@@ -241,7 +241,9 @@ Handlebars.registerPartial("article-item", Handlebars.template({"1":function(con
 
   return "            <a href=\""
     + alias4(((helper = (helper = helpers["preview-link"] || (depth0 != null ? depth0["preview-link"] : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"preview-link","hash":{},"data":data}) : helper)))
-    + "\" target=\"_blank\" class=\"btn btn-default btn-block preview\">\n                <span class=\"fa fa-eye\"></span>\n                Preview\n            </a>\n            <button class=\"btn btn-default  btn-block schedule\" id=\"schedule\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
+    + "\" target=\"_blank\" class=\"btn btn-default btn-block preview\">\n                <span class=\"fa fa-eye\"></span>\n                Preview\n            </a>\n            <button class=\"btn btn-default  btn-block schedule schedule-btn\" id=\"schedule-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-toggle=\"modal\"\n                    data-action-type=\"schedule\"\n                    data-title=\"Schedule Article\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -261,14 +263,20 @@ Handlebars.registerPartial("article-item", Handlebars.template({"1":function(con
 
   return "\n                <p><strong><span\n                        class=\"text-uppercase\">Scheduled</span><br/>"
     + alias3((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"DD/MM/YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
-    + "\n                </strong></p><br/>\n                <button class=\"btn btn-default btn-block schedule\" id=\"schedule-amend\" data-toggle=\"modal\"\n                        data-target=\"#schedule-modal\"\n                        data-article-id=\""
+    + "\n                </strong></p><br/>\n                <button class=\"btn btn-default btn-block schedule schedule-amend-btn\" data-action-type=\"schedule-amend\"  id=\"schedule-amend-"
+    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-toggle=\"modal\"\n                        data-target=\"#schedule-modal\"\n                        data-article-id=\""
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\"\n                        data-title=\"Re-schedule Article\"\n                        data-scheduled=\""
     + alias3(((helper = (helper = helpers["scheduled-publication-date"] || (depth0 != null ? depth0["scheduled-publication-date"] : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"scheduled-publication-date","hash":{},"data":data}) : helper)))
     + "\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\n                    <span class=\"fa fa-calendar\"></span>\n                    Re-Schedule\n                </button>\n                <button class=\"btn btn-default btn-block schedule\" id=\"schedule-cancel\" data-toggle=\"modal\"\n                        data-target=\"#schedule-modal\"\n                        data-article-id=\""
+    + ">\n                    <span class=\"fa fa-calendar\"></span>\n                    Re-Schedule\n                </button>\n                <button class=\"btn btn-default btn-block schedule schedule-cancel-btn\" data-action-type=\"schedule-cancel\" id=\"schedule-cancel-"
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-toggle=\"modal\"\n                        data-target=\"#schedule-modal\"\n                        data-article-id=\""
+    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\"\n                        data-article-doi=\""
+    + alias3(((helper = (helper = helpers.doi || (depth0 != null ? depth0.doi : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"doi","hash":{},"data":data}) : helper)))
     + "\"\n                        data-title=\"Cancel Schedule\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ">\n                    <span class=\"fa fa-calendar-minus-o\"></span>\n                    Cancel\n                </button>\n\n";
@@ -668,14 +676,20 @@ Handlebars.registerPartial("scheduled-article-item", Handlebars.template({"1":fu
 
   return "            <p><strong><span\n                    class=\"text-uppercase\">Scheduled</span><br/>"
     + alias3((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"DD/MM/YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
-    + "\n            </strong></p><br/>\n            <button class=\"btn btn-default btn-block schedule\" id=\"schedule-amend\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
+    + "\n            </strong></p><br/>\n            <button class=\"btn btn-default btn-block schedule schedule-amend-btn\" data-action-type=\"schedule-amend\" id=\"schedule-amend-"
+    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\"\n                    data-title=\"Re-schedule Article\"\n                    data-scheduled=\""
     + alias3(((helper = (helper = helpers["scheduled-publication-date"] || (depth0 != null ? depth0["scheduled-publication-date"] : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"scheduled-publication-date","hash":{},"data":data}) : helper)))
     + "\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(60, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\n                <span class=\"fa fa-calendar\"></span>\n                Re-Schedule\n            </button>\n            <button class=\"btn btn-default btn-block schedule\" id=\"schedule-cancel\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
+    + ">\n                <span class=\"fa fa-calendar\"></span>\n                Re-Schedule\n            </button>\n            <button class=\"btn btn-default btn-block schedule schedule-cancel-btn\" data-action-type=\"schedule-cancel\" id=\"schedule-cancel-"
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
+    + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\"\n                    data-article-doi=\""
+    + alias3(((helper = (helper = helpers.doi || (depth0 != null ? depth0.doi : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"doi","hash":{},"data":data}) : helper)))
     + "\"\n                    data-title=\"Cancel Schedule\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(60, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ">\n                <span class=\"fa fa-calendar-minus-o\"></span>\n                Cancel\n            </button>\n";
@@ -872,18 +886,26 @@ this["eLife"]["templates"]["detail/buttons-publish"] = Handlebars.template({"com
 this["eLife"]["templates"]["detail/buttons-reschedule"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "<button class=\"btn btn-default schedule\" id=\"schedule-amend\" data-toggle=\"modal\"\n        data-target=\"#schedule-modal\"\n        data-article-id=\""
+  return "<button class=\"btn btn-default schedule schedule-amend-btn\" data-action-type=\"schedule-amend\" id=\"schedule-amend-"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
-    + "\"\n        data-title=\"Re-schedule Article\">\n    <span class=\"fa fa-calendar\"></span>\n    Re-Schedule\n</button>\n<button class=\"btn btn-default schedule\" id=\"schedule-cancel\" data-toggle=\"modal\"\n        data-target=\"#schedule-modal\"\n        data-article-id=\""
+    + "\" data-toggle=\"modal\"\n        data-target=\"#schedule-modal\"\n        data-article-id=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
+    + "\"\n        data-title=\"Re-schedule Article\">\n    <span class=\"fa fa-calendar\"></span>\n    Re-Schedule\n</button>\n<button class=\"btn btn-default schedule schedule-cancel-btn\" id=\"schedule-cancel-"
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
+    + "\" data-action-type=\"schedule-cancel\" data-toggle=\"modal\"\n        data-target=\"#schedule-modal\"\n        data-article-id=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
+    + "\"\n        data-article-doi=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.currentArticle : depth0)) != null ? stack1.doi : stack1), depth0))
     + "\"\n        data-title=\"Cancel Schedule\">\n    <span class=\"fa fa-calendar-minus-o\"></span>\n    Cancel Schedule\n</button>";
 },"useData":true});
 
 this["eLife"]["templates"]["detail/buttons-schedule"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "<button class=\"btn btn-default schedule\" id=\"schedule\" data-toggle=\"modal\" data-target=\"#schedule-modal\"\n        data-article-id=\""
-    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
+  return "<button class=\"btn btn-default schedule schedule-btn\" id=\"schedule-"
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
+    + "\" data-action-type=\"schedule\" data-toggle=\"modal\" data-target=\"#schedule-modal\"  data-title=\"Schedule Article\"\n        data-article-id=\""
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.article : depth0)) != null ? stack1.id : stack1), depth0))
     + "\">\n    <span class=\"fa fa-calendar\"></span>\n    Schedule\n</button>";
 },"useData":true});
 
@@ -1029,11 +1051,11 @@ this["eLife"]["templates"]["schedule/article-schedule-modal-body"] = Handlebars.
     var stack1;
 
   return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.showArticleIdField : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    <p>When do you want to schedule this article?</p>\n    <p class=\"article-cancel-info\"></p>\n    <br/>\n    <div class=\"form-group\">\n        <div class=\"col-sm-12\">\n            <input id=\"schedule-date\" name=\"date\" class=\"form-control datepicker schedule-field\" type=\"text\" placeholder=\"Date\">\n        </div>\n    </div>\n    <br/>\n    <br/>\n    <div class=\"form-group\">\n        <div class=\"col-sm-12\">\n            <div class=\"timepicker-container\">\n                <div class=\"timepicker-hour\">\n                    <input id=\"schedule_hour_submit\" name=\"schedule_hour_submit\"\n                           class=\"form-control timepicker hourpicker schedule-field\"\n                           type=\"number\" placeholder=\"Hour\" min=\"1\" max=\"12\"  maxlength=\"2\" data-validation=\"numeric\">\n                </div>\n                <div class=\"timepicker-divider\">:</div>\n                <div class=\"timepicker-minute\">\n                    <input id=\"schedule_minute_submit\" name=\"schedule_minute_submit\"\n                           class=\"form-control timepicker minutepicker schedule-field\" type=\"number\" placeholder=\"Minute\" min=\"0\" max=\"59\"  maxlength=\"2\" data-validation=\"numeric\">\n                </div>\n                <div class=\"timepicker-ampm\">\n                    <select id=\"schedule_ampm_submit\" class=\"form-control timepicker ampmpicker schedule-field\" name=\"schedule_ampm_submit\">\n                        <option value=\"am\">am</option>\n                        <option value=\"pm\" selected=\"selected\">pm</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n    <br/>\n";
+    + "    <p>When do you want to schedule this article?</p>\n    <p class=\"article-cancel-info\"></p>\n    <br/>\n    <div class=\"form-group\">\n        <div class=\"col-sm-12\">\n            <input id=\"schedule-date\" name=\"date\" class=\"form-control datepicker schedule-field\" data-required type=\"text\" placeholder=\"Date\">\n        </div>\n    </div>\n    <br/>\n    <br/>\n    <div class=\"form-group\">\n        <div class=\"col-sm-12\">\n            <div class=\"timepicker-container\">\n                <div class=\"timepicker-hour\">\n                    <input id=\"schedule_hour_submit\" name=\"schedule_hour_submit\"\n                           class=\"form-control timepicker hourpicker schedule-field\"\n                           type=\"number\" placeholder=\"Hour\"  data-required data-min=\"0\" data-actual-min=\"1\" data-max=\"13\" data-actual-max=\"12\" maxlength=\"2\" data-validation=\"numeric\">\n                </div>\n                <div class=\"timepicker-divider\">:</div>\n                <div class=\"timepicker-minute\">\n                    <input id=\"schedule_minute_submit\" name=\"schedule_minute_submit\"\n                           class=\"form-control timepicker minutepicker schedule-field\"  data-required type=\"number\" placeholder=\"Minute\" data-min=\"-1\" data-actual-min=\"0\" data-max=\"60\" data-actual-max=\"59\"  maxlength=\"2\" data-validation=\"numeric\">\n                </div>\n                <div class=\"timepicker-ampm\">\n                    <select id=\"schedule_ampm_submit\" class=\"form-control timepicker ampmpicker schedule-field\"  data-required name=\"schedule_ampm_submit\">\n                        <option value=\"am\">am</option>\n                        <option value=\"pm\" selected=\"selected\">pm</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n    <br/>\n";
 },"2":function(container,depth0,helpers,partials,data) {
-    return "        <p>Please enter the numeric ID of the article you wish to publish:</p>\n        <br/>\n        <div class=\"form-group\">\n            <div class=\"col-sm-12\">\n                <input id=\"schedule-id\" name=\"id\" class=\"form-control article-id schedule-field\" data-validation=\"numeric\" type=\"number\" placeholder=\"Article ID\" min=\"0\">\n            </div>\n        </div>\n        <br/>\n        <hr/>\n        <br/>\n";
+    return "        <p>Please enter the numeric ID of the article you wish to publish:</p>\n        <br/>\n        <div class=\"form-group\">\n            <div class=\"col-sm-12\">\n                <input id=\"schedule-id\" name=\"id\" class=\"form-control article-id schedule-field\" data-required data-validation=\"numeric\" type=\"number\" placeholder=\"Article ID\" min=\"0\">\n            </div>\n        </div>\n        <br/>\n        <hr/>\n        <br/>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "    <div class=\"alert alert-warning\">\n        <p>Are you sure you want to cancel the publication of this article?</p>\n        <p class=\"article-cancel-info\"></p>\n    </div>\n";
+    return "    <div class=\"alert alert-warning schedule-cancel-container\">\n        <p>Are you sure you want to cancel the publication of this article?</p>\n        <p class=\"article-cancel-info\"></p>\n    </div>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
@@ -1042,7 +1064,7 @@ this["eLife"]["templates"]["schedule/article-schedule-modal-body"] = Handlebars.
 },"useData":true});
 
 this["eLife"]["templates"]["schedule/article-schedule-modal-footer"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    return "    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"schedule-close\">No</button>\n    <button type=\"button\" class=\"btn btn-primary has-spinner\" id=\"schedule-cancel\">Yes</button>\n";
+    return "    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"schedule-close\">No</button>\n    <button type=\"button\" class=\"btn btn-primary has-spinner\" id=\"schedule-cancel-btn\">Yes</button>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     return "    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"schedule-close\">Close</button>\n    <button type=\"button\" class=\"btn btn-primary has-spinner\" id=\"schedule-action\">Schedule</button>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1054,20 +1076,18 @@ this["eLife"]["templates"]["schedule/article-schedule-modal-footer"] = Handlebar
 this["eLife"]["templates"]["schedule/article-schedule-modal-status"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "    <div class=\"alert alert-success\">\n"
+  return "    <div class=\"alert alert-success\" id=\"success-message\">\n"
     + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,(depth0 != null ? depth0.actionType : depth0),"schedule-cancel",{"name":"is","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = (helpers.isnt || (depth0 && depth0.isnt) || alias2).call(alias1,(depth0 != null ? depth0.actionType : depth0),"schedule-cancel",{"name":"isnt","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n";
 },"2":function(container,depth0,helpers,partials,data) {
-    return "            <p>This article has been unscheduled.</p>\n";
+    return "            <p class=\"message\">This article has been unscheduled.</p>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "            <p>Your article has been successfully scheduled.</p>\n";
+    return "            <p class=\"message\">Your article has been successfully scheduled.</p>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+    var stack1;
 
-  return container.escapeExpression((helpers.debug || (depth0 && depth0.debug) || alias2).call(alias1,(depth0 != null ? depth0.response : depth0),{"name":"debug","hash":{},"data":data}))
-    + "\n\n"
-    + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,((stack1 = (depth0 != null ? depth0.response : depth0)) != null ? stack1.result : stack1),"success",{"name":"is","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+  return ((stack1 = (helpers.is || (depth0 && depth0.is) || helpers.helperMissing).call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.response : depth0)) != null ? stack1.result : stack1),"success",{"name":"is","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 
 this["eLife"]["templates"]["schedule/article-schedule-modal"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1075,7 +1095,7 @@ this["eLife"]["templates"]["schedule/article-schedule-modal"] = Handlebars.templ
 },"useData":true});
 
 this["eLife"]["templates"]["scheduled/scheduled-actions"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p class=\"text-right\">\n    <button class=\"btn btn-default schedule\" id=\"future-schedule\" data-toggle=\"modal\" data-target=\"#schedule-modal\" data-title=\"Add Scheduled Article\">\n        <span class=\"fa fa-clock-o\"></span>\n        Add Scheduled Article\n    </button>\n</p>";
+    return "<p class=\"text-right\">\n    <button class=\"btn btn-default schedule schedule-future\" id=\"future-schedule\" data-action-type=\"future-schedule\" data-toggle=\"modal\" data-target=\"#schedule-modal\" data-title=\"Add Scheduled Article\">\n        <span class=\"fa fa-clock-o\"></span>\n        Add Scheduled Article\n    </button>\n</p>";
 },"useData":true});
 
 this["eLife"]["templates"]["scheduled/scheduled-content-calendar"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

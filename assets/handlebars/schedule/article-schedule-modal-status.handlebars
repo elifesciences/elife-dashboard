@@ -1,12 +1,10 @@
-{{debug response}}
-
 {{#is response.result 'success'}}
-    <div class="alert alert-success">
+    <div class="alert alert-success" id="success-message">
         {{#is actionType 'schedule-cancel'}}
-            <p>This article has been unscheduled.</p>
+            <p class="message">This article has been unscheduled.</p>
         {{/is}}
         {{#isnt actionType 'schedule-cancel'}}
-            <p>Your article has been successfully scheduled.</p>
+            <p class="message">Your article has been successfully scheduled.</p>
         {{/isnt}}
     </div>
 {{/is}}

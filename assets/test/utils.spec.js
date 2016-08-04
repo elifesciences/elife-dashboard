@@ -12,23 +12,6 @@ if (typeof require !== 'undefined') {
 describe('Application Utilities', function () {
     'use strict';
 
-    before(function () {
-        // runs before all tests in this block
-    });
-
-    after(function () {
-        // runs after all tests in this block
-    });
-
-    beforeEach(function () {
-        // runs before each test in this block
-    });
-
-    afterEach(function () {
-        // runs after each test in this block
-    });
-
-
     it('utils should exist', function () {
         expect(utils).to.be.a('object');
     });

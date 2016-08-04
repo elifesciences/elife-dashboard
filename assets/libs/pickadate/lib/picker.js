@@ -915,7 +915,7 @@ function isUsingDefaultTheme( element ) {
 
     // For normal browsers.
     else if ( window.getComputedStyle ) {
-        theme = getComputedStyle( element )[prop]
+        theme = window.getComputedStyle( element )[prop]
     }
 
     return theme == 'fixed'

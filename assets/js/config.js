@@ -20,8 +20,6 @@ module.exports = {
     // },
     logLevel: 0,
     ISPP: false,
-    isScheduling: false,
-    isAllScheduled: false,
     colorAdvanceArticle: '#f1f1f1',
     colorArticle: '#cde1f1',
     colorText: '#111',

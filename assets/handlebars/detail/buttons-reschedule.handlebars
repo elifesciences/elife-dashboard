@@ -1,13 +1,14 @@
-<button class="btn btn-default schedule" id="schedule-amend" data-toggle="modal"
+<button class="btn btn-default schedule schedule-amend-btn" data-action-type="schedule-amend" id="schedule-amend-{{ article.id }}" data-toggle="modal"
         data-target="#schedule-modal"
         data-article-id="{{ article.id }}"
         data-title="Re-schedule Article">
     <span class="fa fa-calendar"></span>
     Re-Schedule
 </button>
-<button class="btn btn-default schedule" id="schedule-cancel" data-toggle="modal"
+<button class="btn btn-default schedule schedule-cancel-btn" id="schedule-cancel-{{ article.id }}" data-action-type="schedule-cancel" data-toggle="modal"
         data-target="#schedule-modal"
         data-article-id="{{ article.id }}"
+        data-article-doi="{{ currentArticle.doi }}"
         data-title="Cancel Schedule">
     <span class="fa fa-calendar-minus-o"></span>
     Cancel Schedule

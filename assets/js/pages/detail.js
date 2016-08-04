@@ -205,6 +205,7 @@ module.exports = function (name) {
             if (detail.scheduleStatus.scheduled > 0) {
                 $('.article-detail-actions', '#article').empty().html(detail.template.buttonsReScheduleTemplate({
                     article: detail.article,
+                    currentArticle: detail.currentArticle,
                     "scheduled-publication-date": detail.scheduleStatus.scheduled
                 }));
                 $('.article-detail-scheduled', '#article').empty().html(detail.template.articlesScheduledForTemplate({scheduleStatus: detail.scheduleStatus}));

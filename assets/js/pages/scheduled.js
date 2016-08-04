@@ -347,18 +347,7 @@ module.exports = function (name) {
             fixedWeekCount: false,
             editable: false,
             lazyFetch: false,
-            defaultDate: moment(scheduled.calendarDate, 'DD-MM-YYYY'),
-            events: [
-                {
-                    title: 'All Day Event',
-                    start: '2016-05-01'
-                },
-                {
-                    title: 'Long Event',
-                    start: '2016-05-07',
-                    end: '2016-05-10'
-                }
-            ]
+            defaultDate: moment(scheduled.calendarDate, 'DD-MM-YYYY')
         });
 
         log.info('calendar start date ' + moment(scheduled.calendarDate, 'DD-MM-YYYY').format('DD-MM-YYYY'))

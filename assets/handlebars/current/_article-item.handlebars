@@ -144,7 +144,9 @@
                 <span class="fa fa-eye"></span>
                 Preview
             </a>
-            <button class="btn btn-default  btn-block schedule" id="schedule" data-toggle="modal"
+            <button class="btn btn-default  btn-block schedule schedule-btn" id="schedule-{{ id }}" data-toggle="modal"
+                    data-action-type="schedule"
+                    data-title="Schedule Article"
                     data-target="#schedule-modal"
                     data-article-id="{{ id }}" {{#unless id}}disabled="disabled"{{/unless}}>
                 <span class="fa fa-calendar"></span>
@@ -168,7 +170,7 @@
                 <p><strong><span
                         class="text-uppercase">Scheduled</span><br/>{{elFormatUnixDate scheduled-publication-date "DD/MM/YYYY h:mma" }}
                 </strong></p><br/>
-                <button class="btn btn-default btn-block schedule" id="schedule-amend" data-toggle="modal"
+                <button class="btn btn-default btn-block schedule schedule-amend-btn" data-action-type="schedule-amend"  id="schedule-amend-{{ id }}" data-toggle="modal"
                         data-target="#schedule-modal"
                         data-article-id="{{ id }}"
                         data-title="Re-schedule Article"
@@ -176,9 +178,10 @@
                     <span class="fa fa-calendar"></span>
                     Re-Schedule
                 </button>
-                <button class="btn btn-default btn-block schedule" id="schedule-cancel" data-toggle="modal"
+                <button class="btn btn-default btn-block schedule schedule-cancel-btn" data-action-type="schedule-cancel" id="schedule-cancel-{{ id }}" data-toggle="modal"
                         data-target="#schedule-modal"
                         data-article-id="{{ id }}"
+                        data-article-doi="{{ doi }}"
                         data-title="Cancel Schedule" {{#unless id}}disabled="disabled"{{/unless}}>
                     <span class="fa fa-calendar-minus-o"></span>
                     Cancel

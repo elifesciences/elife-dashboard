@@ -1,7 +1,9 @@
 // If we're running under Node,
 if (typeof require !== 'undefined') {
     var jsdom = require("jsdom").jsdom;
-    global.document = jsdom('<html><head><script></script></head><body></body></html>');
+    if(global.document === undefined) {
+        global.document = jsdom('<html><head><script></script></head><body></body></html>');
+    }
     global.window = document.defaultView;
     var $ = require('jquery');
     var sinon = require('sinon');
@@ -42,22 +44,6 @@ describe('Publication', function () {
         publish.init();
         this.$publishNowBtn = $('<button type="button" data-action="publish" data-article-title="10.7554/eLife.10856" data-article-doi="10.7554/eLife.10856" data-article-id="10856" data-article-version="2" data-article-run="6805bed5-3416-4cba-9960-d897a64c9320">Publish Now</button>');
         $('body').append(template['current/article']);
-    });
-
-    after(function () {
-        // runs after all tests in this block
-    });
-
-    beforeEach(function () {
-        // runs before each test in this block
-        // sinon.spy($, "ajax");
-    });
-
-    afterEach(function () {
-        // runs after each test in this block
-        // Restor jQuery's ajax method to its
-        // original state
-        // $.ajax.restore();
     });
 
     it('publish should exist', function () {
