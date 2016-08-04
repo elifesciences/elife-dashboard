@@ -124,8 +124,8 @@ Add source roots to PYTHONPATH (checked)
 
 
 
-## Licence
+## License
 
-MIT Licensed. See [LICENCE.txt](LICENCE.txt)
+MIT Licensed. See [LICENSE](LICENSE)
 
 npm install
