@@ -1,0 +1,14 @@
+<div class="row detail-cta">
+    <div class="col-md-6">
+        <span class="article-detail-scheduled"></span>
+    </div>
+    <div class="col-md-6 text-right">
+        {{#if currentArticle.preview-link}}
+            <a href="{{currentArticle.preview-link}}" target="_blank" class="btn btn-default">
+                <span class="fa fa-eye"></span>
+                Preview
+            </a>
+        {{/if}}
+        <span class="article-detail-actions btn-group"></span>
+    </div>
+</div>

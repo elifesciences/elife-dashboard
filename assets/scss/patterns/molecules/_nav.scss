@@ -1,0 +1,40 @@
+.navbar-elf {
+  border: 0px;
+  background-color: darken($gray-lighter, 2%);
+  a {
+    color: $gray;
+    text-decoration: none;
+    &:hover {
+      color: $gray;
+    }
+  }
+  .navbar-collapse {
+    padding: 0;
+    &.in {
+      overflow-x: hidden;
+      .dropdown-menu {
+        padding-left: 35px;
+      }
+    }
+  }
+  .navbar-toggle {
+    //border-color: $gray-light;
+    color: $gray-light;
+    .icon-bar {
+      background-color: $gray-light;
+    }
+  }
+  .nav {
+    li a {
+      border-right: 1px solid #ffffff;
+      padding-right: 60px;
+      padding-left: 60px;
+    }
+    .dropdown-menu {
+      width: 100%;
+      li a {
+        padding: 5px 30px;
+      }
+    }
+  }
+}

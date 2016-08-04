@@ -1,0 +1,56 @@
+<section class="article-detail" id="article-{{article.id}}">
+    <table class="article-list">
+        <tr class="article__row">
+            <td class="article__col article__col__icon">
+                <span class="article__icon">
+                    <span class="fa fa-file {{#if currentArticle.status}}file-icon-{{lowercase currentArticle.status }}{{else}}file-icon-none{{/if}}"></span>
+                </span>
+            </td>
+            <td class="article__col article__col__title">
+                <h6 class="article-doi article__title">{{currentArticle.doi}}</h6>
+                <p>{{currentArticle.title}}</p>
+            </td>
+            <td class="article__col article__col__action">
+                <dl>
+                    <dt><i>Version:</i></dt>
+                    <dd><strong>{{currentVersion}}</strong></dd>
+                    <dt><i>Run:</i></dt>
+                    <dd><strong>{{currentEvents.run-number}}</strong></dd>
+                </dl>
+            </td>
+        </tr>
+    </table>
+    <div class="elf-well">
+        {{#if currentRun}}
+            <dl>
+                <dt><i>Run id:</i></dt>
+                <dd>{{ currentRun }}</dd>
+            </dl>
+        {{/if}}
+        {{#if currentArticle.article-type}}
+            <dl>
+                <dt><i>Article type:</i></dt>
+                <dd>{{ currentArticle.article-type }}</dd>
+            </dl>
+        {{/if}}
+        {{#if currentArticle.publication-date}}
+            <dl>
+                <dt><i>Publication date:</i></dt>
+                <dd>{{currentArticle.publication-date}}{{!--{{elFormatUnixDate currentArticle.publication-date "MM/DD/YYYY HH:mm:ss" }}--}}</dd>
+            </dl>
+        {{/if}}
+        {{#if currentArticle.corresponding-authors}}
+            <dl>
+                <dt><i>Corresponding authors:</i></dt>
+                <dd>{{currentArticle.corresponding-authors}}</dd>
+            </dl>
+        {{/if}}
+        {{#if currentArticle.authors}}
+            <dl>
+                <dt><i>Authors:</i></dt>
+                <dd>{{currentArticle.authors}}</dd>
+            </dl>
+        {{/if}}
+
+    </div>
+</section>

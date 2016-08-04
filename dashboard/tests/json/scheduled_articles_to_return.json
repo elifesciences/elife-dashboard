@@ -1,0 +1,27 @@
+ {
+   "articles":
+   [
+     {
+        "status": "VOR",
+        "run-id": "b6ef5d1f-23b3-4f4e-9ba3-7de24f885171",
+        "publication-date": "2015-12-11T00:00:00Z", "article-type": "research-article",
+        "run": 1,
+        "title": "A gene-expression screen identifies a non-toxic sumoylation inhibitor that mimics SUMO-less human LRH-1 in liver",
+        "corresponding-authors":"Holly A Ingraham",
+        "preview-link": "https://elifesciences.org/content/4/e09003v3",
+        "article-id": "09003",
+        "authors": "Miyuki Suzawa, Diego A Miranda, Karmela A Ramos, Kenny K-H Ang, Emily J Faivre, Christopher G Wilson, Laura Caboni, Michelle R Arkin, Yeong-Sang Kim, Robert J Fletterick, Aaron Diaz, John S Schneekloth, Holly A Ingraham, Peter Tontonoz",
+        "event-type": "Post EIF",
+        "event-status": "end",
+        "event-timestamp": 1454940991,
+        "_publication-data": "eyJ3b3JrZmxvd19uYW1lIjogIlBvc3RQZXJmZWN0UHVibGljYXRpb24iLCAid29ya2Zsb3dfZGF0\nYSI6IHsic3RhdHVzIjogInZvciIsICJ1cGRhdGVfZGF0ZSI6ICIyMDE2LTAyLTA4VDE0OjE2OjMx\nWiIsICJydW4iOiAiYjZlZjVkMWYtMjNiMy00ZjRlLTliYTMtN2RlMjRmODg1MTcxIiwgImV4cGFu\nZGVkX2ZvbGRlciI6ICIwOTAwMy4zL2I2ZWY1ZDFmLTIzYjMtNGY0ZS05YmEzLTdkZTI0Zjg4NTE3\nMSIsICJ2ZXJzaW9uIjogIjMiLCAiZWlmX2xvY2F0aW9uIjogIjA5MDAzLjMvYjZlZjVkMWYtMjNi\nMy00ZjRlLTliYTMtN2RlMjRmODg1MTcxL2VsaWZlLTA5MDAzLXYzLmpzb24iLCAiYXJ0aWNsZV9p\nZCI6ICIwOTAwMyJ9fQ==\n",
+        "is-temp": false,
+        "version": 3,
+        "publication-status": "ready to publish",
+        "path": "content/4/e09003v3",
+        "scheduled-publication-date": 1464382800,
+        "id": "09003",
+        "doi": "10.7554/eLife.09003"
+     },
+       {"scheduled-publication-date": 1464451200, "id": "00000099999999", "is-temp": true}]
+}

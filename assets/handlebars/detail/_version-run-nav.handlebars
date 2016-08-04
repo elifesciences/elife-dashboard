@@ -1,0 +1,26 @@
+<section class="version-run-nav">
+    <ol class="version-run-nav-list">
+        {{#each article.versions as |versions|}}
+            <li class="{{#is details.version-number ../currentVersion}}active{{/is}}">
+                <span class="version-container">
+                    <span class="version">Version {{details.version-number}}
+                    </span>
+                    <span class="status"><span
+                            class="{{#if versions.details.status}}file-icon-{{lowercase versions.details.status }}{{else}}file-icon-none{{/if}} "></span></span>
+                </span>
+                <ol class="run-container">
+                    {{#each versions.runs as |runs| }}
+                        <li class="run {{#is ../details.version-number ../../currentVersion}}{{#is run-id ../../currentRun}}active{{/is}}{{/is}}">
+                            <a href="/article/{{../../article.id}}/{{../details.version-number}}/{{run-id}}" data-version="{{../details.version-number}}" data-run="{{run-id}}">
+                                <span class="title">Run {{run-number}}</span>
+                                <span class="date">{{elFormatUnixDate first-event-timestamp "DD/MM/YYYY HH:mm:ss" }}</span>
+                                <span class="icon"><span class="fa fa-chevron-right"></span></span>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ol>
+
+            </li>
+        {{/each}}
+    </ol>
+</section>

@@ -1,0 +1,73 @@
+.article-event-timeline {
+
+
+  .article-event-timeline__row {
+    @include make-row();
+    padding-bottom: 10px;
+  }
+  .article-event-timeline__status {
+    @include make-sm-column(2, 0px);
+    text-align: center;
+  }
+  .article-event-timeline__title {
+    @include make-sm-column(3, 0px);
+    p {
+      padding: $icon-circle-md/4 0px ;
+    }
+  }
+  .article-event-timeline__detail {
+    @include make-sm-column(7, 0px);
+    div {
+      min-height: 90px;
+      font-size: $font-size-small;
+      padding-top: $icon-circle-md/4;
+    }
+  }
+
+
+  // Lines
+
+  .article-event-timeline__row {
+    &:last-of-type {
+      .line {
+        display: none;
+        background: none;
+      }
+    }
+  }
+  .article-event-timeline__status {
+    position: relative;
+    .fa { position: relative; }
+    .line {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      height: 100px;
+      width: 2px;
+      background: url('#{$img-path}/molecules/article-event-timeline-bg.png') center repeat-y ;
+    }
+  }
+
+  @media #{$df-sm} {
+    .line {
+      display: none;
+    }
+    .article-event-timeline__row {
+      border-bottom: 1px solid $gray-lighter;
+      margin-bottom: 10px;
+    }
+    .article-event-timeline__title {
+      padding-top: 10px;
+      font-size: $font-size-h4;
+    }
+    .article-event-timeline__title,
+    .article-event-timeline__detail {
+      padding: 0 10px;
+      p {
+        padding: 0px;
+      }
+    }
+
+  }
+
+}

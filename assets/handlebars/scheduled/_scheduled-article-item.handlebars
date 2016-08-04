@@ -1,0 +1,137 @@
+<tr class="article__row" id="article-{{id}}">
+    <td class="article__col article__col__icon">
+        {{#if url}}
+            <a href="/article/{{url}}" class="article__icon">
+                <span class="fa fa-file {{#if status}}file-icon-{{lowercase status }}{{else}}file-icon-none{{/if}}"></span>
+            </a>
+        {{else}}
+            <span class="article__icon">
+                <span class="fa fa-file {{#if status}}file-icon-{{lowercase status }}{{else}}file-icon-none{{/if}}"></span>
+            </span>
+        {{/if}}
+    </td>
+    <td class="article__col article__col__title">
+        <h6 class="article__title">
+            {{#if doi}}
+                {{#if url}}
+                <a href="/article/{{url}}" class="article-doi">{{ doi }}</a>
+                {{else}}
+                    <span class="article-doi">{{ doi }}</span>
+                {{/if}}
+            {{else}}
+                Not yet available ({{id}})
+            {{/if}}
+            {{#unless id}}<span class="fa e-icon xs danger fa-exclamation-triangle" data-toggle="tooltip" data-placement="right" title="There is a problem with this article ID is null"></span>{{/unless}}
+        </h6>
+        {{#if title}}
+            <p>
+                {{#if url}}
+                    <a href="/article/{{url}}">{{ title }}</a>
+                {{else}}
+                    {{ title }}
+                {{/if}}
+            </p>
+        {{/if}}
+    </td>
+    <td class="article__col article__col__info">
+        <dl>
+            {{#if version}}
+                {{#if doi}}
+                    <dt>
+                        {{#if url}}
+                        <a href="/article/{{url}}"><i>Version:</i></a>
+                        {{else}}
+                        <i>Version:</i>
+                        {{/if}}
+                    </dt>
+                    <dd>
+                    {{#if url}}
+                        <a href="/article/{{url}}">{{ version }}</a>
+                    {{else}}
+                        {{ version }}
+                    {{/if}}
+                    </dd>
+                {{/if}}
+            {{/if}}
+            {{#if article-type}}
+                <dl>
+                    <dt>
+                        {{#if url}}
+                            <a href="/article/{{url}}"><i>Article type:</i></a>
+                        {{else}}
+                            <i>Article type:</i>
+                        {{/if}}
+                    </dt>
+                    <dd>
+                        {{#if url}}
+                            <a href="/article/{{url}}">{{ article-type }}</a>
+                        {{else}}
+                            {{ article-type }}
+                        {{/if}}
+                    </dd>
+                </dl>
+            {{/if}}
+            {{#if publication-date}}
+                <dl>
+                    <dt>
+                        {{#if url}}
+                            <a href="/article/{{url}}"><i>Publication date:</i></a>
+                        {{else}}
+                            <i>Publication date:</i>
+                        {{/if}}
+                    </dt>
+                    <dd>
+                        {{#if url}}
+                            <a href="/article/{{url}}">{{publication-date}}{{!--{{elFormatUnixDate publication-date "Do MMMM YYYY" }}--}}</a>
+                        {{else}}
+                            {{publication-date}}{{!--{{elFormatUnixDate publication-date "Do MMMM YYYY" }}--}}
+                        {{/if}}
+                    </dd>
+                </dl>
+            {{/if}}
+            {{#if corresponding-authors}}
+                <dl>
+                    <dt>
+                        {{#if url}}
+                            <a href="/article/{{url}}"><i>Corresponding authors:</i></a>
+                        {{else}}
+                            <i>Corresponding authors:</i>
+                        {{/if}}
+                    </dt>
+                    <dd>
+                        {{#if url}}
+                            <a href="/article/{{url}}">{{ corresponding-authors }}</a>
+                        {{else}}
+                            {{ corresponding-authors }}
+                        {{/if}}
+                    </dd>
+                </dl>
+            {{/if}}
+        </dl>
+    </td>
+
+    <td class="article__col article__col__action">
+        {{#if scheduled-publication-date}}
+            <p><strong><span
+                    class="text-uppercase">Scheduled</span><br/>{{elFormatUnixDate scheduled-publication-date "DD/MM/YYYY h:mma" }}
+            </strong></p><br/>
+            <button class="btn btn-default btn-block schedule" id="schedule-amend" data-toggle="modal"
+                    data-target="#schedule-modal"
+                    data-article-id="{{ id }}"
+                    data-title="Re-schedule Article"
+                    data-scheduled="{{scheduled-publication-date}}" {{#unless id}}disabled="disabled"{{/unless}}>
+                <span class="fa fa-calendar"></span>
+                Re-Schedule
+            </button>
+            <button class="btn btn-default btn-block schedule" id="schedule-cancel" data-toggle="modal"
+                    data-target="#schedule-modal"
+                    data-article-id="{{ id }}"
+                    data-title="Cancel Schedule" {{#unless id}}disabled="disabled"{{/unless}}>
+                <span class="fa fa-calendar-minus-o"></span>
+                Cancel
+            </button>
+        {{/if}}
+    </td>
+
+
+</tr>

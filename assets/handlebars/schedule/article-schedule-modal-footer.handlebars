@@ -1,0 +1,7 @@
+{{#is actionType 'cancel'}}
+    <button type="button" class="btn btn-default" data-dismiss="modal" id="schedule-close">No</button>
+    <button type="button" class="btn btn-primary has-spinner" id="schedule-cancel">Yes</button>
+{{else}}
+    <button type="button" class="btn btn-default" data-dismiss="modal" id="schedule-close">Close</button>
+    <button type="button" class="btn btn-primary has-spinner" id="schedule-action">Schedule</button>
+{{/is}}

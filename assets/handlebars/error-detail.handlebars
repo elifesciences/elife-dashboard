@@ -1,0 +1,25 @@
+{{#if detail}}
+    <div class="alert alert-muted {{ref}}" id="error-detail">
+        <div class="row">
+            <div class="col-sm-6">
+                {{#if statusText}}
+                    <p class="status h5 text-uppercase">
+                        {{#if statusCode}}{{statusCode}}: {{/if}}
+                        {{statusText}}
+                        {{#if type}}({{type}}){{/if}}
+                    </p>
+                {{/if}}
+            </div>
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Show Details
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="collapseExample">
+            <hr />
+            {{#if detail}}<p class="detail">{{detail}}</p>{{/if}}
+        </div>
+
+    </div>
+{{/if}}

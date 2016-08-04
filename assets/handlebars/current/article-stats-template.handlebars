@@ -1,0 +1,56 @@
+<div class="article-stats">
+    {{#each this as |articles articleSection|}}
+
+        {{# if articles.length}}
+            <div class="article-stats__section">
+
+                <div class="stats__section__row">
+                    <div class="stats__section__icon">
+                        {{#is articleSection 'error'}}
+                            <a href="#error-list" class="icon"><span class="fa e-icon md danger fa-exclamation-triangle"></span></a>
+                        {{/is}}
+                        {{#is articleSection 'inProgress'}}
+                            <a href="#in-progress-list" class="icon"><span class="fa e-icon md info fa-cog"></span></a>
+                        {{/is}}
+                        {{#is articleSection 'uir'}}
+                            <a href="#uir-list" class="icon"><span class="fa e-icon md muted fa-hand-o-down "></span></a>
+                        {{/is}}
+                        {{#is articleSection 'scheduled'}}
+                            <a href="#scheduled-list" class="icon"><span class="fa e-icon md warning fa-clock-o"></span></a>
+                        {{/is}}
+                    </div>
+                    <div class="stats__section__detail">
+                        {{#is articleSection 'error'}}
+                            <a href="#error-list">
+                                <span class="stats__section__val">{{articles.length}}</span><br>
+                                <span class="stats__section__desc">Articles with Errors</span>
+                            </a>
+                        {{/is}}
+                        {{#is articleSection 'inProgress'}}
+                            <a href="#inProgress-list">
+                                <span class="stats__section__val">{{articles.length}}</span><br>
+                                <span class="stats__section__desc">Articles are in Progress</span>
+                            </a>
+                        {{/is}}
+                        {{#is articleSection 'uir'}}
+                            <a href="#uir-list">
+                                <span class="stats__section__val">{{articles.length}}</span><br>
+                                <span class="stats__section__desc">Articles require User Input<br>(Ready to Publish)</span>
+                            </a>
+                        {{/is}}
+                        {{#is articleSection 'scheduled'}}
+                            <a href="#scheduled-list">
+                                <span class="stats__section__val">{{articles.length}}</span><br>
+                                <span class="stats__section__desc">Articles are Scheduled</span>
+                            </a>
+                        {{/is}}
+                    </div>
+                </div>
+
+
+            </div>
+        {{/if}}
+    {{/each}}
+</div>
+
+

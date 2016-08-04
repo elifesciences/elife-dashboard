@@ -1,0 +1,44 @@
+/* @TODO page tabs */
+.elf-nav-tabs {
+  margin-bottom: 20px;
+  border: 0px;
+  //border-bottom: 1px solid $nav-tabs-border-color;
+  > li {
+    float: left;
+    // Make the list-items overlay the bottom border
+    margin-bottom: -1px;
+
+    // Actual tabs (as links)
+    > a {
+      color: $text-color;
+      background-color: $gray-lighter;
+      padding: 10px 40px;
+      line-height: $line-height-base;
+      border: 1px solid transparent;
+      border-top-color: darken($gray-lighter, 5%);
+      border-right-color: darken($gray-lighter, 5%);
+      &:first-of-type {
+        border-left-color: darken($gray-lighter, 5%);
+      }
+      &:hover {
+        background-color: darken($gray-lighter, 5%);
+      }
+    }
+
+    &.active > a {
+        background-color: transparent;
+        cursor: default;
+    }
+  }
+  // pulling this in mainly for less shorthand
+  &.nav-justified {
+    @extend .nav-justified;
+    @extend .nav-tabs-justified;
+  }
+
+  @media #{$df-sm} {
+      > li {
+        width: 100%;
+      }
+  }
+}

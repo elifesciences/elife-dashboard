@@ -1,0 +1,32 @@
+{
+  "error": [],
+  "in-progress": [
+    {
+      "doi": "10.7554/eLife.09003",
+      "id": null,
+      "version": 3
+    },
+    {
+      "doi": "10.7554/eLife.09003",
+      "event-status": "start",
+      "event-timestamp": 1454940889,
+      "event-type": "Convert JATS",
+      "id": null,
+      "run": 1,
+      "run-id": "b6ef5d1f-23b3-4f4e-9ba3-7de24f885171",
+      "version": 3
+    },
+    {
+      "doi": "10.7554/eLife.09672",
+      "event-status": "start",
+      "event-timestamp": 1454811517,
+      "event-type": "Expand Article",
+      "id": null,
+      "run": 1,
+      "run-id": "dc319cf8-8f7a-42d6-bec9-33fde4d51db0",
+      "version": 2
+    }
+  ],
+  "scheduled": [],
+  "uir": []
+}

@@ -1,0 +1,6 @@
+<div id="error-message" class="alert elf-alert {{#if errorType }}alert-{{errorType}}{{else}}alert-danger{{/if}} {{ref}}">
+    {{#if statusText}}
+        <p class="status h5 text-uppercase">{{#if statusCode}}{{statusCode}}: {{/if}}{{statusText}}{{#if type}}({{type}}){{/if}}</p>
+    {{/if}}
+{{#if message}}<p class="message">{{message}}</p>{{/if}}
+</div>

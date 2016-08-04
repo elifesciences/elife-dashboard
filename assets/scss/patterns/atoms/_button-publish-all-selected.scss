@@ -1,0 +1,22 @@
+/*------------------------------------*\
+    $BUTTONS
+\*------------------------------------*/
+
+
+.btn-publish-all-selected {
+  display: none;
+  .is-pp & {
+    display: block;
+  }
+  position: absolute;
+  right: 0;
+  text-decoration: none;
+  top: 15px;
+
+  @media #{$df-sm} {
+    width: 100%;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+}

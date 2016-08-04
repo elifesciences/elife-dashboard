@@ -1,0 +1,82 @@
+/* Archive page is incomplete */
+
+
+.archive-page {
+
+  .filter {
+    margin: 0;
+    margin-top: 40px;
+    position: relative;
+
+    a {
+      text-decoration: none;
+    }
+
+    .dropdown-toggle {
+      position: absolute;
+      right: 15px;
+      top: -73px;
+    }
+
+    > .dropdown-menu  {
+      top: -35px;
+      background-color: white;
+      border-radius: 0;
+      padding: 15px;
+      width: 100%;
+    }
+
+    > .dropdown-menu ul {
+      list-style-type: none;
+    }
+
+
+    .filter-search {
+      border-bottom: 1px solid $gray-lighter;
+      padding: 0 0 15px;
+    }
+
+    .filter-refine {
+      list-style: none;
+      min-height: 420px;
+      overflow: visible;
+      padding: 15px 0;
+
+      legend {
+        border: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .btn {
+        margin-top: 10px;
+        padding: 5px 7px;
+        text-decoration: none;
+
+
+
+      }
+
+    }
+
+
+  }
+
+
+  .article-snapshot-list {
+
+    &.archive {
+
+      .column-2 {
+        padding-left: 5%;
+        padding-right: 5%;
+
+
+      }
+
+    }
+
+  }
+
+}

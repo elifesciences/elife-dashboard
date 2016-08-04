@@ -1,0 +1,6 @@
+.sticky-header.sticky {
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+  @include box-shadow( 0px 25px 45px -34px rgba(0,0,0,0.75));
+}

@@ -1,0 +1,53 @@
+{{#each this as |articles articleSection|}}
+    {{# if articles.length}}
+        <section class="article-list-section sticky" id="{{articleSection}}-list">
+            {{#is articleSection 'uir'}}
+                <button href="#" class="btn btn-default btn-publish-all-selected btn-publish-queued" data-toggle="modal"
+                        data-target="#publish-modal" type="button">
+                    <span class="fa fa-globe"></span>
+                    Publish All Selected
+                </button>
+            {{/is}}
+            <table class="article-list">
+                {{#if articleSection}}
+                    <caption class="sticky-header">
+                        {{#is articleSection 'error'}}
+                            <span class="fa e-icon md danger fa-warning  pull-left"></span>
+                        {{/is}}
+                        {{#is articleSection 'inProgress'}}
+                            <span class="fa e-icon md info fa-cog  pull-left"></span>
+                        {{/is}}
+                        {{#is articleSection 'uir'}}
+                            <span class="fa e-icon md muted fa-hand-o-down  pull-left"></span>
+                        {{/is}}
+                        {{#is articleSection 'scheduled'}}
+                            <span class="fa e-icon md warning fa-clock-o  pull-left"></span>
+                        {{/is}}
+                        <h4>
+                            {{#is articleSection 'error'}}
+                                Errors
+                            {{/is}}
+                            {{#is articleSection 'inProgress'}}
+                                In Progress
+                            {{/is}}
+                            {{#is articleSection 'uir'}}
+                                User Input Required (Ready to Publish)
+                            {{/is}}
+                            {{#is articleSection 'scheduled'}}
+                                Scheduled
+                            {{/is}}
+                            {{# if articles.length}}
+                                <small>({{articles.length}} Articles)</small>
+                            {{/if}}
+                        </h4>
+                    </caption>
+                {{/if}}
+                <tbody>
+                {{#each articles}}
+                    {{> article-item section=articleSection }}
+                {{/each}}
+                </tbody>
+            </table>
+        </section>
+    {{/if}}
+{{/each}}

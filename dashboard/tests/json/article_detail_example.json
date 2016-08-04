@@ -1,0 +1,27 @@
+{
+  "id": "09003",
+  "versions": {
+    "3": {
+      "details": {
+        "doi": "10.7554/eLife.09003",
+        "version-number": "3"
+      },
+      "runs": {
+        "1": {
+          "events": [
+            {
+              "event-message": "Starting conversion of article xml to EIF for 09003",
+              "event-status": "start",
+              "event-timestamp": 1454940889,
+              "event-type": "Convert JATS"
+            }
+          ],
+          "first-event-timestamp": 1454940889,
+          "run-id": "b6ef5d1f-23b3-4f4e-9ba3-7de24f885171",
+          "run-number": "1",
+          "version-number": "3"
+        }
+      }
+    }
+  }
+}

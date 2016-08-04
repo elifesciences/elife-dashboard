@@ -1,0 +1,13 @@
+{{#if scheduled.articles}}
+    <section class="article-list-section sticky" id="scheduled-list">
+        <table class="article-list">
+            <tbody>
+            {{#each scheduled.articles}}
+                {{> scheduled-article-item }}
+            {{/each}}
+            </tbody>
+        </table>
+    </section>
+{{else}}
+    <p class="text-center">There are currently no articles scheduled.</p>
+{{/if}}

@@ -1,0 +1,168 @@
+{
+  "articles": [
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.00286",
+      "event-status": "end",
+      "event-timestamp": 1458804203,
+      "event-type": "Convert images",
+      "id": "00286",
+      "publication-date": 1458804203,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1458804203,
+      "is-temp": 0
+    },
+    {
+      "id": "00289898",
+      "scheduled-publication-date": 1458464581,
+      "is-temp": 1
+    },
+    {
+      "id": "00284",
+      "scheduled-publication-date": 1458464581,
+      "is-temp": 1
+    },
+    {
+      "id": "00243",
+      "scheduled-publication-date": 1458478771,
+      "is-temp": 1
+    },
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.33333",
+      "event-status": "end",
+      "event-timestamp": 1458478771,
+      "event-type": "Convert images",
+      "id": "33333",
+      "publication-date": 1458478771,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1458478771,
+      "is-temp": 0
+    },
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.234234",
+      "event-status": "end",
+      "event-timestamp": 1458496831,
+      "event-type": "Convert images",
+      "id": "234234",
+      "publication-date": 1458496831,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1458496831,
+      "is-temp": 0
+    },
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.00283",
+      "event-status": "end",
+      "event-timestamp": 1459939661,
+      "event-type": "Convert images",
+      "id": "00283",
+      "publication-date": 1459939661,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1459939661,
+      "is-temp": 0
+    },
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.2342",
+      "event-status": "end",
+      "event-timestamp": 1458856754,
+      "event-type": "Convert images",
+      "id": "2342",
+      "publication-date": 1458856754,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1458856754,
+      "is-temp": 0
+    },
+    {
+      "id": "4343",
+      "scheduled-publication-date": 1459574706,
+      "is-temp": 1
+    },
+    {
+      "id": "43423",
+      "scheduled-publication-date": 1460430946,
+      "is-temp": 1
+    },
+    {
+      "id": "342342",
+      "scheduled-publication-date": 1459809648,
+      "is-temp": 1
+    },
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.34234",
+      "event-status": "end",
+      "event-timestamp": 1458444864,
+      "event-type": "Convert images",
+      "id": "34234",
+      "publication-date": 1458444864,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1458444864,
+      "is-temp": 0
+    },{
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.234234",
+      "event-status": "end",
+      "event-timestamp": 1460727695,
+      "event-type": "Convert images",
+      "id": "234234",
+      "publication-date": 1460727695,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title 1",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1460727695,
+      "is-temp": 0
+    },{
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.234234234",
+      "event-status": "end",
+      "event-timestamp": 1460413980,
+      "event-type": "Convert images",
+      "id": "234234234",
+      "publication-date": 1460413980,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title 2",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html",
+      "scheduled-publication-date": 1460413980,
+      "is-temp": 0
+    }
+  ]
+}

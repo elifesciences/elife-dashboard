@@ -1,0 +1,11 @@
+.elf-event-bubble {
+  display: inline-block;
+  background-color: #cde1f1;
+  border-color: #cde1f1;
+  color: #111;
+  &.tmp {
+    color: #111;
+    background-color: #f1f1f1;
+    border-color: #f1f1f1;
+  }
+}

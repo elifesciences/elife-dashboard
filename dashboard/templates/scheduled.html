@@ -1,0 +1,20 @@
+{% extends "dashboard_page.html" %}
+
+{% block nav %}
+<ul class="nav elf-nav-tabs">
+    <li role="presentation" class=""><a href="/current">Current</a></li>
+    <li role="presentation" class="active"><a href="/scheduled">Scheduled</a></li>
+</ul>
+{% endblock %}
+{% block body %}
+
+<div class="scheduled-page">
+    <div class="row schedule-page-cta">
+        <div class="col-sm-6"><div class="schedule-page__switcher"></div></div>
+        <div class="col-sm-6"><div class="schedule-page__actions"></div></div>
+    </div>
+    <hr />
+    <div class="schedule-page__content"></div>
+</div>
+
+{% endblock %}

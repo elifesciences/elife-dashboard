@@ -1,0 +1,95 @@
+.article-list-section {
+  border-bottom: 1px solid darken($gray-lighter, 5%);
+  margin: 20px 0;
+  position: relative;
+}
+
+.article-list {
+  font-size: 1.2rem;
+  width: 100%;
+
+  a {
+    color: $text-color;
+    text-decoration: none;
+    &:hover {
+      color: $text-color;
+    }
+  }
+
+  caption {
+    background-color: #fff;
+    h4 {
+      margin: 0;
+      padding: 15px 0 15px 65px;
+    }
+  }
+
+  .article__title {
+    font-weight: bold;
+    margin-top: 0;
+  }
+  .article__icon {
+    padding: 0 20px;
+    display: block;
+  }
+
+  .article__row {
+    border-top: 1px solid darken($gray-lighter, 5%);
+    vertical-align: top;
+    .article__col {
+      padding: 15px;
+      vertical-align: middle;
+    }
+    .article__col__icon {
+      width: 5%;
+      padding: 10px 0px;
+      background-color: lighten($gray-lighter, 5%);
+    }
+    .article__col__title {
+      width: 35%;
+    }
+    .article__col__info {
+      width: 35%;
+      background-color: lighten($gray-lighter, 5%);
+    }
+    .article__col__status {
+      width: 10%;
+    }
+    .article__col__action {
+      width: 15%;
+      background-color: lighten($gray-lighter, 5%);
+    }
+  }
+
+  @media #{$df-md} {
+    .article__row {
+      .article__col {
+        width: 100%;
+        display: block;
+        clear: both;
+      }
+      .article__col__icon {
+        width: 10%;
+        display: table-cell;
+      }
+      .article__col__title {
+        width: 90%;
+      }
+    }
+  }
+
+}
+
+
+
+
+// sticky headers
+.article-snapshot-list {
+  caption {
+    &.sticky {
+      -webkit-box-shadow: 0px 18px 17px -23px rgba(0,0,0,0.51);
+      -moz-box-shadow: 0px 18px 17px -23px rgba(0,0,0,0.51);
+      box-shadow: 0px 18px 17px -23px rgba(0,0,0,0.51);
+    }
+  }
+}
