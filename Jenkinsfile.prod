@@ -6,5 +6,5 @@ elifePipeline {
     stage 'Deploy'
     elifeDeploySlackNotification "elife-dashboard", "prod"
     elifeGitMoveToBranch commit, 'master'
-    elifeSwitchRevision 'elife-dashboard-master', commit
+    builderDeployRevision 'elife-dashboard--prod', commit
 }
