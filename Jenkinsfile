@@ -15,7 +15,7 @@ elifePipeline {
     elifeMainlineOnly {
         stage 'End2end tests'
         elifeEnd2EndTest {
-            elifeSwitchRevision 'elife-dashboard-develop--end2end', commit
+            builderDeployRevision 'elife-dashboard--end2end', commit
         }
 
         stage 'Approval'
