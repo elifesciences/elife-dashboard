@@ -1,12 +1,4 @@
-// If we're running under Node,
-if (typeof require !== 'undefined') {
-    var jsdom = require("jsdom");
-    var window = jsdom.jsdom().defaultView;
-    var $ = require('jquery');
-    var expect = require('chai').expect;
-    var utils = require('../js/helpers/utils.js');
-}
-
+var utils = require('../js/helpers/utils.js');
 
 //component to be tested
 describe('Application Utilities', function () {

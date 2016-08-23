@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function () {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -384,10 +384,18 @@ module.exports = function (name) {
         } else {
             sch.resetParameters();
             if (schedule.isScheduling === false && schedule.isAllScheduled === true) {
-                window.location.reload(true);
+                sch.reloadPage();
             }
         }
     }
+
+    /**
+     * Split out reload page for easier unit testing
+     */
+    function reloadPage() {
+        window.location.reload(true);
+    }
+
 
     /**
      * Zero Pad the value
@@ -429,6 +437,7 @@ module.exports = function (name) {
         setParameters: setParameters,
         initDateTime: initDateTime,
         refreshPage: refreshPage,
+        reloadPage: reloadPage,
         updateModal: updateModal,
         schedule: schedule,
         resetParameters: resetParameters,

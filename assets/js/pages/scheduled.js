@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function () {
     "use strict";
     // Libs
     var $ = require('jquery');
