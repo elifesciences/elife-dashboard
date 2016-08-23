@@ -9,7 +9,7 @@ if (typeof require !== 'undefined') {
     var sinon = require('sinon');
     var _ = require('underscore');
     var expect = require('chai').expect;
-    var Handlebars = require('Handlebars');
+    var Handlebars = require('handlebars');
     var moment = require('moment');
     var template = require('../js/templates');
     var Swag = require('../libs/swag.js');
