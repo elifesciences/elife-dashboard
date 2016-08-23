@@ -5,7 +5,6 @@ elifePipeline {
 
     stage 'Project tests'
     lock('elife-dashboard--ci') {
-        def testArtifact = "${env.BUILD_TAG}.junit.xml"
         builderDeployRevision 'elife-dashboard--ci', commit
         builderProjectTests 'elife-dashboard--ci', '/srv/elife-dashboard', ['/srv/elife-dashboard/build/junit.xml']
     }
