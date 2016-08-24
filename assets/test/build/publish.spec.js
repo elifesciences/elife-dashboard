@@ -43188,7 +43188,7 @@ module.exports = function () {
     // Templates
     {
         require('./../helpers/templates-helpers.js');
-        var Handlebars = require('Handlebars');
+        var Handlebars = require('handlebars');
         var template = require('./../templates');
         var Swag = require('./../../libs/swag.js');
         Swag.registerHelpers(Handlebars);
@@ -43735,7 +43735,7 @@ module.exports = function () {
 }();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../../libs/swag.js":"swag","./../helpers/templates-helpers.js":1,"./../templates":"templates","Handlebars":41,"bootstrap-sass":9,"config":"config","history":"jqueryHistory","jquery":42,"loglevel":43,"moment":44,"pickadate":"pickadate","publish":"publish","underscore":58,"utils":2}],"jqueryHistory":[function(require,module,exports){
+},{"./../../libs/swag.js":"swag","./../helpers/templates-helpers.js":1,"./../templates":"templates","bootstrap-sass":9,"config":"config","handlebars":41,"history":"jqueryHistory","jquery":42,"loglevel":43,"moment":44,"pickadate":"pickadate","publish":"publish","underscore":58,"utils":2}],"jqueryHistory":[function(require,module,exports){
 (function (global){
 
 ; $ = global.$ = require("jquery");
