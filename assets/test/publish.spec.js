@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var Handlebars = require('Handlebars');
+var Handlebars = require('handlebars');
 var template = require('../js/templates');
 var Swag = require('../libs/swag.js');
 var config = require('../js/config.js');

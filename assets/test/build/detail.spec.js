@@ -43392,7 +43392,7 @@ module.exports = function () {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('./../../libs/swag.js');
             Swag.registerHelpers(Handlebars);
@@ -43598,7 +43598,7 @@ module.exports = function () {
 }();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../../libs/swag.js":"swag","./../config.js":"config","./../helpers/templates-helpers.js":1,"./../helpers/utils.js":2,"./../services/publish.js":"publish","./../templates":"templates","Handlebars":41,"bootstrap-sass":9,"jquery":42,"loglevel":43,"underscore":58}],"detail":[function(require,module,exports){
+},{"./../../libs/swag.js":"swag","./../config.js":"config","./../helpers/templates-helpers.js":1,"./../helpers/utils.js":2,"./../services/publish.js":"publish","./../templates":"templates","bootstrap-sass":9,"handlebars":41,"jquery":42,"loglevel":43,"underscore":58}],"detail":[function(require,module,exports){
 (function (global){
 module.exports = function () {
     "use strict";
@@ -47856,7 +47856,7 @@ module.exports = function () {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('swag');
             Swag.registerHelpers(Handlebars);
@@ -48244,7 +48244,7 @@ module.exports = function () {
 }();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../helpers/templates-helpers.js":1,"./../templates":"templates","Handlebars":41,"bootstrap-sass":9,"config":"config","fullcalendar":11,"history":"jqueryHistory","jquery":42,"loglevel":43,"moment":44,"pickadate":"pickadate","publish":"publish","swag":"swag","underscore":58,"utils":2}],"schedule":[function(require,module,exports){
+},{"./../helpers/templates-helpers.js":1,"./../templates":"templates","bootstrap-sass":9,"config":"config","fullcalendar":11,"handlebars":41,"history":"jqueryHistory","jquery":42,"loglevel":43,"moment":44,"pickadate":"pickadate","publish":"publish","swag":"swag","underscore":58,"utils":2}],"schedule":[function(require,module,exports){
 (function (global){
 module.exports = function () {
     "use strict";

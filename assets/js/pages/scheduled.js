@@ -19,7 +19,7 @@ module.exports = function () {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('swag');
             Swag.registerHelpers(Handlebars);
