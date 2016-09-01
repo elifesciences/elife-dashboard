@@ -126,10 +126,17 @@ module.exports = function () {
      */
     function refreshPage(e) {
         if (publish.isPublishing === true || publish.isAllPublished === true) {
-            window.location.reload(true);
+            pub.reloadPage();
         }
 
         pub.resetModalButtons();
+    }
+
+    /**
+     * Split out reload page for easier unit testing
+     */
+    function reloadPage() {
+        window.location.reload(true);
     }
 
     /**
@@ -314,6 +321,7 @@ module.exports = function () {
         displayQueueList: displayQueueList,
         resetModalButtons: resetModalButtons,
         refreshPage: refreshPage,
+        reloadPage: reloadPage,
         performPublish: performPublish,
         updatePublishModal: updatePublishModal,
         queueArticles: queueArticles,
