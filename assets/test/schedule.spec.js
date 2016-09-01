@@ -1,12 +1,15 @@
+var options = {
+    debug: true,
+    logLevel: 'silent'
+};
+var config = require('config')(options);
 require('fullcalendar');
 var $ = require('jquery');
 var moment = require('moment');
 global.$ = $;
 global.jQuery = $;
 var bootstrap = require('bootstrap-sass');
-var config = require('../js/config.js');
-var schedule = require('../js/services/schedule.js');
-config.logLevel = 'silent';
+var schedule = require('../js/services/schedule.js')(config);
 
 //component to be tested
 describe('Schedule', function () {

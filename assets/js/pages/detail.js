@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -24,7 +24,6 @@ module.exports = function () {
 
     // App
     {
-        var config = require('config');
         var utils = require('utils');
         var publish = require('publish');
         var log = require('loglevel');
@@ -556,8 +555,9 @@ module.exports = function () {
         detailReplaceState: detailReplaceState,
         updatePageUrl: updatePageUrl,
         getUrlHash: getUrlHash,
+        config: config
     };
 
     return det;
 
-}();
+};

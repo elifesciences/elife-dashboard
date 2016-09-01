@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -9,7 +9,7 @@ module.exports = function () {
         {
             require('fullcalendar');
             require('history');
-            // require('qtip');
+            require('qtip2');
             var moment = require('moment');
             var _ = require('underscore');
             $.pickadate = require('pickadate');
@@ -27,11 +27,12 @@ module.exports = function () {
 
         // App
         {
-            var config = require('config');
             var utils = require('utils');
             var publish = require('publish');
             var log = require('loglevel');
-            if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
+            if (!_.isNull(config.logLevel)) {
+                log.setLevel(config.logLevel);
+            }
         }
 
         // Variables
@@ -50,6 +51,7 @@ module.exports = function () {
             scheduled.listDateStart = scheduled.defaultlistDateStart;
             scheduled.listDateEnd = scheduled.defaultlistDateEnd;
             scheduled.urlParams = {};
+            scheduled.currUrl = null;
         }
 
         {
@@ -66,9 +68,7 @@ module.exports = function () {
         }
     }
 
-
     //
-
 
     /**
      * Initialise the methods for the scheduled page
@@ -82,6 +82,7 @@ module.exports = function () {
             switchPage(scheduled.currentView);
         }
     }
+
     /**
      * Generate the url for history.js
      * @returns {string}
@@ -92,7 +93,7 @@ module.exports = function () {
         if (scheduled.currentView) {
             url += 'view=' + scheduled.currentView;
 
-            if (scheduled.currentView ==  'list') {
+            if (scheduled.currentView == 'list') {
                 if (scheduled.listDateStart) {
                     url += '&start=' + scheduled.listDateStart;
                 }
@@ -102,7 +103,7 @@ module.exports = function () {
                 }
             }
 
-            if (scheduled.currentView ==  'calendar') {
+            if (scheduled.currentView == 'calendar') {
                 if (scheduled.currentViewType) {
                     url += '&type=' + scheduled.currentViewType;
                 }
@@ -116,6 +117,10 @@ module.exports = function () {
         return url;
     }
 
+    /**
+     * Reutn url object from hash
+     * @returns {*}
+     */
     function getUrlParams() {
         var state = History.getState();
         var hash = state.hash;
@@ -127,9 +132,10 @@ module.exports = function () {
      * Set the page url when first loading the page
      */
     function setPageUrl() {
-        // We're setting the page url here so the priority is to take items from the URL, else we will use the defaults from init
-        scheduled.urlParams = getUrlParams();
-
+        // We're setting the page url here so the
+        // priority is to take items from the URL,
+        // else we will use the defaults from init
+        scheduled.urlParams = schd.getUrlParams();
 
         // set from url
         if (_.has(scheduled.urlParams, 'view')) {
@@ -153,7 +159,23 @@ module.exports = function () {
         }
 
         var urlParams = createUrl();
-        var url = window.location.origin + window.location.pathname + urlParams;
+        scheduled.currUrl = schd.getWindowPathname() + urlParams;
+        schd.schdReplaceState(scheduled.currUrl);
+    }
+
+    /**
+     * Helper for finding pathname
+     * @returns {*}
+     */
+    function getWindowPathname() {
+        return window.location.origin + window.location.pathname;
+    }
+
+    /**
+     * Replace state wrapper
+     * @param url
+     */
+    function schdReplaceState(url) {
         History.replaceState(null, null, url);
     }
 
@@ -170,7 +192,15 @@ module.exports = function () {
         }
 
         var urlParams = createUrl();
-        var url = window.location.origin + window.location.pathname + urlParams;
+        scheduled.currUrl = schd.getWindowPathname() + urlParams;
+        schd.schdPushState(scheduled.currUrl);
+    }
+
+    /**
+     * Push state wrapper
+     * @param url
+     */
+    function schdPushState(url) {
         History.pushState(null, null, url);
     }
 
@@ -223,7 +253,7 @@ module.exports = function () {
         if (pageType === 'list') {
             $('.scheduled-page').addClass('list-view');
             $('.scheduled-page').removeClass('calendar-view');
-            var fetch = fetchScheduledArticles(scheduled.listDateStart, scheduled.listDateEnd);
+            var fetch = fetchScheduledArticles(scheduled.listDateStart, scheduled.listDateEnd, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
             fetch.done(function (data) {
                 $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.scheduledContentListTemplate({scheduled: scheduled.scheduled}));
                 $('[data-toggle="tooltip"]').tooltip({container: 'body'});
@@ -234,46 +264,24 @@ module.exports = function () {
             $('.scheduled-page').removeClass('list-view');
             $('.scheduled-page').addClass('calendar-view');
             $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.scheduledContentCalendarTemplate({scheduled: scheduled.scheduled}));
-            renderCalendar();
+            schd.renderCalendar();
         }
 
     }
-
-
-
 
     /**
      * Fetch Scheduled articles from the API - depending on list or calendar the start/end dates will be different
      * @param start
      * @param end
      */
-    function fetchScheduledArticles(start, end) {
+    function fetchScheduledArticles(start, end, successCallback, errorCallback) {
         // For debugging purposes
         // log.info('fetchScheduledArticles');
         // log.info('start ' + moment.unix(start).format('dddd, MMMM Do YYYY, h:mm:ss a'));
         // log.info('end ' + moment.unix(end).format('dddd, MMMM Do YYYY, h:mm:ss a'));
         // log.info('/fetchScheduledArticles');
-
         var startDate = moment(start, 'DD-MM-YYYY').unix();
         var endDate = moment(end, 'DD-MM-YYYY').unix();
-
-        var fetchScheduledArticlesSuccess = function(data) {
-            var articles = utils.generateUrl(data.articles);
-            scheduled.scheduled = {articles: articles};
-        }
-
-        var fetchScheduledArticlesError = function(data,a,e,i) {
-            log.error('API Error: ' + config.api.article_schedule_for_range + '/from/' + startDate + '/to/' + endDate + '/');
-            log.info(data);
-            var errorInfo = utils.formatErrorInformation(data);
-            errorInfo.errorType = null;
-            errorInfo.ref = 'scheduleArticlePublicationError';
-            errorInfo.type = config.errors.en.type.api;
-            $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.errorMessage(errorInfo));
-            $('#error-console').empty().html(scheduled.template.errorDetail(errorInfo));
-
-        }
-
         return $.ajax({
             url: config.api.article_schedule_for_range + '/from/' + startDate + '/to/' + endDate + '/',
             cache: false,
@@ -284,32 +292,61 @@ module.exports = function () {
     }
 
     /**
+     * Success callback for fetching scheduled data
+     * @param data
+     */
+    function fetchScheduledArticlesSuccess(data) {
+        var articles = utils.generateUrl(data.articles);
+        scheduled.scheduled = {articles: articles};
+    }
+
+    /**
+     * Error callback for fetching scheduled data
+     * @param data
+     */
+    function fetchScheduledArticlesError(data) {
+        log.error('API Error: ' + config.api.article_schedule_for_range + '/from/' + scheduled.currentStartDate + '/to/' + scheduled.currentEndDate + '/');
+        log.info(data);
+        var errorInfo = utils.formatErrorInformation(data);
+        errorInfo.errorType = null;
+        errorInfo.ref = 'scheduleArticlePublicationError';
+        errorInfo.type = config.errors.en.type.api;
+        $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(scheduled.template.errorDetail(errorInfo));
+
+    }
+
+    /**
+     * Update the global dates called on viewRender
+     * @param view
+     * @param element
+     */
+    function renderCalendarViewRender(view, element) {
+        scheduled.currentViewType = view.type;
+        // this event fires once the calendar has completed loading and when the date is changed - thus calling the new events
+        var start = moment(view.start).format('DD-MM-YYYY');
+        var end = moment(view.end).format('DD-MM-YYYY');
+        if (scheduled.currentViewType == 'month') {
+            // if the current 'start' date of the selected month is not the same as the actual month then set the scheduled.calendarDate to the first of the proper month
+            var currentStartMonth = moment(start, 'DD-MM-YYYY').format('MM-YYYY');
+            var currentMonth = moment(view.title, 'MMMM YYYY').format('MM-YYYY');
+            if (currentStartMonth != currentMonth) {
+                scheduled.calendarDate = moment(view.title, 'MMMM YYYY').startOf('month').format('DD-MM-YYYY');
+            }
+            else {
+                scheduled.calendarDate = start;
+            }
+        } else {
+            scheduled.calendarDate = start;
+        }
+        schd.updateCalendar(start, end);
+    }
+
+    /**
      * Render the calendar for the calendar view
      */
     function renderCalendar() {
-
-        function renderCalendarViewRender(view, element) {
-            scheduled.currentViewType = view.type;
-            // this event fires once the calendar has completed loading and when the date is changed - thus calling the new events
-            var start = moment(view.start).format('DD-MM-YYYY');
-            var end = moment(view.end).format('DD-MM-YYYY');
-            if(scheduled.currentViewType == 'month') {
-                // if the current 'start' date of the selected month is not the same as the actual month then set the scheduled.calendarDate to the first of the proper month
-                var currentStartMonth = moment(start, 'DD-MM-YYYY').format('MM-YYYY');
-                var currentMonth = moment(view.title, 'MMMM YYYY').format('MM-YYYY');
-                if(currentStartMonth != currentMonth) {
-                    scheduled.calendarDate = moment(view.title, 'MMMM YYYY').startOf('month').format('DD-MM-YYYY');
-                }
-                else {
-                    scheduled.calendarDate = start;
-                }
-            } else {
-                scheduled.calendarDate = start;
-            }
-            updateCalendar(start, end);
-        }
-
-
+        log.info('calendar start date ' + moment(scheduled.calendarDate, 'DD-MM-YYYY').format('DD-MM-YYYY'))
         $('#schedule-calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -319,7 +356,7 @@ module.exports = function () {
             eventRender: function (event, element) {
                 //Show tooltip when hovering over an event title
                 var toolTipContent = '<strong>' + event.title + '</strong><br/>' + moment(event.start).format('MMMM D, YYYY') + ' ' + moment(event.start).format('h:mma');
-                /*element.qtip({
+                element.qtip({
                     content: toolTipContent,
                     hide: {fixed: true, delay: 200},
                     style: 'qtip-light',
@@ -335,10 +372,10 @@ module.exports = function () {
                             scroll: false,
                         },
                     },
-                });*/
+                });
             },
 
-            viewRender: renderCalendarViewRender,
+            viewRender: schd.renderCalendarViewRender,
 
             timeFormat: 'h:mma',
             firstDay: 1,
@@ -350,7 +387,6 @@ module.exports = function () {
             defaultDate: moment(scheduled.calendarDate, 'DD-MM-YYYY')
         });
 
-        log.info('calendar start date ' + moment(scheduled.calendarDate, 'DD-MM-YYYY').format('DD-MM-YYYY'))
     }
 
     /**
@@ -362,13 +398,13 @@ module.exports = function () {
     function updateCalendar(start, end) {
         log.info('updateCalendar')
         $('#schedule-calendar', scheduled.$el).before(scheduled.template.loadingTemplate());
-        var fetch = fetchScheduledArticles(start, end);
+        var fetch = fetchScheduledArticles(start, end, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
         fetch.done(function (data) {
             $('.loading-template', scheduled.$el).remove();
             $('#schedule-calendar').fullCalendar('removeEvents');
             $('#schedule-calendar').fullCalendar('addEventSource', convertArticlesToCalendar(scheduled.scheduled));
             $('#schedule-calendar').fullCalendar('rerenderEvents');
-            updatePageUrl();
+            schd.updatePageUrl();
         });
     }
 
@@ -380,12 +416,12 @@ module.exports = function () {
     function convertArticlesToCalendar(data) {
         var calendarArticles = [];
         _.each(data.articles, function (a) {
-            var calendarArticle = [];
+            var calendarArticle = {};
             calendarArticle.title = (a['is-temp']) ? a.id + ' (tmp)' : a.id;
             calendarArticle.backgroundColor = (a['is-temp']) ? config.colorAdvanceArticle : config.colorArticle;
             calendarArticle.borderColor = (a['is-temp']) ? config.colorAdvanceArticle : config.colorArticle;
             calendarArticle.textColor = config.colorText;
-            calendarArticle.start = moment.unix(a['scheduled-publication-date']);
+            calendarArticle.start = moment.unix(a['scheduled-publication-date']).format('YYYY-MM-DD HH:mm Z');
             if (!(a['is-temp']) && !_.isNull(a.id)) {
                 calendarArticle.url = (config.ISPP) ? '/patterns/04-pages-01-detail/04-pages-01-detail.html?article/' + a.id : 'article/' + a.id;
             }
@@ -396,12 +432,30 @@ module.exports = function () {
         return calendarArticles;
     }
 
-
-    return {
+    var schd = {
+        scheduled: scheduled,
         init: init,
         fetchScheduledArticles: fetchScheduledArticles,
-        updateCalendar:updateCalendar
+        updateCalendar: updateCalendar,
+        renderCalendarViewRender: renderCalendarViewRender,
+        schdReplaceState: schdReplaceState,
+        schdPushState: schdPushState,
+        getWindowPathname: getWindowPathname,
+        createUrl: createUrl,
+        getUrlParams: getUrlParams,
+        setPageUrl: setPageUrl,
+        updatePageUrl: updatePageUrl,
+        bindEvents: bindEvents,
+        renderLoader: renderLoader,
+        renderSwitcher: renderSwitcher,
+        renderActions: renderActions,
+        clickSwitchPage: clickSwitchPage,
+        switchPage: switchPage,
+        fetchScheduledArticlesSuccess: fetchScheduledArticlesSuccess,
+        fetchScheduledArticlesError: fetchScheduledArticlesError,
+        renderCalendar: renderCalendar,
+        convertArticlesToCalendar: convertArticlesToCalendar
     }
+    return schd;
 
-
-}();
+};

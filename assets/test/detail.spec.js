@@ -1,6 +1,9 @@
-var config = require('config');
-config.logLevel = 'silent';
-var detail = require('detail');
+var options = {
+    debug: true,
+    logLevel: 'silent'
+};
+var config = require('config')(options);
+var detail = require('detail')(config);
 
 //component to be tested
 describe('Details page', function () {

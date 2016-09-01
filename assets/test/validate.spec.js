@@ -1,5 +1,10 @@
 var $ = require('jquery');
-var validate = require('../js/helpers/validate.js');
+var options = {
+    debug: true,
+    logLevel: 'silent'
+};
+var config = require('config')(options);
+var validate = require('../js/helpers/validate.js')(config);
 
 
 //component to be tested

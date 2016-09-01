@@ -1,9 +1,14 @@
 (function () {
-    var schedule = require('schedule');
-    var publish = require('publish');
-    var current = require('current');
-    var detail = require('detail');
-    var scheduled = require('scheduled');
+    var options = {
+        debug: true
+    };
+    var config = require('config')();
+    var schedule = require('schedule')(config);
+    var publish = require('publish')(config);
+    var current = require('current')(config);
+    var detail = require('detail')(config);
+    var scheduled = require('scheduled')(config);
+
     publish.init();
     schedule.init();
     current.init();

@@ -1,9 +1,8 @@
-module.exports = function (name) {
+module.exports = function (config) {
 
     var $ = require('jquery');
     var _ = require('underscore');
     global.jQuery = $;
-    var config = require('./../config.js');
     var utils = require('./utils.js');
     var log = require('loglevel');
     if (!_.isNull(config.logLevel)) {
@@ -113,4 +112,4 @@ module.exports = function (name) {
     };
     return validate;
 
-}();
+};

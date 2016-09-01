@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -7,7 +7,6 @@ module.exports = function () {
     // Libs
     {
         var _ = require('underscore');
-        var config = require('./../config.js');
         var utils = require('./../helpers/utils.js');
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
@@ -338,4 +337,4 @@ module.exports = function () {
 
     return pub;
 
-}();
+};

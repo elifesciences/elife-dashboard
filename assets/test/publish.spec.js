@@ -1,11 +1,14 @@
+var options = {
+    debug: true,
+    logLevel: 'silent'
+};
+var config = require('config')(options);
 var $ = require('jquery');
 var Handlebars = require('handlebars');
 var template = require('../js/templates');
 var Swag = require('../libs/swag.js');
-var config = require('../js/config.js');
-var publish = require('../js/services/publish.js');
+var publish = require('../js/services/publish.js')(config);
 Swag.registerHelpers(Handlebars);
-config.logLevel = 'silent';
 
 function check(done, f) {
     try {

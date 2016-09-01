@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -9,9 +9,8 @@ module.exports = function () {
         var moment = require('moment');
         var _ = require('underscore');
         $.pickadate = require('./../../libs/pickadate/lib/index.js');
-        var config = require('./../config.js');
         var utils = require('./../helpers/utils.js');
-        var validate = require('./../helpers/validate.js');
+        var validate = require('./../helpers/validate.js')(config);
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
             log.setLevel(config.logLevel);
@@ -450,4 +449,4 @@ module.exports = function () {
 
     return sch;
 
-}();
+};
