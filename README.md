@@ -56,16 +56,18 @@ deactivate
 (in project folder)
 (with active virtual environment as above)
 
+if you only need to run the test services:
 ```bash
 pip install -r service-test-requirements.txt
+
 ```
 
-or if you only need to run the test services:
+else
 
 ```bash
 pip install -r requirements.txt
 ```
-
+This will only succeed if postgres binaries are installed
 
 
 ### Running test services
