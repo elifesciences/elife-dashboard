@@ -29,7 +29,7 @@ module.exports = function (config) {
     // Variables
     {
         var data = {};
-        data.articleId = null;
+        // data.articleId = null;
         data.articleScheduled = null;
         data.scheduleData = {};
         data.scheduleDate = null;
@@ -226,19 +226,19 @@ module.exports = function (config) {
         data.articleScheduled = articleScheduled;
         data.scheduleActionType = $(e.currentTarget).attr('data-action-type');
 
-        var data = {actionType: 'schedule', includeArticleId: false};
-        if (data.scheduleActionType === 'schedule-cancel') {
-            data.actionType = 'cancel';
-        } else if (data.scheduleActionType === 'schedule-amend' || data.scheduleActionType === 'schedule' || data.scheduleActionType === 'future-schedule') {
-            data.actionType = 'schedule';
+        var actionData = {actionType: 'schedule', includeArticleId: false};
+        if (schedule.scheduleActionType === 'schedule-cancel') {
+            actionData.actionType = 'cancel';
+        } else if (schedule.scheduleActionType === 'schedule-amend' || schedule.scheduleActionType === 'schedule' || schedule.scheduleActionType === 'future-schedule') {
+            actionData.actionType = 'schedule';
         }
 
-        if (data.scheduleActionType === 'future-schedule') {
-            data.showArticleIdField = true;
+        if (schedule.scheduleActionType === 'future-schedule') {
+            actionData.showArticleIdField = true;
         }
 
-        $('#schedule-modal .modal-body').html(data.template.modalBody(data));
-        $('#schedule-modal .modal-footer').html(data.template.modalFooter(data));
+        $('#schedule-modal .modal-body').html(data.template.modalBody(actionData));
+        $('#schedule-modal .modal-footer').html(data.template.modalFooter(actionData));
 
     }
 
@@ -299,13 +299,13 @@ module.exports = function (config) {
      * Success callback for publishing article
      * @param data
      */
-    function scheduleArticlePublicationSuccess(data) {
+    function scheduleArticlePublicationSuccess(returnedData) {
         log.info('Success: ' + config.api.schedule_article_publication);
-        log.info(data);
+        log.info(returnedData);
         log.info(data.scheduleData);
         $('#schedule-modal .modal-body').html(data.template.modalStatus({
-            response: data,
-            actionType: data.scheduleActionType
+            response: returnedData,
+            actionType: schedule.scheduleActionType
         }));
         $('#schedule-close', '#schedule-modal').text('Close');
         data.isScheduling = false;

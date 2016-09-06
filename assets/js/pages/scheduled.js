@@ -255,7 +255,7 @@ module.exports = function (config) {
             $('.scheduled-page').removeClass('calendar-view');
             var fetch = fetchScheduledArticles(data.listDateStart, data.listDateEnd, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
             fetch.done(function (returnedData) {
-                $('.schedule-page__content', data.$el).empty().html(data.template.scheduledContentListTemplate({scheduled: returnedData.scheduled}));
+                $('.schedule-page__content', data.$el).empty().html(data.template.scheduledContentListTemplate({scheduled: data.scheduled}));
                 $('[data-toggle="tooltip"]').tooltip({container: 'body'});
             });
         }

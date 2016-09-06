@@ -18,6 +18,7 @@ describe('Schedule', function () {
     var $reScheduleBtn;
     var $cancelScheduleBtn;
     var $futureScheduleBtn;
+    var picker;
 
     before(function () {
         // runs before all tests in this block
@@ -40,21 +41,21 @@ describe('Schedule', function () {
 
     describe('Schedule setParameters()', function() {
         before(function() {
-            console.log($scheduleBtn);
             $scheduleBtn.click();
         });
         after(function() {
-            $('#schedule-modal').modal('hide')
+            $('#schedule-modal').modal('hide');
         });
         it('Should update schedule parameters', function() {
             expect(schedule.data.articleId).to.equal('10856');
             expect(schedule.data.scheduleActionType).to.equal('schedule');
         });
         it('Should update the template to reflect action type', function() {
-            var btnClose = document.querySelector('#schedule-modal .modal-footer #schedule-close');
-            var btnAction = document.querySelector('#schedule-modal .modal-footer #schedule-action');
-            expect(btnClose.innerHTML).to.equal('Close');
-            expect(btnAction.innerHTML).to.equal('Schedule');
+            var btnClose = $('#schedule-modal #schedule-close');
+            var btnAction = $('#schedule-modal #schedule-action');
+            console.log(btnClose);
+            expect(btnClose[0].innerHTML).to.equal('Close');
+            expect(btnAction[0].innerHTML).to.equal('Schedule');
             expect(btnClose).to.not.be.null;
             expect(btnAction).to.not.be.null;
         });
@@ -187,21 +188,21 @@ describe('Schedule', function () {
     describe('initDatetime()', function() {
         before(function() {
             $reScheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
             $('#schedule-modal').modal('hide');
             schedule.resetParameters();
         });
         it('Should render a date picker on the page', function() {
-            expect(this.picker).to.not.be.undefined;
+            expect(picker).to.not.be.undefined;
         });
         it('When given scheduled date - fields should show correct date', function() {
-            expect(this.picker.get('value')).to.equal('June 7, 2016');
+            expect(picker.get('value')).to.equal('June 7, 2016');
             // date comes from epoch on $reScheduleBtn
         });
         it('When changed update the scheduleDate and validate form', function() {
-            this.picker.set('select', [2000, 2, 1]);
+            picker.set('select', [2000, 2, 1]);
             expect(schedule.data.scheduleDate).to.equal(951868800000); //01 Mar 2000
         });
     });
@@ -209,7 +210,7 @@ describe('Schedule', function () {
     describe('setTime', function() {
         before(function() {
             $futureScheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -235,7 +236,7 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [2000, 2, 1]);
+            picker.set('select', [2000, 2, 1]);
             $scheduleField.trigger('change');
             expect(schedule.data.scheduleTime).to.equal('01:30 am');
             expect(schedule.data.scheduleDate).to.equal(951868800000); //01 Mar 2000
@@ -292,7 +293,7 @@ describe('Schedule', function () {
     describe('validateForm', function() {
         before(function() {
             $scheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -306,7 +307,7 @@ describe('Schedule', function () {
             $min.val('30');
             $ampm.val('am');
             $scheduleField.val('1234');
-            this.picker.set('select', [3000, 2, 1]);
+            picker.set('select', [3000, 2, 1]);
             var valid = schedule.validateForm();
             expect(valid).to.be.true;
         });
@@ -319,7 +320,7 @@ describe('Schedule', function () {
             $min.val('30');
             $ampm.val('am');
             $scheduleField.val('1234aaa');
-            this.picker.set('select', [2000, 2, 1]);
+            picker.set('select', [2000, 2, 1]);
             var valid = schedule.validateForm();
             expect(valid).to.be.false;
         });
@@ -328,7 +329,7 @@ describe('Schedule', function () {
     describe('checkScheduledTimeValid', function() {
         before(function() {
             $scheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -341,8 +342,8 @@ describe('Schedule', function () {
             $hour.val('');
             $min.val('');
             $ampm.val('');
-            this.picker.$node.val(''); // clear the input value
-            this.picker.stop().start(); // restart the picker
+            picker.$node.val(''); // clear the input value
+            picker.stop().start(); // restart the picker
             schedule.validateForm();
             expect(schedule.checkScheduledTimeValid()).to.be.false;
         });
@@ -354,8 +355,8 @@ describe('Schedule', function () {
             $hour.val('13');
             $min.val('30');
             $ampm.val('am');
-            this.picker.$node.val(''); // clear the input value
-            this.picker.stop().start(); // restart the picker
+            picker.$node.val(''); // clear the input value
+            picker.stop().start(); // restart the picker
             schedule.validateForm();
             expect(schedule.checkScheduledTimeValid()).to.be.false;
         });
@@ -367,7 +368,7 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [3000, 2, 1]);
+            picker.set('select', [3000, 2, 1]);
             schedule.validateForm();
             expect(schedule.checkScheduledTimeValid()).to.be.true;
         });
@@ -379,7 +380,7 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [2000, 2, 1]);
+            picker.set('select', [2000, 2, 1]);
             schedule.validateForm();
             expect(schedule.checkScheduledTimeValid()).to.be.false;
         });
@@ -391,7 +392,7 @@ describe('Schedule', function () {
         });
         it('If action type schedule', function() {
             $scheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: "32508783000" }};
             var $scheduleField = $('#schedule-modal .schedule-field');
             var $hour = $('#schedule-modal .hourpicker');
@@ -400,7 +401,7 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [3000, 2, 1]);
+            picker.set('select', [3000, 2, 1]);
             $scheduleField.trigger('change');
             schedule.performSchedule();
             expect(schedule.data.scheduleData).to.eql(result);
@@ -426,7 +427,7 @@ describe('Schedule', function () {
 
         it('If action type future schedule', function() {
             $futureScheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: "32508783000" }};
             var $scheduleField = $('#schedule-modal .schedule-field');
             var $hour = $('#schedule-modal .hourpicker');
@@ -435,7 +436,7 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [3000, 2, 1]);
+            picker.set('select', [3000, 2, 1]);
             $scheduleField.trigger('change');
             schedule.performSchedule();
             expect(schedule.data.scheduleData).to.eql(result);
@@ -443,7 +444,7 @@ describe('Schedule', function () {
         });
         it('If action type cancel', function() {
             $cancelScheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: false }};
             schedule.performSchedule();
             expect(schedule.data.scheduleData).to.eql(result);
@@ -460,7 +461,7 @@ describe('Schedule', function () {
         });
         it('scheduleArticlePublicationSuccess', function(){
             var data = {result: "success"};
-            schedule.dataArticlePublicationSuccess(data);
+            schedule.scheduleArticlePublicationSuccess(data);
             expect($('#schedule-modal #schedule-close').text()).to.eql('Close');
             expect(schedule.data.isScheduling).to.be.false;
             expect(schedule.data.isAllScheduled).to.be.true;
@@ -468,7 +469,7 @@ describe('Schedule', function () {
         it('Should display schedule success alert', function () {
             schedule.data.scheduleActionType = 'schedule';
             var data = {result: "success"};
-            schedule.dataArticlePublicationSuccess(data);
+            schedule.scheduleArticlePublicationSuccess(data);
             var alertBox = document.querySelector('#success-message');
             var messageResult = 'Your article has been successfully scheduled.';
             var alertMessage = alertBox.querySelector('.message');
@@ -477,7 +478,7 @@ describe('Schedule', function () {
         it('Should display schedule cancellation success alert', function () {
             schedule.data.scheduleActionType = 'schedule-cancel';
             var data = {result: "success"};
-            schedule.dataArticlePublicationSuccess(data);
+            schedule.scheduleArticlePublicationSuccess(data);
             var alertBox = document.querySelector('#success-message');
             var messageResult = 'This article has been unscheduled.';
             var alertMessage = alertBox.querySelector('.message');
@@ -495,7 +496,7 @@ describe('Schedule', function () {
                     "detail": "I'm afraid I can't do that Dave",
                 }
             };
-            schedule.dataArticlePublicationError(data);
+            schedule.scheduleArticlePublicationError(data);
             var alertBox = document.querySelector('#error-message.scheduleArticlePublicationError');
             var statusResult = 'Error Occurred(API Error)';
             var messageResult = 'I\'m afraid I can\'t do that Dave';
@@ -555,13 +556,13 @@ describe('Schedule', function () {
         });
         it('Reload page if not on scheduled page', function() {
             document.getElementsByTagName('body')[0].classList.remove('scheduled-page');
-            schedule.dataArticlePublicationSuccess();
+            schedule.scheduleArticlePublicationSuccess();
             schedule.refreshPage();
             expect(resetParametersSpy.called).to.be.true;
         });
         it('Reload page if not on scheduled page and not scheduling and all scheduled', function() {
             document.getElementsByTagName('body')[0].classList.remove('scheduled-page');
-            schedule.dataArticlePublicationSuccess();
+            schedule.scheduleArticlePublicationSuccess();
             schedule.refreshPage();
             expect(resetParametersSpy.called).to.be.true;
             expect(reloadPageStub.called).to.be.true;
