@@ -1,10 +1,9 @@
-module.exports = function (name) {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
     global.jQuery = $;
 
-    if ($('.current-page').length > 0) {
         // Libs
         {
             var _ = require('underscore');
@@ -14,7 +13,7 @@ module.exports = function (name) {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('./../../libs/swag.js');
             Swag.registerHelpers(Handlebars);
@@ -22,11 +21,10 @@ module.exports = function (name) {
 
         // App
         {
-            var config = require('./../config.js');
             var utils = require('./../helpers/utils.js');
             var log = require('loglevel');
             if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
-            var publish = require('./../services/publish.js');
+            var publish = require('./../services/publish.js')(config);
         }
 
         // Variables
@@ -44,14 +42,29 @@ module.exports = function (name) {
             current.template.article = template['current/article'];
             current.template.articleStats = template['current/article-stats-template'];
         }
-    }
 
 
     function init() {
         if ($('.current-page').length > 0) {
             bindEvents();
+            renderLoading();
             renderArticles();
         }
+    }
+
+    /**
+     * Render loading template
+     */
+    function renderLoading() {
+        $('#articles').empty().html(current.template.loadingTemplate());
+    }
+
+    /**
+     * Fetch articles and render on the page.
+     * Renders both the 'summary' at the top of the page and the list below
+     */
+    function renderArticles() {
+        fetchArticles(fetchArticlesSuccess, fetchArticlesError);
     }
 
     /**
@@ -77,6 +90,7 @@ module.exports = function (name) {
      * @param articles
      */
     var fetchArticlesSuccess = function (articles) {
+        current.articles = articles;
         $('#articles').empty().html(current.template.article(sortArticles(articles)));
         $('#articleStats').empty().html(current.template.articleStats(sortArticles(articles)));
         $('.btn-publish-queued').hide();
@@ -101,17 +115,6 @@ module.exports = function (name) {
     }
 
 
-
-    /**
-     * Fetch articles and render on the page.
-     * Renders both the 'summary' at the top of the page and the list below
-     */
-    function renderArticles() {
-        $('#articles').empty().html(current.template.loadingTemplate());
-        fetchArticles(fetchArticlesSuccess, fetchArticlesError);
-    }
-
-
     /**
      * Bind events
      */
@@ -124,6 +127,7 @@ module.exports = function (name) {
 
     /**
      * Apply sticky header logic to the article headers
+     * Headers are only sticky if number of items >= to 2
      * @param e
      */
     function stickyHeaders(e) {
@@ -209,12 +213,18 @@ module.exports = function (name) {
         publish.displayQueueList();
     }
 
-    return {
+    var crnt = {
         init: init,
+        current: current,
+        bindEvents: bindEvents,
+        renderLoading: renderLoading,
         renderArticles: renderArticles,
+        sortArticles: sortArticles,
         fetchArticlesSuccess: fetchArticlesSuccess,
         fetchArticlesError: fetchArticlesError
-    }
+    };
+
+    return crnt;
 
 
-}();
+};

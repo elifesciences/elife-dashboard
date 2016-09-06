@@ -1,29 +1,14 @@
-// If we're running under Node,
-if (typeof require !== 'undefined') {
-    var jsdom = require("jsdom").jsdom;
-    if(global.document === undefined) {
-        global.document = jsdom('<html><head><script></script></head><body></body></html>');
-    }
-    global.window = document.defaultView;
-    var $ = require('jquery');
-    var sinon = require('sinon');
-    var _ = require('underscore');
-    var expect = require('chai').expect;
-    var Handlebars = require('handlebars');
-    var template = require('../js/templates');
-    var Swag = require('../libs/swag.js');
-    var config = require('../js/config.js');
-    config.logLevel = 'silent';
-    var publish = require('../js/services/publish.js');
-    var current = require('../js/pages/current.js');
-    var utils = require('../js/helpers/utils.js');
-    Swag.registerHelpers(Handlebars);
-    global.$ = $;
-    global.jQuery = $;
-    global._ = _;
-    global.config = config;
-    global.utils = utils;
-}
+var options = {
+    debug: true,
+    logLevel: 'silent'
+};
+var config = require('config')(options);
+var $ = require('jquery');
+var Handlebars = require('handlebars');
+var template = require('../js/templates');
+var Swag = require('../libs/swag.js');
+var publish = require('../js/services/publish.js')(config);
+Swag.registerHelpers(Handlebars);
 
 function check(done, f) {
     try {
@@ -204,10 +189,10 @@ describe('Publication', function () {
     });
 
     describe('refreshPage()', function () {
-        var windowLocationReloadSpy;
+        var reloadPageStub;
         var resetModalButtonsSpy;
         beforeEach(function () {
-            windowLocationReloadSpy = sinon.spy(window.location, "reload");
+            reloadPageStub = sinon.stub(publish, "reloadPage");
             resetModalButtonsSpy = sinon.spy(publish, "resetModalButtons");
         });
         it('If no publish action occurred - reset the modal buttons', function () {
@@ -219,17 +204,17 @@ describe('Publication', function () {
         it('If publish action occurred - if ispublishing true - reload page', function () {
             publish.publish.isPublishing = true;
             publish.refreshPage();
-            expect(windowLocationReloadSpy.calledOnce).to.be.true;
+            expect(reloadPageStub.called).to.be.true;
         });
         it('If publish action occurred - if isallpublished true - reload page', function () {
             publish.publish.isAllPublished = true;
             publish.refreshPage();
-            expect(windowLocationReloadSpy.calledOnce).to.be.true;
+            expect(reloadPageStub.called).to.be.true;
         });
         afterEach(function () {
             publish.publish.isPublishing = false;
             publish.publish.isAllPublished = false;
-            windowLocationReloadSpy.restore();
+            reloadPageStub.restore();
             resetModalButtonsSpy.restore();
         });
     });
