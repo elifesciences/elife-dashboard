@@ -1,32 +1,12 @@
-// If we're running under Node,
-if (typeof require !== 'undefined') {
-    var jsdom = require("jsdom").jsdom;
-    if(global.document === undefined) {
-        global.document = jsdom('<html><head><script></script></head><body></body></html>');
-    }
-    global.window = document.defaultView;
-    require('fullcalendar');
-    var $ = require('jquery');
-    var sinon = require('sinon');
-    var _ = require('underscore');
-    var expect = require('chai').expect;
-    var Handlebars = require('handlebars');
-    var moment = require('moment');
-    var template = require('../js/templates');
-    var Swag = require('../libs/swag.js');
-    var bootstrap = require('bootstrap-sass');
-    var config = require('../js/config.js');
-    config.logLevel = 'silent';
-    var schedule = require('../js/services/schedule.js');
-    var utils = require('../js/helpers/utils.js');
-    Swag.registerHelpers(Handlebars);
-    $.pickadate = require('../libs/pickadate/lib/index.js');
-    global.$ = $;
-    global.jQuery = $;
-    global._ = _;
-    global.config = config;
-    global.utils = utils;
-}
+require('fullcalendar');
+var $ = require('jquery');
+var moment = require('moment');
+global.$ = $;
+global.jQuery = $;
+var bootstrap = require('bootstrap-sass');
+var config = require('../js/config.js');
+var schedule = require('../js/services/schedule.js');
+config.logLevel = 'silent';
 
 //component to be tested
 describe('Schedule', function () {
@@ -553,15 +533,15 @@ describe('Schedule', function () {
     });
 
     describe('refreshPage - not on scheduled page', function() {
-        var windowLocationReloadSpy;
+        var reloadPageStub;
         var resetParametersSpy;
         before(function(){
-            windowLocationReloadSpy = sinon.spy(window.location, "reload");
+            reloadPageStub = sinon.stub(schedule, "reloadPage");
             resetParametersSpy = sinon.spy(schedule, "resetParameters");
         });
         after(function(){
             schedule.resetParameters();
-            windowLocationReloadSpy.restore();
+            reloadPageStub.restore();
         });
         it('Reload page if not on scheduled page', function() {
             document.getElementsByTagName('body')[0].classList.remove('scheduled-page');
@@ -574,7 +554,7 @@ describe('Schedule', function () {
             schedule.scheduleArticlePublicationSuccess();
             schedule.refreshPage();
             expect(resetParametersSpy.called).to.be.true;
-            expect(windowLocationReloadSpy.called).to.be.true;
+            expect(reloadPageStub.called).to.be.true;
         });
     });
 

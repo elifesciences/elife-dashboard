@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function () {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -14,7 +14,7 @@ module.exports = function (name) {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('./../../libs/swag.js');
             Swag.registerHelpers(Handlebars);

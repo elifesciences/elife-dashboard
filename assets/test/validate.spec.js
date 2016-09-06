@@ -1,31 +1,5 @@
-// If we're running under Node,
-if (typeof require !== 'undefined') {
-    var jsdom = require("jsdom").jsdom;
-    if(global.document === undefined) {
-        global.document = jsdom('<html><head><script></script></head><body></body></html>');
-    }
-    global.window = document.defaultView;
-    var $ = require('jquery');
-    var sinon = require('sinon');
-    var _ = require('underscore');
-    var expect = require('chai').expect;
-    var Handlebars = require('handlebars');
-    var moment = require('moment');
-    var template = require('../js/templates');
-    var Swag = require('../libs/swag.js');
-    var bootstrap = require('bootstrap-sass');
-    var config = require('../js/config.js');
-    config.logLevel = 'silent';
-    var validate = require('../js/helpers/validate.js');
-    var utils = require('../js/helpers/utils.js');
-    Swag.registerHelpers(Handlebars);
-    $.pickadate = require('../libs/pickadate/lib/index.js');
-    global.$ = $;
-    global.jQuery = $;
-    global._ = _;
-    global.config = config;
-    global.utils = utils;
-}
+var $ = require('jquery');
+var validate = require('../js/helpers/validate.js');
 
 
 //component to be tested
@@ -33,7 +7,7 @@ describe('Validate', function () {
     'use strict';
 
     before(function () {
-        document.body.innerHTML = "";
+        // document.body.innerHTML = "";
         this.$fieldRequired = $('<input id="fieldRequired" name="fieldRequired" type="text" data-required/>');
         this.$fieldNumeric = $('<input id="fieldNumeric" name="fieldNumeric" type="text" data-validation="numeric"/>');
         this.$fieldMaxMin = $('<input id="fieldMaxMin" name="fieldMaxMin" type="number" data-min="0" data-actual-min="1" data-max="13" data-actual-max="12">');

@@ -120,10 +120,14 @@ Add source roots to PYTHONPATH (checked)
 ## Development of Front end
 
 * ```npm start``` to start python application - this will only work if you have setup the command line options above - if you already have the application running, skip this.
-* ```grunt dev``` in new terminal window to start build, and live reload. If you do not want the files to be watched enter ```grunt```
+* ```grunt``` in new terminal window to start build, and live reload.
 * run test services.
 * Start Live Reload in your browser (if required)
 
+
+## Running Front end tests
+
+* ```grunt test``` will run the tests.  
 
 
 ## License
