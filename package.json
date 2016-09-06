@@ -14,9 +14,7 @@
     "url": "git://github.com/elifesciences/elife-dashboard.git"
   },
   "scripts": {
-    "build": "browserify -t hbsfy assets/js/main.js -o dashboard/static/testjs/bundle.js",
-    "test": "mocha --ui bdd --reporter spec --recursive assets/test",
-    "start": "source venv/bin/activate && python runserver.py"
+    "install": "grunt"
   },
   "devDependencies": {
     "browserify": "^13.0.1",

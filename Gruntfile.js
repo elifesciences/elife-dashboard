@@ -22,6 +22,18 @@ module.exports = function (grunt) {
         '/* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' + ' */\n\n',
 
         /**
+         * Shell commands
+         */
+        shell: {
+            serve_mock: {
+                command: 'source venv/bin/activate && python test_services.py'
+            },
+            serve: {
+                command: 'source venv/bin/activate && python runserver.py'
+            }
+        },
+
+        /**
          * Concatenate
          *
          * CSS
@@ -185,6 +197,7 @@ module.exports = function (grunt) {
      * Default task
      */
 
-    grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
+    grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass']);
+    grunt.registerTask('dev', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
     grunt.registerTask('test', ['handlebars', 'browserify:test', 'mocha_phantomjs']);
 };
