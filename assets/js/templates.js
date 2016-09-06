@@ -249,7 +249,9 @@ Handlebars.registerPartial("article-item", Handlebars.template({"1":function(con
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ">\n                <span class=\"fa fa-calendar\"></span>\n                Schedule\n            </button>\n            <button class=\"btn btn-default publish btn-publish btn-block\" data-toggle=\"modal\"\n                    data-target=\"#publish-modal\"\n                    type=\"button\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\n                <span class=\"fa fa-globe\"></span>\n                Publish Now\n            </button>\n            <div class=\"checkbox\">\n                <label>\n                    <input type=\"checkbox\" class=\"toggle-publish-all\" "
+    + ">\n                <span class=\"fa fa-globe\"></span>\n                Publish Now\n            </button>\n            <div class=\"checkbox\">\n                <label>\n                    <input type=\"checkbox\" id=\"checkbox-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"toggle-publish-all\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "> Batch Publishing\n                </label>\n            </div>\n";
 },"70":function(container,depth0,helpers,partials,data) {
