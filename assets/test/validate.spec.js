@@ -21,7 +21,7 @@ describe('Validate', function () {
 
 
     it('validate should exist', function () {
-        expect(validate).to.be.a('object');
+        expect(validate).to.be.an('object');
     });
 
     describe('validateToggleError', function() {

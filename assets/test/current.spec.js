@@ -563,7 +563,7 @@ describe('Current', function () {
     });
 
     it('current should exist', function () {
-        expect(current).to.be.a('object');
+        expect(current).to.be.an('object');
     });
 
     describe('renderLoading()', function () {

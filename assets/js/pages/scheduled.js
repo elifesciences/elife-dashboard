@@ -37,33 +37,33 @@ module.exports = function (config) {
 
         // Variables
         {
-            var scheduled = {};
-            scheduled.$el = $('.scheduled-page');
-            scheduled.urlSet = false;
-            scheduled.scheduled = [];
-            scheduled.defaultView = 'list';
-            scheduled.defaultViewType = 'month';
-            scheduled.defaultlistDateStart = moment().format('DD-MM-YYYY');
-            scheduled.defaultlistDateEnd = moment().add(1, 'years').format('DD-MM-YYYY');
-            scheduled.currentView = scheduled.defaultView;
-            scheduled.currentViewType = scheduled.defaultViewType;
-            scheduled.calendarDate = scheduled.defaultlistDateStart;
-            scheduled.listDateStart = scheduled.defaultlistDateStart;
-            scheduled.listDateEnd = scheduled.defaultlistDateEnd;
-            scheduled.urlParams = {};
-            scheduled.currUrl = null;
+            var data = {};
+            data.$el = $('.scheduled-page');
+            data.urlSet = false;
+            data.scheduled = [];
+            data.defaultView = 'list';
+            data.defaultViewType = 'month';
+            data.defaultlistDateStart = moment().format('DD-MM-YYYY');
+            data.defaultlistDateEnd = moment().add(1, 'years').format('DD-MM-YYYY');
+            data.currentView = data.defaultView;
+            data.currentViewType = data.defaultViewType;
+            data.calendarDate = data.defaultlistDateStart;
+            data.listDateStart = data.defaultlistDateStart;
+            data.listDateEnd = data.defaultlistDateEnd;
+            data.urlParams = {};
+            data.currUrl = null;
         }
 
         {
             // Templates
-            scheduled.template = {};
-            scheduled.template.errorMessage = template['error-message'];
-            scheduled.template.errorDetail = template['error-detail'];
-            scheduled.template.scheduledContentListTemplate = template['scheduled/scheduled-content-list'];
-            scheduled.template.scheduledContentCalendarTemplate = template['scheduled/scheduled-content-calendar'];
-            scheduled.template.scheduledActionsTemplate = template['scheduled/scheduled-actions'];
-            scheduled.template.scheduledSwitcherTemplate = template['scheduled/scheduled-switcher'];
-            scheduled.template.loadingTemplate = template['loading-template'];
+            data.template = {};
+            data.template.errorMessage = template['error-message'];
+            data.template.errorDetail = template['error-detail'];
+            data.template.scheduledContentListTemplate = template['scheduled/scheduled-content-list'];
+            data.template.scheduledContentCalendarTemplate = template['scheduled/scheduled-content-calendar'];
+            data.template.scheduledActionsTemplate = template['scheduled/scheduled-actions'];
+            data.template.scheduledSwitcherTemplate = template['scheduled/scheduled-switcher'];
+            data.template.loadingTemplate = template['loading-template'];
 
         }
     }
@@ -79,7 +79,7 @@ module.exports = function (config) {
             bindEvents();
             renderSwitcher();
             renderActions();
-            switchPage(scheduled.currentView);
+            switchPage(data.currentView);
         }
     }
 
@@ -90,26 +90,26 @@ module.exports = function (config) {
     function createUrl() {
         // put the URL together
         var url = '?';
-        if (scheduled.currentView) {
-            url += 'view=' + scheduled.currentView;
+        if (data.currentView) {
+            url += 'view=' + data.currentView;
 
-            if (scheduled.currentView == 'list') {
-                if (scheduled.listDateStart) {
-                    url += '&start=' + scheduled.listDateStart;
+            if (data.currentView == 'list') {
+                if (data.listDateStart) {
+                    url += '&start=' + data.listDateStart;
                 }
 
-                if (scheduled.listDateEnd) {
-                    url += '&end=' + scheduled.listDateEnd;
+                if (data.listDateEnd) {
+                    url += '&end=' + data.listDateEnd;
                 }
             }
 
-            if (scheduled.currentView == 'calendar') {
-                if (scheduled.currentViewType) {
-                    url += '&type=' + scheduled.currentViewType;
+            if (data.currentView == 'calendar') {
+                if (data.currentViewType) {
+                    url += '&type=' + data.currentViewType;
                 }
 
-                if (scheduled.calendarDate) {
-                    url += '&date=' + scheduled.calendarDate
+                if (data.calendarDate) {
+                    url += '&date=' + data.calendarDate
                 }
             }
         }
@@ -135,32 +135,32 @@ module.exports = function (config) {
         // We're setting the page url here so the
         // priority is to take items from the URL,
         // else we will use the defaults from init
-        scheduled.urlParams = schd.getUrlParams();
+        data.urlParams = scheduled.getUrlParams();
 
         // set from url
-        if (_.has(scheduled.urlParams, 'view')) {
-            scheduled.currentView = scheduled.urlParams.view;
+        if (_.has(data.urlParams, 'view')) {
+            data.currentView = data.urlParams.view;
         }
 
-        if (_.has(scheduled.urlParams, 'start')) {
-            scheduled.listDateStart = scheduled.urlParams.start;
+        if (_.has(data.urlParams, 'start')) {
+            data.listDateStart = data.urlParams.start;
         }
 
-        if (_.has(scheduled.urlParams, 'end')) {
-            scheduled.listDateEnd = scheduled.urlParams.end;
+        if (_.has(data.urlParams, 'end')) {
+            data.listDateEnd = data.urlParams.end;
         }
 
-        if (_.has(scheduled.urlParams, 'type')) {
-            scheduled.currentViewType = scheduled.urlParams.type;
+        if (_.has(data.urlParams, 'type')) {
+            data.currentViewType = data.urlParams.type;
         }
 
-        if (_.has(scheduled.urlParams, 'date')) {
-            scheduled.calendarDate = scheduled.urlParams.date;
+        if (_.has(data.urlParams, 'date')) {
+            data.calendarDate = data.urlParams.date;
         }
 
         var urlParams = createUrl();
-        scheduled.currUrl = schd.getWindowPathname() + urlParams;
-        schd.schdReplaceState(scheduled.currUrl);
+        data.currUrl = scheduled.getWindowPathname() + urlParams;
+        scheduled.schdReplaceState(data.currUrl);
     }
 
     /**
@@ -186,14 +186,14 @@ module.exports = function (config) {
         // here we have updated the globals so we will take the url data from the history object
         // unless its the list view where we use the default dates
         // (if we were coming from the updated url ones the setPageUrl  method would trigger instead of this one)
-        if (scheduled.currentView == 'list') {
-            scheduled.listDateStart = scheduled.defaultlistDateStart;
-            scheduled.listDateEnd = scheduled.defaultlistDateEnd;
+        if (data.currentView == 'list') {
+            data.listDateStart = data.defaultlistDateStart;
+            data.listDateEnd = data.defaultlistDateEnd;
         }
 
         var urlParams = createUrl();
-        scheduled.currUrl = schd.getWindowPathname() + urlParams;
-        schd.schdPushState(scheduled.currUrl);
+        data.currUrl = scheduled.getWindowPathname() + urlParams;
+        scheduled.schdPushState(data.currUrl);
     }
 
     /**
@@ -208,28 +208,28 @@ module.exports = function (config) {
      * Bind events
      */
     function bindEvents() {
-        $(scheduled.$el).on('click', '.schedule-page-switch', clickSwitchPage.bind(this));
+        $(data.$el).on('click', '.schedule-page-switch', clickSwitchPage.bind(this));
     }
 
     /**
      * Render the loading icon
      */
     function renderLoader() {
-        $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.loadingTemplate());
+        $('.schedule-page__content', data.$el).empty().html(data.template.loadingTemplate());
     }
 
     /**
      * Render the list / Calender switcher
      */
     function renderSwitcher() {
-        $('.schedule-page__switcher', scheduled.$el).html(scheduled.template.scheduledSwitcherTemplate({currentView: scheduled.currentView}));
+        $('.schedule-page__switcher', data.$el).html(data.template.scheduledSwitcherTemplate({currentView: data.currentView}));
     }
 
     /**
      * Render the 'add scheduled articles' button
      */
     function renderActions() {
-        $('.schedule-page__actions', scheduled.$el).html(scheduled.template.scheduledActionsTemplate());
+        $('.schedule-page__actions', data.$el).html(data.template.scheduledActionsTemplate());
     }
 
     /**
@@ -237,8 +237,8 @@ module.exports = function (config) {
      * @param e
      */
     function clickSwitchPage(e) {
-        scheduled.currentView = $(e.currentTarget).attr('data-switch');
-        switchPage(scheduled.currentView);
+        data.currentView = $(e.currentTarget).attr('data-switch');
+        switchPage(data.currentView);
         updatePageUrl();
     }
 
@@ -253,9 +253,9 @@ module.exports = function (config) {
         if (pageType === 'list') {
             $('.scheduled-page').addClass('list-view');
             $('.scheduled-page').removeClass('calendar-view');
-            var fetch = fetchScheduledArticles(scheduled.listDateStart, scheduled.listDateEnd, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
-            fetch.done(function (data) {
-                $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.scheduledContentListTemplate({scheduled: scheduled.scheduled}));
+            var fetch = fetchScheduledArticles(data.listDateStart, data.listDateEnd, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
+            fetch.done(function (returnedData) {
+                $('.schedule-page__content', data.$el).empty().html(data.template.scheduledContentListTemplate({scheduled: returnedData.scheduled}));
                 $('[data-toggle="tooltip"]').tooltip({container: 'body'});
             });
         }
@@ -263,8 +263,8 @@ module.exports = function (config) {
         if (pageType === 'calendar') {
             $('.scheduled-page').removeClass('list-view');
             $('.scheduled-page').addClass('calendar-view');
-            $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.scheduledContentCalendarTemplate({scheduled: scheduled.scheduled}));
-            schd.renderCalendar();
+            $('.schedule-page__content', data.$el).empty().html(data.template.scheduledContentCalendarTemplate({scheduled: data.scheduled}));
+            scheduled.renderCalendar();
         }
 
     }
@@ -295,24 +295,24 @@ module.exports = function (config) {
      * Success callback for fetching scheduled data
      * @param data
      */
-    function fetchScheduledArticlesSuccess(data) {
-        var articles = utils.generateUrl(data.articles);
-        scheduled.scheduled = {articles: articles};
+    function fetchScheduledArticlesSuccess(returnedData) {
+        var articles = utils.generateUrl(returnedData.articles);
+        data.scheduled = {articles: articles};
     }
 
     /**
      * Error callback for fetching scheduled data
      * @param data
      */
-    function fetchScheduledArticlesError(data) {
-        log.error('API Error: ' + config.api.article_schedule_for_range + '/from/' + scheduled.currentStartDate + '/to/' + scheduled.currentEndDate + '/');
-        log.info(data);
-        var errorInfo = utils.formatErrorInformation(data);
+    function fetchScheduledArticlesError(returnedData) {
+        log.error('API Error: ' + config.api.article_schedule_for_range + '/from/' + returnedData.currentStartDate + '/to/' + returnedData.currentEndDate + '/');
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'scheduleArticlePublicationError';
         errorInfo.type = config.errors.en.type.api;
-        $('.schedule-page__content', scheduled.$el).empty().html(scheduled.template.errorMessage(errorInfo));
-        $('#error-console').empty().html(scheduled.template.errorDetail(errorInfo));
+        $('.schedule-page__content', data.$el).empty().html(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
 
     }
 
@@ -322,31 +322,31 @@ module.exports = function (config) {
      * @param element
      */
     function renderCalendarViewRender(view, element) {
-        scheduled.currentViewType = view.type;
+        data.currentViewType = view.type;
         // this event fires once the calendar has completed loading and when the date is changed - thus calling the new events
         var start = moment(view.start).format('DD-MM-YYYY');
         var end = moment(view.end).format('DD-MM-YYYY');
-        if (scheduled.currentViewType == 'month') {
-            // if the current 'start' date of the selected month is not the same as the actual month then set the scheduled.calendarDate to the first of the proper month
+        if (data.currentViewType == 'month') {
+            // if the current 'start' date of the selected month is not the same as the actual month then set the data.calendarDate to the first of the proper month
             var currentStartMonth = moment(start, 'DD-MM-YYYY').format('MM-YYYY');
             var currentMonth = moment(view.title, 'MMMM YYYY').format('MM-YYYY');
             if (currentStartMonth != currentMonth) {
-                scheduled.calendarDate = moment(view.title, 'MMMM YYYY').startOf('month').format('DD-MM-YYYY');
+                data.calendarDate = moment(view.title, 'MMMM YYYY').startOf('month').format('DD-MM-YYYY');
             }
             else {
-                scheduled.calendarDate = start;
+                data.calendarDate = start;
             }
         } else {
-            scheduled.calendarDate = start;
+            data.calendarDate = start;
         }
-        schd.updateCalendar(start, end);
+        scheduled.updateCalendar(start, end);
     }
 
     /**
      * Render the calendar for the calendar view
      */
     function renderCalendar() {
-        log.info('calendar start date ' + moment(scheduled.calendarDate, 'DD-MM-YYYY').format('DD-MM-YYYY'))
+        log.info('calendar start date ' + moment(data.calendarDate, 'DD-MM-YYYY').format('DD-MM-YYYY'))
         $('#schedule-calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -375,16 +375,16 @@ module.exports = function (config) {
                 });
             },
 
-            viewRender: schd.renderCalendarViewRender,
+            viewRender: scheduled.renderCalendarViewRender,
 
             timeFormat: 'h:mma',
             firstDay: 1,
             aspectRatio: 2,
-            defaultView: scheduled.currentViewType,
+            defaultView: data.currentViewType,
             fixedWeekCount: false,
             editable: false,
             lazyFetch: false,
-            defaultDate: moment(scheduled.calendarDate, 'DD-MM-YYYY')
+            defaultDate: moment(data.calendarDate, 'DD-MM-YYYY')
         });
 
     }
@@ -397,14 +397,14 @@ module.exports = function (config) {
      */
     function updateCalendar(start, end) {
         log.info('updateCalendar')
-        $('#schedule-calendar', scheduled.$el).before(scheduled.template.loadingTemplate());
+        $('#schedule-calendar', data.$el).before(data.template.loadingTemplate());
         var fetch = fetchScheduledArticles(start, end, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
         fetch.done(function (data) {
-            $('.loading-template', scheduled.$el).remove();
+            $('.loading-template', data.$el).remove();
             $('#schedule-calendar').fullCalendar('removeEvents');
-            $('#schedule-calendar').fullCalendar('addEventSource', convertArticlesToCalendar(scheduled.scheduled));
+            $('#schedule-calendar').fullCalendar('addEventSource', convertArticlesToCalendar(data.scheduled));
             $('#schedule-calendar').fullCalendar('rerenderEvents');
-            schd.updatePageUrl();
+            scheduled.updatePageUrl();
         });
     }
 
@@ -432,8 +432,8 @@ module.exports = function (config) {
         return calendarArticles;
     }
 
-    var schd = {
-        scheduled: scheduled,
+    var scheduled = {
+        data: data,
         init: init,
         fetchScheduledArticles: fetchScheduledArticles,
         updateCalendar: updateCalendar,
@@ -456,6 +456,6 @@ module.exports = function (config) {
         renderCalendar: renderCalendar,
         convertArticlesToCalendar: convertArticlesToCalendar
     }
-    return schd;
+    return scheduled;
 
 };

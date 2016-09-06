@@ -5,7 +5,7 @@ describe('Application Utilities', function () {
     'use strict';
 
     it('utils should exist', function () {
-        expect(utils).to.be.a('object');
+        expect(utils).to.be.an('object');
     });
 
     // test cases

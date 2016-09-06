@@ -247,7 +247,7 @@ describe('Details page', function () {
     };
 
     it('details should exist', function () {
-        expect(detail).to.be.a('object');
+        expect(detail).to.be.an('object');
     });
 
     describe('renderLoader()', function () {
@@ -279,7 +279,8 @@ describe('Details page', function () {
                 runId: '1345f644-67ba-479d-8e54-65e7803c79c1',
             };
             detail.setArticleParams();
-            expect(detail.detail.queryParams).to.eql(result);
+            console.log(detail);
+            expect(detail.data.queryParams).to.eql(result);
         });
     });
 
@@ -307,7 +308,7 @@ describe('Details page', function () {
 
         it('QueryParams ArticleID null - show standard error', function () {
             detail.setArticleParams();
-            detail.detail.queryParams.articleId = null;
+            detail.data.queryParams.articleId = null;
             var data = {
                 statusCode: 400,
                 statusText: config.errors.en.missingInformation,
@@ -347,9 +348,9 @@ describe('Details page', function () {
         it('Should update details', function () {
             detail.setArticleParams();
             detail.getArticleSuccess(data);
-            expect(detail.detail.article).to.eql(data);
-            expect(detail.detail.currentArticle).to.eql(data.versions[1].details);
-            expect(detail.detail.currentEvents).to.eql(data.versions[1].runs[1]);
+            expect(detail.data.article).to.eql(data);
+            expect(detail.data.currentArticle).to.eql(data.versions[1].details);
+            expect(detail.data.currentEvents).to.eql(data.versions[1].runs[1]);
         });
     });
 
@@ -382,31 +383,30 @@ describe('Details page', function () {
         after(function () {
             detail.resetParams();
         });
-        // var queryParams = {"articleId": "00353", "versionNumber": "1", "runId": "1345f644-67ba-479d-8e54-65e7803c79c1"};
         it('Should find the last version number in details.article if no version number but has run id', function () {
             var result = {"articleId": "00353", "versionNumber": "2", "runId": "1345f644-67ba-479d-8e54-65e7803c79c1"};
-            detail.detail.article = data;
-            detail.detail.queryParams = {
+            detail.data.article = data;
+            detail.data.queryParams = {
                 "articleId": "00353",
                 "versionNumber": null,
                 "runId": "1345f644-67ba-479d-8e54-65e7803c79c1"
             };
             detail.setLatestArticle();
-            expect(detail.detail.queryParams).to.eql(result);
+            expect(detail.data.queryParams).to.eql(result);
         });
         it('Should find the last version and run if only given article ID', function () {
             var result = {"articleId": "00353", "versionNumber": "2", "runId": "afa7d187-4fad-4286-aea4-3460adebfca7"};
-            detail.detail.article = data;
-            detail.detail.queryParams = {"articleId": "00353", "versionNumber": null, "runId": null};
+            detail.data.article = data;
+            detail.data.queryParams = {"articleId": "00353", "versionNumber": null, "runId": null};
             detail.setLatestArticle();
-            expect(detail.detail.queryParams).to.eql(result);
+            expect(detail.data.queryParams).to.eql(result);
         });
         it('Should find the last run ID if not given run id', function () {
             var result = {"articleId": "00353", "versionNumber": "2", "runId": "afa7d187-4fad-4286-aea4-3460adebfca7"};
-            detail.detail.article = data;
-            detail.detail.queryParams = {"articleId": "00353", "versionNumber": "2", "runId": null};
+            detail.data.article = data;
+            detail.data.queryParams = {"articleId": "00353", "versionNumber": "2", "runId": null};
             detail.setLatestArticle();
-            expect(detail.detail.queryParams).to.eql(result);
+            expect(detail.data.queryParams).to.eql(result);
         });
     });
 
@@ -417,8 +417,8 @@ describe('Details page', function () {
             $('#article-console').empty();
         });
         it('Should return details for that version if queryParams has versionNumber', function () {
-            detail.detail.article = data;
-            detail.detail.queryParams = {"articleId": "00353", "versionNumber": "1"};
+            detail.data.article = data;
+            detail.data.queryParams = {"articleId": "00353", "versionNumber": "1"};
             var result = {
                 "article-type": "discussion",
                 "authors": "Version 1 Eve Marder",
@@ -435,16 +435,16 @@ describe('Details page', function () {
             expect(currentArticle).to.eql(result);
         });
         it('Should return false and populate detail.errors if queryParams has no versionNumber,', function () {
-            detail.detail.article = data;
-            detail.detail.queryParams = {"articleId": "00353", "versionNumber": null};
+            detail.data.article = data;
+            detail.data.queryParams = {"articleId": "00353", "versionNumber": null};
             var result = {
                 status: config.errors.en.type.application,
                 statusText: config.errors.en.incorrectInformation,
-                message: config.errors.en.noVersions + ' (' + detail.detail.queryParams.versionNumber + ')'
+                message: config.errors.en.noVersions + ' (' + detail.data.queryParams.versionNumber + ')'
             };
             var currentArticle = detail.getCurrentArticle();
             expect(currentArticle).to.be.false;
-            expect(detail.detail.errors).to.eql(result);
+            expect(detail.data.errors).to.eql(result);
         });
     });
 
@@ -453,8 +453,8 @@ describe('Details page', function () {
             detail.resetParams();
         });
         it('It should return details for that run if queryParams has versionNumber and runId', function () {
-            detail.detail.article = data;
-            detail.detail.queryParams = {
+            detail.data.article = data;
+            detail.data.queryParams = {
                 "articleId": "00353",
                 "versionNumber": "1",
                 "runId": "1345f644-67ba-479d-8e54-65e7803c79c1"
@@ -513,16 +513,16 @@ describe('Details page', function () {
             expect(currentArticle).to.eql(result);
         });
         it('It should return false and populate detail.errors if queryParams has no versionNumber and runId', function () {
-            detail.detail.article = data;
-            detail.detail.queryParams = {"articleId": "00353", "versionNumber": null, "runId": null};
+            detail.data.article = data;
+            detail.data.queryParams = {"articleId": "00353", "versionNumber": null, "runId": null};
             var result = {
                 status: config.errors.en.type.application,
                 statusText: config.errors.en.incorrectInformation,
-                message: config.errors.en.noRuns + ' (' + detail.detail.queryParams.runId + ')'
+                message: config.errors.en.noRuns + ' (' + detail.data.queryParams.runId + ')'
             };
             var currentRun = detail.getCurrentRun();
             expect(currentRun).to.be.false;
-            expect(detail.detail.errors).to.eql(result);
+            expect(detail.data.errors).to.eql(result);
         });
     });
 
@@ -544,9 +544,9 @@ describe('Details page', function () {
         });
         it('if article and no errors - display article ', function () {
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
             var article = document.getElementById('article');
             var articleTitle = article.querySelector('.article__title');
@@ -554,18 +554,18 @@ describe('Details page', function () {
         });
         it('if no article and errors display those errors on the page ', function () {
             detail.setArticleParams();
-            detail.detail.article = null;
-            detail.detail.errors = {
+            detail.data.article = null;
+            detail.data.errors = {
                 status: config.errors.en.type.application,
                 statusText: config.errors.en.incorrectInformation,
-                message: config.errors.en.noVersions + ' (' + detail.detail.queryParams.versionNumber + ')'
+                message: config.errors.en.noVersions + ' (' + detail.data.queryParams.versionNumber + ')'
             };
             detail.renderArticle();
             var article = document.getElementById('article');
             var articleStatus = article.querySelector('.status');
             var articleMessage = article.querySelector('.message');
             expect(articleStatus.innerHTML).to.equal(config.errors.en.incorrectInformation);
-            expect(articleMessage.innerHTML).to.equal(config.errors.en.noVersions + ' (' + detail.detail.queryParams.versionNumber + ')');
+            expect(articleMessage.innerHTML).to.equal(config.errors.en.noVersions + ' (' + detail.data.queryParams.versionNumber + ')');
         });
     });
 
@@ -582,7 +582,7 @@ describe('Details page', function () {
             var data = {"articles": [{"article-identifier": "00353", published: false, scheduled: 0}]};
             var result = {"article-identifier": "00353", published: false, scheduled: 0}
             detail.getDetailActionsSuccess(data);
-            expect(detail.detail.scheduleStatus).to.eql(result);
+            expect(detail.data.scheduleStatus).to.eql(result);
             expect(renderDetailActionsStub.called).to.be.true;
         });
     });
@@ -626,10 +626,10 @@ describe('Details page', function () {
         it('Should only show reSchedule and cancel button along with date scheduled - if schedule status not empty and scheduled date is greater than 0', function () {
             $('#article').empty();
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
-            detail.detail.scheduleStatus = {"article-identifier": "00353", published: false, scheduled: 1471381200};
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
+            detail.data.scheduleStatus = {"article-identifier": "00353", published: false, scheduled: 1471381200};
             detail.renderArticle();
             expect($('#article .scheduled-for').text()).to.not.be.empty;
             var scheduleBtn = $('.article-detail-actions .schedule-btn');
@@ -644,10 +644,10 @@ describe('Details page', function () {
         it('Should show schedule and publish now button along with no date scheduled - if schedule status not empty and scheduled date is 0', function () {
             $('#article').empty();
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
-            detail.detail.scheduleStatus = {"article-identifier": "00353", published: false, scheduled: 0};
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
+            detail.data.scheduleStatus = {"article-identifier": "00353", published: false, scheduled: 0};
             detail.renderArticle();
             expect($('#article .scheduled-for').text()).to.be.empty;
             var scheduleBtn = $('.article-detail-actions .schedule-btn');
@@ -662,10 +662,10 @@ describe('Details page', function () {
         it('Should only show publish now button along with no date scheduled - if schedule status is empty', function () {
             $('#article').empty();
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
-            detail.detail.scheduleStatus = [];
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
+            detail.data.scheduleStatus = [];
             detail.renderArticle();
             expect($('#article .scheduled-for').text()).to.be.empty;
             var scheduleBtn = $('.article-detail-actions .schedule-btn');
@@ -705,15 +705,15 @@ describe('Details page', function () {
                 runId: "afa7d187-4fad-4286-aea4-3460adebfca7"
             };
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
             detail.bindEvents();
             detail.renderArticle();
             $('a[data-version="1"][data-run="afa7d187-4fad-4286-aea4-3460adebfca7"]').click();
             expect(detailPushStateStub.called).to.be.true;
-            expect(detail.detail.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
-            expect(detail.detail.queryParams).to.eql(result);
+            expect(detail.data.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
+            expect(detail.data.queryParams).to.eql(result);
         });
     });
 
@@ -744,12 +744,12 @@ describe('Details page', function () {
         });
         it('Should return the correct url', function () {
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.detail.currUrl);
-            expect(detail.detail.currUrl).to.equal('/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1');
+            console.log(detail.data.currUrl);
+            expect(detail.data.currUrl).to.equal('/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1');
         });
     });
 
@@ -780,12 +780,12 @@ describe('Details page', function () {
         });
         it('Should return the last run of the provided run', function () {
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.detail.currUrl);
-            expect(detail.detail.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
+            console.log(detail.data.currUrl);
+            expect(detail.data.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });
 
@@ -816,12 +816,12 @@ describe('Details page', function () {
         });
         it('Should return the url of the last run of the last version', function () {
             detail.setArticleParams();
-            detail.detail.article = data;
-            detail.detail.currentArticle = detail.getCurrentArticle();
-            detail.detail.currentEvents = detail.getCurrentRun();
+            detail.data.article = data;
+            detail.data.currentArticle = detail.getCurrentArticle();
+            detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.detail.currUrl);
-            expect(detail.detail.currUrl).to.equal('/article/00353/2/afa7d187-4fad-4286-aea4-3460adebfca7');
+            console.log(detail.data.currUrl);
+            expect(detail.data.currUrl).to.equal('/article/00353/2/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });
 

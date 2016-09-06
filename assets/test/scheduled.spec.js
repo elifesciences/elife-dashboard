@@ -119,9 +119,9 @@ describe('Scheduled page', function () {
         });
         it('Should set page url using address bar information', function () {
             scheduled.setPageUrl();
-            expect(scheduled.scheduled.currentView).to.eql('list');
-            expect(scheduled.scheduled.listDateStart).to.eql('26-08-2016');
-            expect(scheduled.scheduled.listDateEnd).to.eql('26-08-2017');
+            expect(scheduled.data.currentView).to.eql('list');
+            expect(scheduled.data.listDateStart).to.eql('26-08-2016');
+            expect(scheduled.data.listDateEnd).to.eql('26-08-2017');
         });
     });
 
@@ -150,9 +150,9 @@ describe('Scheduled page', function () {
         });
         it('Should set page url using address bar information', function () {
             scheduled.setPageUrl();
-            expect(scheduled.scheduled.currentView).to.eql('calendar');
-            expect(scheduled.scheduled.currentViewType).to.eql('month');
-            expect(scheduled.scheduled.calendarDate).to.eql('01-08-2016');
+            expect(scheduled.data.currentView).to.eql('calendar');
+            expect(scheduled.data.currentViewType).to.eql('month');
+            expect(scheduled.data.calendarDate).to.eql('01-08-2016');
         });
     });
 
@@ -257,7 +257,7 @@ describe('Scheduled page', function () {
             });
             ajaxStub = sinon.stub($, "ajax").returns({
                 done: function (callback) {
-                    scheduled.scheduled.scheduled = scheduledArticles;
+                    scheduled.data.scheduled = scheduledArticles;
                     return callback(scheduledArticles);
                 }
             });
@@ -327,7 +327,7 @@ describe('Scheduled page', function () {
         it('Should update scheduled list', function () {
             scheduled.fetchScheduledArticlesSuccess(scheduledArticles);
             var fetchScheduledArticlesSuccessProcessed = {articles: utils.generateUrl(scheduledArticles.articles)};
-            expect(scheduled.scheduled.scheduled).to.eql(fetchScheduledArticlesSuccessProcessed);
+            expect(scheduled.data.scheduled).to.eql(fetchScheduledArticlesSuccessProcessed);
         });
     });
 
@@ -421,10 +421,10 @@ describe('Scheduled page', function () {
             schdPushStateStub = sinon.stub(scheduled, "schdPushState", function () {
             });
 
-            scheduled.scheduled.scheduled = scheduledArticles;
+            scheduled.data.scheduled = scheduledArticles;
             $('.scheduled-page').removeClass('list-view');
             $('.scheduled-page').addClass('calendar-view');
-            $('.schedule-page__content').empty().html(scheduled.scheduled.template.scheduledContentCalendarTemplate({scheduled: scheduled.scheduled.scheduled}));
+            $('.schedule-page__content').empty().html(scheduled.data.template.scheduledContentCalendarTemplate({scheduled: scheduled.data.scheduled}));
             scheduled.renderCalendar();
             this.timeout(3000); // A very long environment setup.
             setTimeout(done, 2500);
@@ -465,8 +465,8 @@ describe('Scheduled page', function () {
             };
             var element = $('.schedule-page__content');
             scheduled.renderCalendarViewRender(view, element);
-            expect(scheduled.scheduled.currentViewType).to.equal('agendaWeek');
-            expect(scheduled.scheduled.calendarDate).to.equal('29-08-2016');
+            expect(scheduled.data.currentViewType).to.equal('agendaWeek');
+            expect(scheduled.data.calendarDate).to.equal('29-08-2016');
         });
         it('In month view it should set the calendar date to the first date of the visible month', function () {
             // visible date is september but calendar shows august, september and october
@@ -479,8 +479,8 @@ describe('Scheduled page', function () {
             };
             var element = $('.schedule-page__content');
             scheduled.renderCalendarViewRender(view, element);
-            expect(scheduled.scheduled.currentViewType).to.equal('month');
-            expect(scheduled.scheduled.calendarDate).to.equal('01-09-2016');
+            expect(scheduled.data.currentViewType).to.equal('month');
+            expect(scheduled.data.calendarDate).to.equal('01-09-2016');
 
             // if the first date is the first - make it that date.
             var view = {
@@ -491,8 +491,8 @@ describe('Scheduled page', function () {
             };
             var element = $('.schedule-page__content');
             scheduled.renderCalendarViewRender(view, element);
-            expect(scheduled.scheduled.currentViewType).to.equal('month');
-            expect(scheduled.scheduled.calendarDate).to.equal('01-05-2017');
+            expect(scheduled.data.currentViewType).to.equal('month');
+            expect(scheduled.data.calendarDate).to.equal('01-05-2017');
         });
     });
 

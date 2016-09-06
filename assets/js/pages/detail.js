@@ -34,28 +34,28 @@ module.exports = function (config) {
 
     // Variables
     {
-        var detail = {};
-        detail.article = [];
-        detail.errors = [];
-        detail.detailEvents = [];
-        detail.detailArticle = [];
-        detail.scheduleStatus = [];
-        detail.queryParams = {};
-        detail.currUrl = {};
-        detail.extraUrl = 'patterns/04-pages-01-detail/04-pages-01-detail.html?/';
+        var data = {};
+        data.article = [];
+        data.errors = [];
+        data.detailEvents = [];
+        data.detailArticle = [];
+        data.scheduleStatus = [];
+        data.queryParams = {};
+        data.currUrl = {};
+        data.extraUrl = 'patterns/04-pages-01-detail/04-pages-01-detail.html?/';
     }
 
     {
         // Templates
-        detail.template = {};
-        detail.template.loadingTemplate = template['loading-template'];
-        detail.template.errorMessage = template['error-message'];
-        detail.template.errorDetail = template['error-detail'];
-        detail.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
-        detail.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
-        detail.template.buttonsPublishTemplate = template['detail/buttons-publish'];
-        detail.template.articlesScheduledForTemplate = template['detail/article-scheduled-for'];
-        detail.template.articleTemplate = template['detail/article'];
+        data.template = {};
+        data.template.loadingTemplate = template['loading-template'];
+        data.template.errorMessage = template['error-message'];
+        data.template.errorDetail = template['error-detail'];
+        data.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
+        data.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
+        data.template.buttonsPublishTemplate = template['detail/buttons-publish'];
+        data.template.articlesScheduledForTemplate = template['detail/article-scheduled-for'];
+        data.template.articleTemplate = template['detail/article'];
 
     }
 
@@ -74,7 +74,7 @@ module.exports = function (config) {
     }
 
     function renderLoader() {
-        $('#article').empty().html(detail.template.loadingTemplate());
+        $('#article').empty().html(data.template.loadingTemplate());
     }
 
     /**
@@ -101,9 +101,9 @@ module.exports = function (config) {
         var versionNumber;
         var runId;
         var url;
-        var hash = det.getUrlHash();
+        var hash = detail.getUrlHash();
         if (config.ISPP) {
-            hash = hash.replace(detail.extraUrl, '');
+            hash = hash.replace(data.extraUrl, '');
         }
 
         url = hash;
@@ -116,19 +116,19 @@ module.exports = function (config) {
         url = (url.slice(-1) === '/') ? url.slice(0, -1) : url;
 
         if (_.isNull(versionNumber) && _.isNull(runId)) {
-            url += '/' + detail.queryParams.versionNumber + '/' + detail.queryParams.runId;
+            url += '/' + data.queryParams.versionNumber + '/' + data.queryParams.runId;
         }
 
         if (!_.isNull(versionNumber) && _.isNull(runId)) {
-            url += '/' + detail.queryParams.runId;
+            url += '/' + data.queryParams.runId;
         }
 
         if (config.ISPP) {
-            url = '/' + detail.extraUrl.slice(0, -1) + url;
+            url = '/' + data.extraUrl.slice(0, -1) + url;
         }
 
-        detail.currUrl = url;
-        det.detailReplaceState(url);
+        data.currUrl = url;
+        detail.detailReplaceState(url);
     }
 
     /**
@@ -155,8 +155,8 @@ module.exports = function (config) {
      * @param e
      */
     function stateChange(e) {
-        det.setArticleParams();
-        det.getArticle();
+        detail.setArticleParams();
+        detail.getArticle();
     }
 
     /**
@@ -166,14 +166,14 @@ module.exports = function (config) {
         e.preventDefault();
         var version = $(e.currentTarget).attr('data-version');
         var run = $(e.currentTarget).attr('data-run');
-        var url = '/article/' + detail.queryParams.articleId + '/' + version + '/' + run;
+        var url = '/article/' + data.queryParams.articleId + '/' + version + '/' + run;
 
         if (config.ISPP) {
-            url = '/' + detail.extraUrl.slice(0, -1) + url;
+            url = '/' + data.extraUrl.slice(0, -1) + url;
         }
 
-        detail.currUrl = url;
-        det.detailPushState(url);
+        data.currUrl = url;
+        detail.detailPushState(url);
 
     }
 
@@ -190,10 +190,10 @@ module.exports = function (config) {
      * Detail Actions Success
      * @param data
      */
-    function getDetailActionsSuccess(data) {
-        if (data.articles.length === 1) {
-            detail.scheduleStatus = data.articles[0];
-            det.renderDetailActions();
+    function getDetailActionsSuccess(returnedData) {
+        if (returnedData.articles.length === 1) {
+            data.scheduleStatus = returnedData.articles[0];
+            detail.renderDetailActions();
         }
     }
 
@@ -201,15 +201,15 @@ module.exports = function (config) {
      * Detail Actions Error
      * @param data
      */
-    function getDetailActionsError(data) {
+    function getDetailActionsError(returnedData) {
         log.error(config.errors.en.type.api + ': ' + config.api.current);
-        log.info(data);
-        var errorInfo = utils.formatErrorInformation(data);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'getDetailActionsError';
         errorInfo.type = config.errors.en.type.api;
-        $('#article').prepend(detail.template.errorMessage(errorInfo));
-        $('#error-console').empty().html(detail.template.errorDetail(errorInfo));
+        $('#article').prepend(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
     }
 
     /**
@@ -220,7 +220,7 @@ module.exports = function (config) {
      */
     function fetchDetailActions(successCallback, errorCallback) {
         var articleIds = [];
-        articleIds.push(detail.queryParams.articleId);
+        articleIds.push(data.queryParams.articleId);
         return $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -239,8 +239,8 @@ module.exports = function (config) {
      * Determine which action buttons to show for this page
      */
     function getDetailActions() {
-        if (!_.isNull(detail.queryParams.articleId)) {
-            det.fetchDetailActions(getDetailActionsSuccess, getDetailActionsError);
+        if (!_.isNull(data.queryParams.articleId)) {
+            detail.fetchDetailActions(getDetailActionsSuccess, getDetailActionsError);
         }
     }
 
@@ -248,32 +248,32 @@ module.exports = function (config) {
      * Determine which action buttons to show for this page
      */
     function renderDetailActions() {
-        if (!_.isEmpty(detail.scheduleStatus)) {
-            if (detail.scheduleStatus.scheduled > 0) {
-                $('.article-detail-actions', '#article').empty().html(detail.template.buttonsReScheduleTemplate({
-                    article: detail.article,
-                    currentArticle: detail.currentArticle,
-                    "scheduled-publication-date": detail.scheduleStatus.scheduled
+        if (!_.isEmpty(data.scheduleStatus)) {
+            if (data.scheduleStatus.scheduled > 0) {
+                $('.article-detail-actions', '#article').empty().html(data.template.buttonsReScheduleTemplate({
+                    article: data.article,
+                    currentArticle: data.currentArticle,
+                    "scheduled-publication-date": data.scheduleStatus.scheduled
                 }));
-                $('.article-detail-scheduled', '#article').empty().html(detail.template.articlesScheduledForTemplate({scheduleStatus: detail.scheduleStatus}));
+                $('.article-detail-scheduled', '#article').empty().html(data.template.articlesScheduledForTemplate({scheduleStatus: data.scheduleStatus}));
             } else {
-                var buttons = detail.template.buttonsScheduleTemplate({article: detail.article}) + detail.template.buttonsPublishTemplate({
-                        article: detail.article,
-                        currentArticle: detail.currentArticle,
-                        currentEvents: detail.currentEvents,
-                        currentVersion: detail.queryParams.versionNumber,
-                        currentRun: detail.queryParams.runId,
-                        scheduleStatus: detail.scheduleStatus,
+                var buttons = data.template.buttonsScheduleTemplate({article: data.article}) + data.template.buttonsPublishTemplate({
+                        article: data.article,
+                        currentArticle: data.currentArticle,
+                        currentEvents: data.currentEvents,
+                        currentVersion: data.queryParams.versionNumber,
+                        currentRun: data.queryParams.runId,
+                        scheduleStatus: data.scheduleStatus,
                     });
                 $('.article-detail-actions', '#article').empty().html(buttons);
             }
         } else {
-            var buttons = detail.template.buttonsPublishTemplate({
-                article: detail.article,
-                currentArticle: detail.currentArticle,
-                currentEvents: detail.currentEvents,
-                currentVersion: detail.queryParams.versionNumber,
-                currentRun: detail.queryParams.runId,
+            var buttons = data.template.buttonsPublishTemplate({
+                article: data.article,
+                currentArticle: data.currentArticle,
+                currentEvents: data.currentEvents,
+                currentVersion: data.queryParams.versionNumber,
+                currentRun: data.queryParams.runId,
             });
             $('.article-detail-actions', '#article').empty().html(buttons);
         }
@@ -288,7 +288,7 @@ module.exports = function (config) {
      */
     function fetchArticle(successCallback, errorCallback) {
         return $.ajax({
-            url: config.api.article + '/' + detail.queryParams.articleId,
+            url: config.api.article + '/' + data.queryParams.articleId,
             cache: false,
             dataType: 'json',
             success: function (data) {
@@ -304,13 +304,13 @@ module.exports = function (config) {
      * Success callback for fetching article information
      * @param data
      */
-    function getArticleSuccess(data) {
-        detail.article = data;
-        det.setLatestArticle();
-        detail.currentArticle = getCurrentArticle();
-        detail.currentEvents = getCurrentRun();
-        det.renderArticle();
-        det.getDetailActions();
+    function getArticleSuccess(returnedData) {
+        data.article = returnedData;
+        detail.setLatestArticle();
+        data.currentArticle = getCurrentArticle();
+        data.currentEvents = getCurrentRun();
+        detail.renderArticle();
+        detail.getDetailActions();
     }
 
     /**
@@ -318,23 +318,23 @@ module.exports = function (config) {
      *
      * @param data
      */
-    function getArticleError(data) {
-        log.error(config.errors.en.type.api + ': ' + config.api.article + '/' + detail.queryParams.articleId);
-        log.info(data);
-        var errorInfo = utils.formatErrorInformation(data);
+    function getArticleError(returnedData) {
+        log.error(config.errors.en.type.api + ': ' + config.api.article + '/' + data.queryParams.articleId);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'getArticleError';
         errorInfo.type = config.errors.en.type.api;
-        $('#article').empty().html(detail.template.errorMessage(errorInfo));
-        $('#error-console').empty().html(detail.template.errorDetail(errorInfo));
+        $('#article').empty().html(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
     }
 
     /**
      * Get article from param in url
      */
     function getArticle() {
-        if (!_.isNull(detail.queryParams.articleId)) {
-            det.fetchArticle(getArticleSuccess, getArticleError);
+        if (!_.isNull(data.queryParams.articleId)) {
+            detail.fetchArticle(getArticleSuccess, getArticleError);
         } else {
             // var errorInfo = utils.formatErrorInformation(data);
             var errorInfo = {};
@@ -343,7 +343,7 @@ module.exports = function (config) {
             errorInfo.statusText = config.errors.en.missingInformation;
             errorInfo.type = config.errors.en.type.application;
             errorInfo.message = config.errors.en.noArticleId;
-            $('#article').empty().html(detail.template.errorMessage(errorInfo));
+            $('#article').empty().html(data.template.errorMessage(errorInfo));
 
         }
     }
@@ -352,44 +352,44 @@ module.exports = function (config) {
      * Render article to template
      */
     function renderArticle() {
-        if (detail.article && _.isEmpty(detail.errors)) {
-            $('#article').empty().html(detail.template.articleTemplate(
+        if (data.article && _.isEmpty(data.errors)) {
+            $('#article').empty().html(data.template.articleTemplate(
                 {
-                    article: detail.article,
-                    currentArticle: detail.currentArticle,
-                    currentEvents: detail.currentEvents,
-                    currentVersion: detail.queryParams.versionNumber,
-                    currentRun: detail.queryParams.runId,
-                    scheduleStatus: detail.scheduleStatus,
+                    article: data.article,
+                    currentArticle: data.currentArticle,
+                    currentEvents: data.currentEvents,
+                    currentVersion: data.queryParams.versionNumber,
+                    currentRun: data.queryParams.runId,
+                    scheduleStatus: data.scheduleStatus,
                 }));
 
-            det.renderDetailActions();
+            detail.renderDetailActions();
         } else {
-            var errorInfo = utils.formatErrorInformation(detail.errors);
+            var errorInfo = utils.formatErrorInformation(data.errors);
             errorInfo.errorType = null;
             errorInfo.ref = 'renderArticleError';
             errorInfo.type = config.errors.en.type.application;
-            $('#article').empty().html(detail.template.errorMessage(detail.errors));
+            $('#article').empty().html(data.template.errorMessage(data.errors));
         }
 
-        det.updatePageUrl();
+        detail.updatePageUrl();
     }
 
     /**
      * Set latest article
      */
     function setLatestArticle() {
-        if (!detail.queryParams.versionNumber) {
-            detail.queryParams.versionNumber = utils.findLastKey(detail.article.versions);
+        if (!data.queryParams.versionNumber) {
+            data.queryParams.versionNumber = utils.findLastKey(data.article.versions);
         }
 
-        if (!detail.queryParams.runId) {
-            if (_.has(detail.article.versions, detail.queryParams.versionNumber)) {
-                var lastKey = utils.findLastKey(detail.article.versions[detail.queryParams.versionNumber].runs);
-                var runId = detail.article.versions[detail.queryParams.versionNumber].runs[lastKey]['run-id'];
-                detail.queryParams.runId = runId;
+        if (!data.queryParams.runId) {
+            if (_.has(data.article.versions, data.queryParams.versionNumber)) {
+                var lastKey = utils.findLastKey(data.article.versions[data.queryParams.versionNumber].runs);
+                var runId = data.article.versions[data.queryParams.versionNumber].runs[lastKey]['run-id'];
+                data.queryParams.runId = runId;
             } else {
-                detail.queryParams.runId = null;
+                data.queryParams.runId = null;
             }
         }
 
@@ -400,13 +400,13 @@ module.exports = function (config) {
      * @returns {*}
      */
     function getCurrentArticle() {
-        if (_.has(detail.article.versions, detail.queryParams.versionNumber)) {
-            return detail.article.versions[detail.queryParams.versionNumber].details;
+        if (_.has(data.article.versions, data.queryParams.versionNumber)) {
+            return data.article.versions[data.queryParams.versionNumber].details;
         } else {
-            detail.errors = {
+            data.errors = {
                 status: config.errors.en.type.application,
                 statusText: config.errors.en.incorrectInformation,
-                message: config.errors.en.noVersions + ' (' + detail.queryParams.versionNumber + ')'
+                message: config.errors.en.noVersions + ' (' + data.queryParams.versionNumber + ')'
             };
             return false;
         }
@@ -417,13 +417,13 @@ module.exports = function (config) {
      * @returns {*}
      */
     function getCurrentRun() {
-        if (_.has(detail.article.versions, detail.queryParams.versionNumber) && _.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId})) {
-            return _.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId});
+        if (_.has(data.article.versions, data.queryParams.versionNumber) && _.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId})) {
+            return _.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId});
         } else {
-            detail.errors = {
+            data.errors = {
                 status: config.errors.en.type.application,
                 statusText: config.errors.en.incorrectInformation,
-                message: config.errors.en.noRuns + ' (' + detail.queryParams.runId + ')'
+                message: config.errors.en.noRuns + ' (' + data.queryParams.runId + ')'
             };
             return false;
         }
@@ -434,11 +434,11 @@ module.exports = function (config) {
      * @param e
      */
     function updateRun(e) {
-        detail.queryParams.versionNumber = $(e.currentTarget).attr('data-version');
-        detail.queryParams.runId = $(e.currentTarget).attr('data-run');
-        setCurrentArticle(detail.article.versions[detail.queryParams.versionNumber].details);
-        if (_.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId})) {
-            setCurrentRun(_.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId}));
+        data.queryParams.versionNumber = $(e.currentTarget).attr('data-version');
+        data.queryParams.runId = $(e.currentTarget).attr('data-run');
+        setCurrentArticle(data.article.versions[data.queryParams.versionNumber].details);
+        if (_.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId})) {
+            setCurrentRun(_.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId}));
         }
 
         renderArticle();
@@ -449,7 +449,7 @@ module.exports = function (config) {
      * @param details
      */
     function setCurrentArticle(details) {
-        detail.currentArticle = details;
+        data.currentArticle = details;
     }
 
     /**
@@ -457,7 +457,7 @@ module.exports = function (config) {
      * @param details
      */
     function setCurrentRun(run) {
-        detail.currentEvents = run;
+        data.currentEvents = run;
     }
 
     /**
@@ -477,7 +477,7 @@ module.exports = function (config) {
         var articleId;
         var versionNumber;
         var runId;
-        var url = det.getWindowPathname();
+        var url = detail.getWindowPathname();
         if (config.ISPP) {
             // for use in the PP
             url = window.location.search;
@@ -497,7 +497,7 @@ module.exports = function (config) {
             runId = 'c03211f7-6e1e-492d-9312-e0a80857873c';
         }
 
-        detail.queryParams = {
+        data.queryParams = {
             articleId: articleId,
             versionNumber: versionNumber,
             runId: runId,
@@ -521,18 +521,18 @@ module.exports = function (config) {
      */
     function resetParams() {
         // detail = {};
-        detail.article = [];
-        detail.errors = [];
-        detail.detailEvents = [];
-        detail.detailArticle = [];
-        detail.scheduleStatus = [];
-        detail.queryParams = {};
+        data.article = [];
+        data.errors = [];
+        data.detailEvents = [];
+        data.detailArticle = [];
+        data.scheduleStatus = [];
+        data.queryParams = {};
     }
 
-    var det = {
+    var detail = {
         init: init,
         bindEvents: bindEvents,
-        detail: detail,
+        data: data,
         renderLoader: renderLoader,
         setArticleParams: setArticleParams,
         getWindowPathname: getWindowPathname,
@@ -558,6 +558,6 @@ module.exports = function (config) {
         config: config
     };
 
-    return det;
+    return detail;
 
 };

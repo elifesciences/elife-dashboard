@@ -25,23 +25,23 @@ module.exports = function (config) {
 
     // Variables
     {
-        var publish = {};
-        publish.queued = [];
-        publish.queuePolled = 0;
-        publish.checkingStatus = '';
-        publish.pollLimit = 250;
-        publish.publishInterval = 500;
-        publish.isAllPublished = false;
-        publish.isPublishing = false;
+        var data = {};
+        data.queued = [];
+        data.queuePolled = 0;
+        data.checkingStatus = '';
+        data.pollLimit = 250;
+        data.publishInterval = 500;
+        data.isAllPublished = false;
+        data.isPublishing = false;
     }
 
     {
         // Templates
-        publish.template = {};
-        publish.template.errorMessage = template['error-message'];
-        publish.template.errorDetail = template['error-detail'];
-        publish.template.publishModal = template['publish/article-publish-modal'];
-        publish.template.publishStatus = template['publish/article-publish-modal-status'];
+        data.template = {};
+        data.template.errorMessage = template['error-message'];
+        data.template.errorDetail = template['error-detail'];
+        data.template.publishModal = template['publish/article-publish-modal'];
+        data.template.publishStatus = template['publish/article-publish-modal-status'];
     }
 
     /**
@@ -49,7 +49,7 @@ module.exports = function (config) {
      */
     function init() {
         bindEvents();
-        $('body').append(publish.template.publishModal());
+        $('body').append(data.template.publishModal());
     }
 
     /**
@@ -85,14 +85,14 @@ module.exports = function (config) {
         var articleDoi = target.attr('data-article-doi');
         var addToQueue = {id: articleId, version: articleVer, run: articleRun, doi: articleDoi};
         if (publishNow) {
-            if (!_.findWhere(publish.queued, addToQueue)) {
-                publish.queued = utils.addObject(publish.queued, addToQueue);
+            if (!_.findWhere(data.queued, addToQueue)) {
+                data.queued = utils.addObject(data.queued, addToQueue);
             }
         } else {
-            if (_.findWhere(publish.queued, addToQueue)) {
-                publish.queued = utils.removeObject(publish.queued, addToQueue);
+            if (_.findWhere(data.queued, addToQueue)) {
+                data.queued = utils.removeObject(data.queued, addToQueue);
             } else {
-                publish.queued = utils.addObject(publish.queued, addToQueue);
+                data.queued = utils.addObject(data.queued, addToQueue);
             }
         }
     }
@@ -101,7 +101,7 @@ module.exports = function (config) {
      * Update the queue list to the items in the queue
      */
     function displayQueueList() {
-        _.each(publish.queued, function (article) {
+        _.each(data.queued, function (article) {
             var listItem = $('<li>' + article.doi + '</li>');
             listItem.data({id: article.id, version: article.version, run: article.run, doi: article.doi});
             $('#articles-queue').append(listItem);
@@ -115,7 +115,7 @@ module.exports = function (config) {
     function updateQueueListStatus(article) {
         var $elm = $('li', '#articles-queue').attr('id', 'article-' + article.id);
         $elm.find('.article-status').remove();
-        $elm.append(publish.template.publishStatus(article));
+        $elm.append(data.template.publishStatus(article));
     }
 
     /**
@@ -124,11 +124,11 @@ module.exports = function (config) {
      * @param e
      */
     function refreshPage(e) {
-        if (publish.isPublishing === true || publish.isAllPublished === true) {
-            pub.reloadPage();
+        if (data.isPublishing === true || data.isAllPublished === true) {
+            publish.reloadPage();
         }
 
-        pub.resetModalButtons();
+        publish.resetModalButtons();
     }
 
     /**
@@ -151,7 +151,7 @@ module.exports = function (config) {
             $(e).prop('checked', false);
         });
 
-        publish.queued = [];
+        data.queued = [];
     }
 
     /**
@@ -160,7 +160,7 @@ module.exports = function (config) {
      */
     function updatePublishModal(e) {
         $('#publish-action', '#publish-modal').prop('disabled', true).addClass('disabled');
-        publish.isPublishing = true;
+        data.isPublishing = true;
     }
 
     /**
@@ -168,7 +168,7 @@ module.exports = function (config) {
      * @param e
      */
     function performPublish(e) {
-        queueArticles(publish.queued, queueArticlesSuccess, queueArticlesError);
+        queueArticles(data.queued, queueArticlesSuccess, queueArticlesError);
     }
 
     /**
@@ -190,16 +190,16 @@ module.exports = function (config) {
         });
     }
 
-    function queueArticlesError(data) {
+    function queueArticlesError(returnedData) {
         log.error(config.errors.en.type.api + ': ' + config.api.queue_article_publication);
-        log.info(data);
-        log.info({articles: publish.queued});
-        var errorInfo = utils.formatErrorInformation(data);
+        log.info(returnedData);
+        log.info({articles: returnedData.queued});
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'queueArticlesError';
         errorInfo.type = config.errors.en.type.api;
-        $('.modal-body', '#publish-modal').empty().html(publish.template.errorMessage(errorInfo));
-        $('.modal-body', '#publish-modal').append(publish.template.errorDetail(errorInfo));
+        $('.modal-body', '#publish-modal').empty().html(data.template.errorMessage(errorInfo));
+        $('.modal-body', '#publish-modal').append(data.template.errorDetail(errorInfo));
     }
 
     function queueArticlesSuccess(data) {
@@ -233,10 +233,10 @@ module.exports = function (config) {
         });
     }
 
-    function checkingStatusSuccess(data) {
-        publish.queued = data;
-        publish.queuePolled++;
-        var articles = data.articles;
+    function checkingStatusSuccess(returnedData) {
+        data.queued = returnedData;
+        data.queuePolled++;
+        var articles = returnedData.articles;
         var status = {completed: 0, error: 0, queued: 0};
         var unpublished = [];
 
@@ -259,61 +259,61 @@ module.exports = function (config) {
         // log.info(status);
         var totalComplete = status.error + status.completed;
         // max polls reached
-        if (publish.queuePolled >= publish.pollLimit) {
+        if (data.queuePolled >= data.pollLimit) {
             log.info('max polls reached');
-            pub.finishPublishing({error: config.errors.en.maxPollsReached, ref: 'max-polls'});
+            publish.finishPublishing({error: config.errors.en.maxPollsReached, ref: 'max-polls'});
         }
         // all status's are complete or errors stop checking
         else if (totalComplete === articles.length) {
             log.info('all queued items are either complete or errors');
-            pub.finishPublishing();
+            publish.finishPublishing();
         }
         // if any still queued
         else {
             setTimeout(function () {
-                pub.pollQueue(unpublished)
-            }, publish.publishInterval);
+                publish.pollQueue(unpublished)
+            }, data.publishInterval);
         }
 
     }
 
-    function checkingStatusError(data) {
-        log.error('checkingStatusError', data);
+    function checkingStatusError(returnedData) {
+        log.error('checkingStatusError', returnedData);
         log.error(config.errors.en.type.api + ': ' + config.api.article_publication_status);
-        log.info(data);
-        log.info({articles: publish.queued});
-        var errorInfo = utils.formatErrorInformation(data);
+        log.info(returnedData);
+        log.info({articles: data.queued});
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'checkingStatusError';
         errorInfo.type = config.errors.en.type.api;
-        $('.modal-body', '#publish-modal').empty().html(publish.template.errorMessage(errorInfo));
-        $('.modal-body', '#publish-modal').append(publish.template.errorDetail(errorInfo));
-        publish.isPublishing = false;
+        $('.modal-body', '#publish-modal').empty().html(data.template.errorMessage(errorInfo));
+        $('.modal-body', '#publish-modal').append(data.template.errorDetail(errorInfo));
+        data.isPublishing = false;
     }
 
     /**
      * We've finished publishing - set some flags and tidy up
      */
-    function finishPublishing(data) {
-        if (_.has(data, 'error')) {
-            log.error(config.errors.en.type.api + ': ' + data.error);
-            log.info(data);
-            var errorInfo = utils.formatErrorInformation(data);
+    function finishPublishing(returnedData) {
+        if (_.has(returnedData, 'error')) {
+            log.error(config.errors.en.type.api + ': ' + returnedData.error);
+            log.info(returnedData);
+            var errorInfo = utils.formatErrorInformation(returnedData);
             errorInfo.errorType = null;
             errorInfo.type = config.errors.en.type.application;
-            errorInfo.message = data.error;
-            if (_.has(data, 'ref')) {
-                errorInfo.ref = data.ref;
+            errorInfo.message = returnedData.error;
+            if (_.has(returnedData, 'ref')) {
+                errorInfo.ref = returnedData.ref;
                 $('#error-message.' + errorInfo.ref, '#publish-modal').remove();
             }
-            $('.modal-body', '#publish-modal').prepend(publish.template.errorMessage(errorInfo));
+            $('.modal-body', '#publish-modal').prepend(data.template.errorMessage(errorInfo));
         }
-        publish.isPublishing = false;
-        publish.isAllPublished = true;
+        data.isPublishing = false;
+        data.isAllPublished = true;
         log.info('publishingFinished');
     }
 
-    var pub = {
+    var publish = {
         init: init,
         initModal: initModal,
         populateQueue: populateQueue,
@@ -332,9 +332,9 @@ module.exports = function (config) {
         pollQueue: pollQueue,
         updateQueueListStatus: updateQueueListStatus,
         finishPublishing: finishPublishing,
-        publish: publish
+        data: data
     };
 
-    return pub;
+    return publish;
 
 };

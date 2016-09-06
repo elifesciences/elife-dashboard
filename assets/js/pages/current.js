@@ -29,18 +29,18 @@ module.exports = function (config) {
 
         // Variables
         {
-            var current = {};
-            current.articles = [];
+            var data = {};
+            data.articles = [];
         }
 
         // Templates
         {
-            current.template = {};
-            current.template.errorMessage = template['error-message'];
-            current.template.errorDetail = template['error-detail'];
-            current.template.loadingTemplate = template['loading-template'];
-            current.template.article = template['current/article'];
-            current.template.articleStats = template['current/article-stats-template'];
+            data.template = {};
+            data.template.errorMessage = template['error-message'];
+            data.template.errorDetail = template['error-detail'];
+            data.template.loadingTemplate = template['loading-template'];
+            data.template.article = template['current/article'];
+            data.template.articleStats = template['current/article-stats-template'];
         }
 
 
@@ -56,7 +56,7 @@ module.exports = function (config) {
      * Render loading template
      */
     function renderLoading() {
-        $('#articles').empty().html(current.template.loadingTemplate());
+        $('#articles').empty().html(data.template.loadingTemplate());
     }
 
     /**
@@ -90,9 +90,9 @@ module.exports = function (config) {
      * @param articles
      */
     var fetchArticlesSuccess = function (articles) {
-        current.articles = articles;
-        $('#articles').empty().html(current.template.article(sortArticles(articles)));
-        $('#articleStats').empty().html(current.template.articleStats(sortArticles(articles)));
+        data.articles = articles;
+        $('#articles').empty().html(data.template.article(sortArticles(articles)));
+        $('#articleStats').empty().html(data.template.articleStats(sortArticles(articles)));
         $('.btn-publish-queued').hide();
         $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     }
@@ -101,17 +101,17 @@ module.exports = function (config) {
      * Fetch Articles Error
      * @param data
      */
-    var fetchArticlesError = function (data) {
+    var fetchArticlesError = function (returnedData) {
         log.info('error');
         log.error(config.errors.en.type.api + ': ' + config.api.current);
-        log.info(data);
-        var errorInfo = utils.formatErrorInformation(data);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'fetchArticlesError';
         errorInfo.type = config.errors.en.type.api;
         $('#articles').empty();
-        $('#articles').empty().html(current.template.errorMessage(errorInfo));
-        $('#articles').append(current.template.errorDetail(errorInfo));
+        $('#articles').empty().html(data.template.errorMessage(errorInfo));
+        $('#articles').append(data.template.errorDetail(errorInfo));
     }
 
 
@@ -186,7 +186,7 @@ module.exports = function (config) {
                 if (checkedState === false) cnt++;
             });
 
-            if (cnt === current.articles.uir.length) $('.btn-publish-queued').hide();
+            if (cnt === data.articles.uir.length) $('.btn-publish-queued').hide();
         }
 
         publish.populateQueue($(e.target).parents('tr'));
@@ -213,9 +213,9 @@ module.exports = function (config) {
         publish.displayQueueList();
     }
 
-    var crnt = {
+    var current = {
         init: init,
-        current: current,
+        data: data,
         bindEvents: bindEvents,
         renderLoading: renderLoading,
         renderArticles: renderArticles,
@@ -224,7 +224,7 @@ module.exports = function (config) {
         fetchArticlesError: fetchArticlesError
     };
 
-    return crnt;
+    return current;
 
 
 };

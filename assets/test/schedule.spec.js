@@ -14,34 +14,41 @@ var schedule = require('../js/services/schedule.js')(config);
 //component to be tested
 describe('Schedule', function () {
     'use strict';
+    var $scheduleBtn;
+    var $reScheduleBtn;
+    var $cancelScheduleBtn;
+    var $futureScheduleBtn;
 
     before(function () {
         // runs before all tests in this block
         schedule.init();
-        this.$scheduleBtn = $('<button class="schedule schedule-btn" data-action-type="schedule" id="schedule-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856" data-title="Schedule Article" ></button>');
-        this.$reScheduleBtn = $('<button class="schedule-amend-btn" data-action-type="schedule-amend" id="schedule-amend-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856" data-title="Re-schedule Article" data-scheduled="1465333200"></button>');
-        this.$cancelScheduleBtn = $('<button class="schedule-cancel-btn" data-action-type="schedule-cancel" id="schedule-cancel-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856"  data-article-doi="10.7554/eLife.10856" data-title="Cancel Schedule"></button>');
-        this.$futureScheduleBtn = $('<button class="schedule-future" data-action-type="future-schedule" id="future-schedule-10856" data-toggle="modal" data-target="#schedule-modal" data-title="Add Scheduled Article"></button>');
-        $('body').append(this.$scheduleBtn);
-        $('body').append(this.$reScheduleBtn);
-        $('body').append(this.$cancelScheduleBtn);
-        $('body').append(this.$futureScheduleBtn);
+
+        $scheduleBtn = $('<button class="schedule schedule-btn" data-action-type="schedule" id="schedule-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856" data-title="Schedule Article" ></button>');
+        $reScheduleBtn = $('<button class="schedule-amend-btn" data-action-type="schedule-amend" id="schedule-amend-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856" data-title="Re-schedule Article" data-scheduled="1465333200"></button>');
+        $cancelScheduleBtn = $('<button class="schedule-cancel-btn" data-action-type="schedule-cancel" id="schedule-cancel-10856" data-toggle="modal" data-target="#schedule-modal" data-article-id="10856"  data-article-doi="10.7554/eLife.10856" data-title="Cancel Schedule"></button>');
+        $futureScheduleBtn = $('<button class="schedule-future" data-action-type="future-schedule" id="future-schedule-10856" data-toggle="modal" data-target="#schedule-modal" data-title="Add Scheduled Article"></button>');
+
+        $('body').append($scheduleBtn);
+        $('body').append($reScheduleBtn);
+        $('body').append($cancelScheduleBtn);
+        $('body').append($futureScheduleBtn);
     });
 
-    it('publish should exist', function () {
-        expect(schedule).to.be.a('object');
+    it('Schedule should exist', function () {
+        expect(schedule).to.be.an('object');
     });
 
     describe('Schedule setParameters()', function() {
         before(function() {
-            this.$scheduleBtn.click();
+            console.log($scheduleBtn);
+            $scheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
         });
         it('Should update schedule parameters', function() {
-            expect(schedule.schedule.articleId).to.equal('10856');
-            expect(schedule.schedule.scheduleActionType).to.equal('schedule');
+            expect(schedule.data.articleId).to.equal('10856');
+            expect(schedule.data.scheduleActionType).to.equal('schedule');
         });
         it('Should update the template to reflect action type', function() {
             var btnClose = document.querySelector('#schedule-modal .modal-footer #schedule-close');
@@ -55,15 +62,15 @@ describe('Schedule', function () {
 
     describe('Reschedule setParameters()', function() {
         before(function() {
-            this.$reScheduleBtn.click();
+            $reScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
         });
         it('Should update schedule parameters', function() {
-            expect(schedule.schedule.articleId).to.equal('10856');
-            expect(schedule.schedule.articleScheduled).to.equal('1465333200');
-            expect(schedule.schedule.scheduleActionType).to.equal('schedule-amend');
+            expect(schedule.data.articleId).to.equal('10856');
+            expect(schedule.data.articleScheduled).to.equal('1465333200');
+            expect(schedule.data.scheduleActionType).to.equal('schedule-amend');
         });
         it('Should update the template to reflect action type', function() {
             var btnClose = document.querySelector('#schedule-modal .modal-footer #schedule-close');
@@ -77,15 +84,15 @@ describe('Schedule', function () {
 
     describe('Future schedule setParameters()', function() {
         before(function() {
-            this.$futureScheduleBtn.click();
+            $futureScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
         });
         it('Should update schedule parameters', function() {
-            expect(schedule.schedule.articleId).to.be.false;
-            expect(schedule.schedule.articleScheduled).to.be.false;
-            expect(schedule.schedule.scheduleActionType).to.equal('future-schedule');
+            expect(schedule.data.articleId).to.be.false;
+            expect(schedule.data.articleScheduled).to.be.false;
+            expect(schedule.data.scheduleActionType).to.equal('future-schedule');
         });
         it('Should update the template to reflect action type', function() {
             var btnClose = document.querySelector('#schedule-modal .modal-footer #schedule-close');
@@ -103,14 +110,14 @@ describe('Schedule', function () {
 
     describe('Cancel setParameters()', function() {
         before(function() {
-            this.$cancelScheduleBtn.click();
+            $cancelScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide');
         });
         it('Should update schedule parameters', function() {
-            expect(schedule.schedule.articleId).to.equal('10856');
-            expect(schedule.schedule.scheduleActionType).to.equal('schedule-cancel');
+            expect(schedule.data.articleId).to.equal('10856');
+            expect(schedule.data.scheduleActionType).to.equal('schedule-cancel');
         });
         it('Should update the template to reflect action type', function() {
             var btnNo = document.querySelector('#schedule-modal .modal-footer #schedule-close');
@@ -127,7 +134,7 @@ describe('Schedule', function () {
 
     describe('Schedule setModalTitle()', function() {
         before(function() {
-            this.$scheduleBtn.click();
+            $scheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
@@ -140,7 +147,7 @@ describe('Schedule', function () {
 
     describe('Reschedule setModalTitle()', function() {
         before(function() {
-            this.$reScheduleBtn.click();
+            $reScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
@@ -153,7 +160,7 @@ describe('Schedule', function () {
 
     describe('Future schedule setModalTitle()', function() {
         before(function() {
-            this.$futureScheduleBtn.click();
+            $futureScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide')
@@ -166,7 +173,7 @@ describe('Schedule', function () {
 
     describe('Cancel setModalTitle()', function() {
         before(function() {
-            this.$cancelScheduleBtn.click();
+            $cancelScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -179,7 +186,7 @@ describe('Schedule', function () {
 
     describe('initDatetime()', function() {
         before(function() {
-            this.$reScheduleBtn.click();
+            $reScheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
@@ -195,13 +202,13 @@ describe('Schedule', function () {
         });
         it('When changed update the scheduleDate and validate form', function() {
             this.picker.set('select', [2000, 2, 1]);
-            expect(schedule.schedule.scheduleDate).to.equal(951868800000); //01 Mar 2000
+            expect(schedule.data.scheduleDate).to.equal(951868800000); //01 Mar 2000
         });
     });
 
     describe('setTime', function() {
         before(function() {
-            this.$futureScheduleBtn.click();
+            $futureScheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
@@ -217,8 +224,8 @@ describe('Schedule', function () {
             $min.val('30');
             $ampm.val('am');
             $scheduleField.trigger('change');
-            expect(schedule.schedule.scheduleTime).to.equal('01:30 am');
-            expect(schedule.schedule.scheduleDate).to.be.null;
+            expect(schedule.data.scheduleTime).to.equal('01:30 am');
+            expect(schedule.data.scheduleDate).to.be.null;
         });
         it('If scheduleTime and scheduleDate - set scheduleDateTime', function() {
             var $scheduleField = $('#schedule-modal .schedule-field');
@@ -230,16 +237,16 @@ describe('Schedule', function () {
             $ampm.val('am');
             this.picker.set('select', [2000, 2, 1]);
             $scheduleField.trigger('change');
-            expect(schedule.schedule.scheduleTime).to.equal('01:30 am');
-            expect(schedule.schedule.scheduleDate).to.equal(951868800000); //01 Mar 2000
-            expect(schedule.schedule.scheduleDateTime).to.be.instanceOf(moment);
-            expect(schedule.schedule.scheduleDateTime.unix()).to.equal(951874200); //01 Mar 2000 1:30am
+            expect(schedule.data.scheduleTime).to.equal('01:30 am');
+            expect(schedule.data.scheduleDate).to.equal(951868800000); //01 Mar 2000
+            expect(schedule.data.scheduleDateTime).to.be.instanceOf(moment);
+            expect(schedule.data.scheduleDateTime.unix()).to.equal(951874200); //01 Mar 2000 1:30am
         });
     });
 
     describe('updateModal', function() {
         before(function() {
-            this.$cancelScheduleBtn.click();
+            $cancelScheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -253,7 +260,7 @@ describe('Schedule', function () {
 
     describe('padInput', function() {
         before(function() {
-            this.$scheduleBtn.click();
+            $scheduleBtn.click();
         });
         after(function() {
             $('#schedule-modal').modal('hide');
@@ -284,7 +291,7 @@ describe('Schedule', function () {
 
     describe('validateForm', function() {
         before(function() {
-            this.$scheduleBtn.click();
+            $scheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
@@ -320,7 +327,7 @@ describe('Schedule', function () {
 
     describe('checkScheduledTimeValid', function() {
         before(function() {
-            this.$scheduleBtn.click();
+            $scheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
         });
         after(function() {
@@ -383,7 +390,7 @@ describe('Schedule', function () {
             $('#schedule-modal').modal('hide');
         });
         it('If action type schedule', function() {
-            this.$scheduleBtn.click();
+            $scheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: "32508783000" }};
             var $scheduleField = $('#schedule-modal .schedule-field');
@@ -396,12 +403,12 @@ describe('Schedule', function () {
             this.picker.set('select', [3000, 2, 1]);
             $scheduleField.trigger('change');
             schedule.performSchedule();
-            expect(schedule.schedule.scheduleData).to.eql(result);
-            expect(schedule.schedule.scheduleActionType).to.eql('schedule');
+            expect(schedule.data.scheduleData).to.eql(result);
+            expect(schedule.data.scheduleActionType).to.eql('schedule');
         });
         it('If action type re-schedule', function() {
-            this.$reScheduleBtn.click();
-            this.picker = $('.datepicker').pickadate( 'picker' );
+            $reScheduleBtn.click();
+            picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: "32508783000" }};
             var $scheduleField = $('#schedule-modal .schedule-field');
             var $hour = $('#schedule-modal .hourpicker');
@@ -410,15 +417,15 @@ describe('Schedule', function () {
             $hour.val('01');
             $min.val('30');
             $ampm.val('am');
-            this.picker.set('select', [3000, 2, 1]);
+            picker.set('select', [3000, 2, 1]);
             $scheduleField.trigger('change');
             schedule.performSchedule();
-            expect(schedule.schedule.scheduleData).to.eql(result);
-            expect(schedule.schedule.scheduleActionType).to.eql('schedule-amend');
+            expect(schedule.data.scheduleData).to.eql(result);
+            expect(schedule.data.scheduleActionType).to.eql('schedule-amend');
         });
 
         it('If action type future schedule', function() {
-            this.$futureScheduleBtn.click();
+            $futureScheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: "32508783000" }};
             var $scheduleField = $('#schedule-modal .schedule-field');
@@ -431,46 +438,46 @@ describe('Schedule', function () {
             this.picker.set('select', [3000, 2, 1]);
             $scheduleField.trigger('change');
             schedule.performSchedule();
-            expect(schedule.schedule.scheduleData).to.eql(result);
-            expect(schedule.schedule.scheduleActionType).to.eql('future-schedule');
+            expect(schedule.data.scheduleData).to.eql(result);
+            expect(schedule.data.scheduleActionType).to.eql('future-schedule');
         });
         it('If action type cancel', function() {
-            this.$cancelScheduleBtn.click();
+            $cancelScheduleBtn.click();
             this.picker = $('.datepicker').pickadate( 'picker' );
             var result  = {article: {'article-identifier': "10856", scheduled: false }};
             schedule.performSchedule();
-            expect(schedule.schedule.scheduleData).to.eql(result);
-            expect(schedule.schedule.scheduleActionType).to.eql('schedule-cancel');
+            expect(schedule.data.scheduleData).to.eql(result);
+            expect(schedule.data.scheduleActionType).to.eql('schedule-cancel');
         });
     });
 
     describe('scheduleArticlePublicationSuccess', function(){
         after(function(){
             schedule.resetParameters();
-            schedule.schedule.isScheduling = false;
-            schedule.schedule.isAllScheduled = false;
+            schedule.data.isScheduling = false;
+            schedule.data.isAllScheduled = false;
             $('#schedule-modal').modal('hide');
         });
         it('scheduleArticlePublicationSuccess', function(){
             var data = {result: "success"};
-            schedule.scheduleArticlePublicationSuccess(data);
+            schedule.dataArticlePublicationSuccess(data);
             expect($('#schedule-modal #schedule-close').text()).to.eql('Close');
-            expect(schedule.schedule.isScheduling).to.be.false;
-            expect(schedule.schedule.isAllScheduled).to.be.true;
+            expect(schedule.data.isScheduling).to.be.false;
+            expect(schedule.data.isAllScheduled).to.be.true;
         });
         it('Should display schedule success alert', function () {
-            schedule.schedule.scheduleActionType = 'schedule';
+            schedule.data.scheduleActionType = 'schedule';
             var data = {result: "success"};
-            schedule.scheduleArticlePublicationSuccess(data);
+            schedule.dataArticlePublicationSuccess(data);
             var alertBox = document.querySelector('#success-message');
             var messageResult = 'Your article has been successfully scheduled.';
             var alertMessage = alertBox.querySelector('.message');
             expect(alertMessage.innerHTML).to.eql(messageResult);
         });
         it('Should display schedule cancellation success alert', function () {
-            schedule.schedule.scheduleActionType = 'schedule-cancel';
+            schedule.data.scheduleActionType = 'schedule-cancel';
             var data = {result: "success"};
-            schedule.scheduleArticlePublicationSuccess(data);
+            schedule.dataArticlePublicationSuccess(data);
             var alertBox = document.querySelector('#success-message');
             var messageResult = 'This article has been unscheduled.';
             var alertMessage = alertBox.querySelector('.message');
@@ -488,7 +495,7 @@ describe('Schedule', function () {
                     "detail": "I'm afraid I can't do that Dave",
                 }
             };
-            schedule.scheduleArticlePublicationError(data);
+            schedule.dataArticlePublicationError(data);
             var alertBox = document.querySelector('#error-message.scheduleArticlePublicationError');
             var statusResult = 'Error Occurred(API Error)';
             var messageResult = 'I\'m afraid I can\'t do that Dave';
@@ -510,7 +517,7 @@ describe('Schedule', function () {
         });
         it('On the scheduled page and there is a scheduled date (ie not cancellation) and calendar view is active and the scheduled datetime is not on the calendar  - reload', function() {
             this.timeout(15000);
-            schedule.schedule.scheduleDateTime = 951874200; // Wed, 01 Mar 2000 01:30:00 GMT
+            schedule.data.scheduleDateTime = 951874200; // Wed, 01 Mar 2000 01:30:00 GMT
             $('.scheduled-page').addClass('calendar-view');
 
             $('body').append('<div id="schedule-calendar"></div>');
@@ -548,13 +555,13 @@ describe('Schedule', function () {
         });
         it('Reload page if not on scheduled page', function() {
             document.getElementsByTagName('body')[0].classList.remove('scheduled-page');
-            schedule.scheduleArticlePublicationSuccess();
+            schedule.dataArticlePublicationSuccess();
             schedule.refreshPage();
             expect(resetParametersSpy.called).to.be.true;
         });
         it('Reload page if not on scheduled page and not scheduling and all scheduled', function() {
             document.getElementsByTagName('body')[0].classList.remove('scheduled-page');
-            schedule.scheduleArticlePublicationSuccess();
+            schedule.dataArticlePublicationSuccess();
             schedule.refreshPage();
             expect(resetParametersSpy.called).to.be.true;
             expect(reloadPageStub.called).to.be.true;

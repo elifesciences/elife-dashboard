@@ -28,27 +28,27 @@ module.exports = function (config) {
 
     // Variables
     {
-        var schedule = {};
-        schedule.articleId = null;
-        schedule.articleScheduled = null;
-        schedule.scheduleData = {};
-        schedule.scheduleDate = null;
-        schedule.scheduleTime = null;
-        schedule.scheduleDateTime = null;
-        schedule.scheduleActionType = null;
-        schedule.isScheduling = false;
-        schedule.isAllScheduled = false;
+        var data = {};
+        data.articleId = null;
+        data.articleScheduled = null;
+        data.scheduleData = {};
+        data.scheduleDate = null;
+        data.scheduleTime = null;
+        data.scheduleDateTime = null;
+        data.scheduleActionType = null;
+        data.isScheduling = false;
+        data.isAllScheduled = false;
     }
 
     {
         // Templates
-        schedule.template = {};
-        schedule.template.scheduleModal = template['schedule/article-schedule-modal'];
-        schedule.template.modalBody = template['schedule/article-schedule-modal-body'];
-        schedule.template.modalFooter = template['schedule/article-schedule-modal-footer'];
-        schedule.template.modalStatus = template['schedule/article-schedule-modal-status'];
-        schedule.template.errorMessage = template['error-message'];
-        schedule.template.errorDetail = template['error-detail'];
+        data.template = {};
+        data.template.scheduleModal = template['schedule/article-schedule-modal'];
+        data.template.modalBody = template['schedule/article-schedule-modal-body'];
+        data.template.modalFooter = template['schedule/article-schedule-modal-footer'];
+        data.template.modalStatus = template['schedule/article-schedule-modal-status'];
+        data.template.errorMessage = template['error-message'];
+        data.template.errorDetail = template['error-detail'];
     }
 
     //
@@ -58,7 +58,7 @@ module.exports = function (config) {
      */
     function init() {
         bindEvents();
-        $('body').append(schedule.template.scheduleModal());
+        $('body').append(data.template.scheduleModal());
     }
 
     /**
@@ -85,11 +85,11 @@ module.exports = function (config) {
         var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
 
         function datePickerOnStart() {
-            var day = moment.unix(schedule.articleScheduled).format('DD');
-            var month = moment.unix(schedule.articleScheduled).format('MM');
-            var year = moment.unix(schedule.articleScheduled).format('YYYY');
+            var day = moment.unix(data.articleScheduled).format('DD');
+            var month = moment.unix(data.articleScheduled).format('MM');
+            var year = moment.unix(data.articleScheduled).format('YYYY');
             month--; //only month for dates are zero indexed
-            if (schedule.articleScheduled) {
+            if (data.articleScheduled) {
                 this.set('select', new Date(year, month, day));
             }
         }
@@ -101,7 +101,7 @@ module.exports = function (config) {
             }
 
             selectedDate = parseInt(selectedDate);
-            schedule.scheduleDate = selectedDate;
+            data.scheduleDate = selectedDate;
             validateForm();
         }
 
@@ -113,10 +113,10 @@ module.exports = function (config) {
         });
 
         // if we're rescheduling we will have an existing time date
-        if (schedule.articleScheduled) {
-            var hour = moment.unix(schedule.articleScheduled).format('hh');
-            var minute = moment.unix(schedule.articleScheduled).format('mm');
-            var ampm = moment.unix(schedule.articleScheduled).format('a');
+        if (data.articleScheduled) {
+            var hour = moment.unix(data.articleScheduled).format('hh');
+            var minute = moment.unix(data.articleScheduled).format('mm');
+            var ampm = moment.unix(data.articleScheduled).format('a');
             $('#schedule_hour_submit', '#schedule-modal').val(hour);
             $('#schedule_minute_submit', '#schedule-modal').val(minute);
             $('#schedule_ampm_submit', '#schedule-modal').val(ampm);
@@ -187,8 +187,8 @@ module.exports = function (config) {
             return false;
         }
         else {
-            // log.info('current time is after the selected date ' + moment().isAfter(schedule.scheduleDateTime));
-            if (moment().isAfter(schedule.scheduleDateTime)) {
+            // log.info('current time is after the selected date ' + moment().isAfter(data.scheduleDateTime));
+            if (moment().isAfter(data.scheduleDateTime)) {
                 // selected time is before now
                 return false
             }
@@ -203,13 +203,13 @@ module.exports = function (config) {
         var hours = $('input[name="schedule_hour_submit"]').val();
         var minutes = $('input[name="schedule_minute_submit"]').val();
         if (!_.isEmpty(hours) && !_.isEmpty(minutes)) {
-            schedule.scheduleTime = $('input[name="schedule_hour_submit"]').val() + ':' + $('input[name="schedule_minute_submit"]').val() + ' ' + $('select[name="schedule_ampm_submit"] option:selected').val();
+            data.scheduleTime = $('input[name="schedule_hour_submit"]').val() + ':' + $('input[name="schedule_minute_submit"]').val() + ' ' + $('select[name="schedule_ampm_submit"] option:selected').val();
         }
 
-        if (!_.isNull(schedule.scheduleDate) && !_.isNull(schedule.scheduleTime)) {
-            var date = moment(schedule.scheduleDate).format('DD-MM-YYYY');
-            var datetime = date + ' ' + schedule.scheduleTime;
-            schedule.scheduleDateTime = moment(datetime, 'DD-MM-YYYY hh:mm a');
+        if (!_.isNull(data.scheduleDate) && !_.isNull(data.scheduleTime)) {
+            var date = moment(data.scheduleDate).format('DD-MM-YYYY');
+            var datetime = date + ' ' + data.scheduleTime;
+            data.scheduleDateTime = moment(datetime, 'DD-MM-YYYY hh:mm a');
         }
 
     }
@@ -222,23 +222,23 @@ module.exports = function (config) {
         setModalTitle($(e.currentTarget));
         var articleId = ($(e.currentTarget).attr('data-article-id')) ? $(e.currentTarget).attr('data-article-id') : false;
         var articleScheduled = ($(e.currentTarget).attr('data-scheduled')) ? $(e.currentTarget).attr('data-scheduled') : false;
-        schedule.articleId = articleId;
-        schedule.articleScheduled = articleScheduled;
-        schedule.scheduleActionType = $(e.currentTarget).attr('data-action-type');
+        data.articleId = articleId;
+        data.articleScheduled = articleScheduled;
+        data.scheduleActionType = $(e.currentTarget).attr('data-action-type');
 
         var data = {actionType: 'schedule', includeArticleId: false};
-        if (schedule.scheduleActionType === 'schedule-cancel') {
+        if (data.scheduleActionType === 'schedule-cancel') {
             data.actionType = 'cancel';
-        } else if (schedule.scheduleActionType === 'schedule-amend' || schedule.scheduleActionType === 'schedule' || schedule.scheduleActionType === 'future-schedule') {
+        } else if (data.scheduleActionType === 'schedule-amend' || data.scheduleActionType === 'schedule' || data.scheduleActionType === 'future-schedule') {
             data.actionType = 'schedule';
         }
 
-        if (schedule.scheduleActionType === 'future-schedule') {
+        if (data.scheduleActionType === 'future-schedule') {
             data.showArticleIdField = true;
         }
 
-        $('#schedule-modal .modal-body').html(schedule.template.modalBody(data));
-        $('#schedule-modal .modal-footer').html(schedule.template.modalFooter(data));
+        $('#schedule-modal .modal-body').html(data.template.modalBody(data));
+        $('#schedule-modal .modal-footer').html(data.template.modalFooter(data));
 
     }
 
@@ -247,7 +247,7 @@ module.exports = function (config) {
      * @param e
      */
     function updateModal(e) {
-        var articleDoi = $('.schedule-cancel-btn[data-article-id="' + schedule.articleId + '"]').attr('data-article-doi');
+        var articleDoi = $('.schedule-cancel-btn[data-article-id="' + data.articleId + '"]').attr('data-article-doi');
         $('.article-cancel-info', '#schedule-modal').html(articleDoi);
         validateForm();
     }
@@ -267,10 +267,10 @@ module.exports = function (config) {
      * reset parameters on modal close
      */
     function resetParameters() {
-        schedule.scheduleData = {};
-        schedule.scheduleDate = null;
-        schedule.scheduleTime = null;
-        schedule.scheduleDateTime = null;
+        data.scheduleData = {};
+        data.scheduleDate = null;
+        data.scheduleTime = null;
+        data.scheduleDateTime = null;
     }
 
     /**
@@ -302,42 +302,42 @@ module.exports = function (config) {
     function scheduleArticlePublicationSuccess(data) {
         log.info('Success: ' + config.api.schedule_article_publication);
         log.info(data);
-        log.info(schedule.scheduleData);
-        $('#schedule-modal .modal-body').html(schedule.template.modalStatus({
+        log.info(data.scheduleData);
+        $('#schedule-modal .modal-body').html(data.template.modalStatus({
             response: data,
-            actionType: schedule.scheduleActionType
+            actionType: data.scheduleActionType
         }));
         $('#schedule-close', '#schedule-modal').text('Close');
-        schedule.isScheduling = false;
-        schedule.isAllScheduled = true;
+        data.isScheduling = false;
+        data.isAllScheduled = true;
     }
 
     /**
      * Error callback for publishing an article
      * @param data
      */
-    function scheduleArticlePublicationError(data) {
+    function scheduleArticlePublicationError(returnedData) {
         log.error(config.errors.en.type.api + ': ' + config.api.schedule_article_publication);
-        log.info(schedule.scheduleData);
-        log.info(data);
+        log.info(data.scheduleData);
+        log.info(returnedData);
 
-        var errorInfo = utils.formatErrorInformation(data);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'scheduleArticlePublicationError';
         errorInfo.type = config.errors.en.type.api;
-        $('.modal-body', '#schedule-modal').empty().html(schedule.template.errorMessage(errorInfo));
-        $('.modal-body', '#schedule-modal').append(schedule.template.errorDetail(errorInfo));
+        $('.modal-body', '#schedule-modal').empty().html(data.template.errorMessage(errorInfo));
+        $('.modal-body', '#schedule-modal').append(data.template.errorDetail(errorInfo));
 
         $('#schedule-close', '#schedule-modal').text('Close');
-        schedule.isScheduling = false;
-        schedule.isAllScheduled = true;
+        data.isScheduling = false;
+        data.isAllScheduled = true;
     }
 
     /**
      * Schedule the article using the service
      */
     function performSchedule() {
-        if (schedule.scheduleActionType !== 'schedule-cancel') {
+        if (data.scheduleActionType !== 'schedule-cancel') {
             var formValid = validateForm();
         } else {
             var formValid = true;
@@ -345,26 +345,26 @@ module.exports = function (config) {
 
         if (formValid) {
             config.isScheduling = true;
-            if (schedule.scheduleActionType === 'future-schedule') {
-                schedule.articleId = $('#schedule-id', '#schedule-modal').val();
+            if (data.scheduleActionType === 'future-schedule') {
+                data.articleId = $('#schedule-id', '#schedule-modal').val();
             }
 
-            if (schedule.scheduleActionType !== 'schedule-cancel') {
-                schedule.scheduleData = {
+            if (data.scheduleActionType !== 'schedule-cancel') {
+                data.scheduleData = {
                     article: {
-                        'article-identifier': schedule.articleId,
-                        scheduled: moment(schedule.scheduleDateTime).format('X')
+                        'article-identifier': data.articleId,
+                        scheduled: moment(data.scheduleDateTime).format('X')
                     },
                 };
             } else {
-                schedule.scheduleData = {article: {'article-identifier': schedule.articleId, scheduled: false}};
+                data.scheduleData = {article: {'article-identifier': data.articleId, scheduled: false}};
             }
 
 
-            // log.info(schedule.scheduleData);
+            // log.info(data.scheduleData);
             $('#schedule-modal #schedule-action').hide();
             $('#schedule-modal #schedule-cancel-btn').hide();
-            scheduleArticlePublication(schedule.scheduleData, scheduleArticlePublicationSuccess, scheduleArticlePublicationError);
+            scheduleArticlePublication(data.scheduleData, scheduleArticlePublicationSuccess, scheduleArticlePublicationError);
         }
 
     }
@@ -377,13 +377,13 @@ module.exports = function (config) {
         // we're on the scheduled page and there is a scheduled date (ie not cancellation)
         // and calendar view is active and the scheduledDateTime is not on the calendar
         // force calendar to go to the new scheduled date
-        if ($('.scheduled-page').length > 0 && schedule.scheduleDateTime && $('.scheduled-page').hasClass('calendar-view') &&  !(moment(schedule.scheduleDateTime).isAfter($('#schedule-calendar').fullCalendar('getView').start) && moment(schedule.scheduleDateTime).isBefore($('#schedule-calendar').fullCalendar('getView').end))) {
+        if ($('.scheduled-page').length > 0 && data.scheduleDateTime && $('.scheduled-page').hasClass('calendar-view') &&  !(moment(data.scheduleDateTime).isAfter($('#schedule-calendar').fullCalendar('getView').start) && moment(data.scheduleDateTime).isBefore($('#schedule-calendar').fullCalendar('getView').end))) {
             $('#schedule-calendar').fullCalendar('render'); // render then go to the date incase its in the current month
-            $('#schedule-calendar').fullCalendar('gotoDate', schedule.scheduleDateTime);
+            $('#schedule-calendar').fullCalendar('gotoDate', data.scheduleDateTime);
         } else {
-            sch.resetParameters();
-            if (schedule.isScheduling === false && schedule.isAllScheduled === true) {
-                sch.reloadPage();
+            schedule.resetParameters();
+            if (data.isScheduling === false && data.isAllScheduled === true) {
+                schedule.reloadPage();
             }
         }
     }
@@ -430,7 +430,7 @@ module.exports = function (config) {
         }
     }
 
-    var sch =  {
+    var schedule =  {
         init: init,
         performSchedule: performSchedule,
         setParameters: setParameters,
@@ -438,7 +438,7 @@ module.exports = function (config) {
         refreshPage: refreshPage,
         reloadPage: reloadPage,
         updateModal: updateModal,
-        schedule: schedule,
+        data: data,
         resetParameters: resetParameters,
         validateForm: validateForm,
         checkScheduledTimeValid: checkScheduledTimeValid,
@@ -447,6 +447,6 @@ module.exports = function (config) {
         scheduleArticlePublicationError: scheduleArticlePublicationError
     };
 
-    return sch;
+    return schedule;
 
 };

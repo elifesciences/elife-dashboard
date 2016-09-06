@@ -1,6 +1,6 @@
 module.exports = function config(options) {
     var _ = require('underscore');
-    var hasOpts = (typeof options != 'undefined') ? true : false;
+    var hasOpts = (!!options) ? true : false;
     var config = {};
 
     //
@@ -62,6 +62,5 @@ module.exports = function config(options) {
     };
 
     // end errors
-
     return config;
 };

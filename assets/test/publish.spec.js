@@ -32,7 +32,7 @@ describe('Publication', function () {
     });
 
     it('publish should exist', function () {
-        expect(publish).to.be.a('object');
+        expect(publish).to.be.an('object');
     });
 
     describe('initModal()', function () {
@@ -57,10 +57,10 @@ describe('Publication', function () {
                 doi: '10.7554/eLife.10856'
             }];
             publish.populateQueue(this.$publishNowBtn, true);
-            expect(publish.publish.queued).to.eql(result)
+            expect(publish.data.queued).to.eql(result)
         });
         it('Should add an object to the queue if its not already in there', function () {
-            publish.publish.queued = [{id: '12345', version: '1', run: '6789'}];
+            publish.data.queued = [{id: '12345', version: '1', run: '6789'}];
             var result = [{id: '12345', version: '1', run: '6789'}, {
                 id: '10856',
                 version: '2',
@@ -68,10 +68,10 @@ describe('Publication', function () {
                 doi: '10.7554/eLife.10856'
             }];
             publish.populateQueue(this.$publishNowBtn);
-            expect(publish.publish.queued).to.eql(result)
+            expect(publish.data.queued).to.eql(result)
         });
         it('Should remove an object from the queue if its in there', function () {
-            publish.publish.queued = [{
+            publish.data.queued = [{
                 id: '10856',
                 version: '2',
                 run: '6805bed5-3416-4cba-9960-d897a64c9320',
@@ -79,7 +79,7 @@ describe('Publication', function () {
             }];
             var result = [];
             publish.populateQueue(this.$publishNowBtn);
-            expect(publish.publish.queued).to.eql(result)
+            expect(publish.data.queued).to.eql(result)
         });
 
     });
@@ -100,11 +100,11 @@ describe('Publication', function () {
             publish.updatePublishModal();
             var publishActionClasses = document.getElementById('publish-action').className;
             expect(/disabled/.test(publishActionClasses)).to.be.true;
-            expect(publish.publish.isPublishing).to.be.true;
+            expect(publish.data.isPublishing).to.be.true;
 
         });
         after(function () {
-            publish.publish.isPublishing = false;
+            publish.data.isPublishing = false;
         });
     });
 
@@ -196,24 +196,24 @@ describe('Publication', function () {
             resetModalButtonsSpy = sinon.spy(publish, "resetModalButtons");
         });
         it('If no publish action occurred - reset the modal buttons', function () {
-            publish.publish.isPublishing = false;
-            publish.publish.isAllPublished = false;
+            publish.data.isPublishing = false;
+            publish.data.isAllPublished = false;
             publish.refreshPage();
             expect(resetModalButtonsSpy.calledOnce).to.be.true;
         });
         it('If publish action occurred - if ispublishing true - reload page', function () {
-            publish.publish.isPublishing = true;
+            publish.data.isPublishing = true;
             publish.refreshPage();
             expect(reloadPageStub.called).to.be.true;
         });
         it('If publish action occurred - if isallpublished true - reload page', function () {
-            publish.publish.isAllPublished = true;
+            publish.data.isAllPublished = true;
             publish.refreshPage();
             expect(reloadPageStub.called).to.be.true;
         });
         afterEach(function () {
-            publish.publish.isPublishing = false;
-            publish.publish.isAllPublished = false;
+            publish.data.isPublishing = false;
+            publish.data.isAllPublished = false;
             reloadPageStub.restore();
             resetModalButtonsSpy.restore();
         });
@@ -237,10 +237,10 @@ describe('Publication', function () {
             expect(articleQueue.innerHTML).to.be.empty;
         });
         it('If no publish action is taken it should empty publish.queued', function () {
-            expect(publish.publish.queued).to.be.empty;
+            expect(publish.data.queued).to.be.empty;
         });
         afterEach(function () {
-            publish.publish.isPublishing = false;
+            publish.data.isPublishing = false;
         });
     });
 
@@ -276,10 +276,10 @@ describe('Publication', function () {
             expect(alertMessage.innerHTML).to.equal(result);
         });
         it('Should set is publishing to false', function () {
-            expect(publish.publish.isPublishing).to.be.false;
+            expect(publish.data.isPublishing).to.be.false;
         });
         afterEach(function () {
-            publish.publish.isPublishing = false;
+            publish.data.isPublishing = false;
         });
     });
 
@@ -321,7 +321,7 @@ describe('Publication', function () {
                     expect(pollQueueSpy.calledOnce).to.be.true;
                     expect(pollQueueSpy.args[0]).to.eql(pollQueueArgs);
                 });
-            }, publish.publish.publishInterval + 200);
+            }, publish.data.publishInterval + 200);
         });
         it('Should call finishPublishing if all errors', function () {
             publish.checkingStatusSuccess({
@@ -350,7 +350,7 @@ describe('Publication', function () {
             expect(finishPublishingSpy.calledOnce).to.be.true;
         });
         it('Should call finishPublishing and display error if max polls reached', function () {
-            publish.publish.queuePolled = publish.publish.pollLimit;
+            publish.data.queuePolled = publish.data.pollLimit;
             publish.checkingStatusSuccess({
                 "articles": [{
                     "doi": "10.7554/elife.005583",
@@ -372,15 +372,15 @@ describe('Publication', function () {
         afterEach(function () {
             finishPublishingSpy.restore();
             pollQueueSpy.restore();
-            publish.publish.queuePolled = 0;
+            publish.data.queuePolled = 0;
         });
     });
 
     describe('finishPublishing()', function () {
         it('Should set status variables', function () {
             publish.finishPublishing();
-            expect(publish.publish.isPublishing).to.be.false;
-            expect(publish.publish.isAllPublished).to.be.true;
+            expect(publish.data.isPublishing).to.be.false;
+            expect(publish.data.isAllPublished).to.be.true;
         });
         it('Should display an error if data returned', function () {
             publish.finishPublishing({error: config.errors.en.maxPollsReached, info: 'max-polls'});
@@ -390,8 +390,8 @@ describe('Publication', function () {
             expect(alertMessage.innerHTML).to.equal(result);
         });
         afterEach(function () {
-            publish.publish.isPublishing = false;
-            publish.publish.isAllPublished = false;
+            publish.data.isPublishing = false;
+            publish.data.isAllPublished = false;
         });
     });
 
