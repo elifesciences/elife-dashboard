@@ -115,17 +115,14 @@ module.exports = function (grunt) {
                 }
             },
             test: {
-/*                files: [{
+                files: [{
                     expand: true,     // Enable dynamic expansion.
                     cwd: './assets/test/',      // Src matches are relative to this path.
                     src: ['*.spec.js'], // Actual pattern(s) to match.
                     dest: './assets/test/build/',   // Destination path prefix.
                     ext: '.spec.js',   // Dest filepaths will have this extension.
                     extDot: 'first'   // Extensions in filenames begin after the first dot
-                }],*/
-                files: {
-                    './assets/test/build/current.spec.js': ['./assets/test/current.spec.js']
-                },
+                }],
                 options: {
                     alias: browserifyAlias,
                     transform: ['browserify-shim'],
