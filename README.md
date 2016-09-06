@@ -56,16 +56,18 @@ deactivate
 (in project folder)
 (with active virtual environment as above)
 
+if you only need to run the test services:
 ```bash
 pip install -r service-test-requirements.txt
+
 ```
 
-or if you only need to run the test services:
+else
 
 ```bash
 pip install -r requirements.txt
 ```
-
+This will only succeed if postgres binaries are installed
 
 
 ### Running test services
@@ -78,7 +80,7 @@ python test_services.py
 
 The server will launch and a console message will provide the base URL, typically http://localhost:8008
 
-### Running Unit tests
+### Running Python Unit tests
 
 The dashboard unit tests depend on database access. The settings used in the tests will be in `settings_test.py`.
 
