@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function () {
 
     var _ = require('underscore');
     /**
@@ -123,7 +123,7 @@ module.exports = function (name) {
 
 
      /**
-      * Format articles - generate url
+      * Format articles add new url field
      * @param articles
      * @returns {*}
      */

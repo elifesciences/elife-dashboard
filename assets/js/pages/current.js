@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -14,7 +14,7 @@ module.exports = function (name) {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('./../../libs/swag.js');
             Swag.registerHelpers(Handlebars);
@@ -22,7 +22,6 @@ module.exports = function (name) {
 
         // App
         {
-            var config = require('./../config.js');
             var utils = require('./../helpers/utils.js');
             var log = require('loglevel');
             if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
@@ -217,4 +216,4 @@ module.exports = function (name) {
     }
 
 
-}();
+};

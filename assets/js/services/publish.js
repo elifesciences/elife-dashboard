@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -7,7 +7,6 @@ module.exports = function () {
     // Libs
     {
         var _ = require('underscore');
-        var config = require('./../config.js');
         var utils = require('./../helpers/utils.js');
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
@@ -126,10 +125,17 @@ module.exports = function () {
      */
     function refreshPage(e) {
         if (publish.isPublishing === true || publish.isAllPublished === true) {
-            window.location.reload(true);
+            pub.reloadPage();
         }
 
         pub.resetModalButtons();
+    }
+
+    /**
+     * Split out reload page for easier unit testing
+     */
+    function reloadPage() {
+        window.location.reload(true);
     }
 
     /**
@@ -314,6 +320,7 @@ module.exports = function () {
         displayQueueList: displayQueueList,
         resetModalButtons: resetModalButtons,
         refreshPage: refreshPage,
+        reloadPage: reloadPage,
         performPublish: performPublish,
         updatePublishModal: updatePublishModal,
         queueArticles: queueArticles,
@@ -330,4 +337,4 @@ module.exports = function () {
 
     return pub;
 
-}();
+};

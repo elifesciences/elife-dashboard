@@ -1,4 +1,4 @@
-module.exports = function (name) {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
@@ -9,9 +9,8 @@ module.exports = function (name) {
         var moment = require('moment');
         var _ = require('underscore');
         $.pickadate = require('./../../libs/pickadate/lib/index.js');
-        var config = require('./../config.js');
         var utils = require('./../helpers/utils.js');
-        var validate = require('./../helpers/validate.js');
+        var validate = require('./../helpers/validate.js')(config);
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
             log.setLevel(config.logLevel);
@@ -384,10 +383,18 @@ module.exports = function (name) {
         } else {
             sch.resetParameters();
             if (schedule.isScheduling === false && schedule.isAllScheduled === true) {
-                window.location.reload(true);
+                sch.reloadPage();
             }
         }
     }
+
+    /**
+     * Split out reload page for easier unit testing
+     */
+    function reloadPage() {
+        window.location.reload(true);
+    }
+
 
     /**
      * Zero Pad the value
@@ -429,6 +436,7 @@ module.exports = function (name) {
         setParameters: setParameters,
         initDateTime: initDateTime,
         refreshPage: refreshPage,
+        reloadPage: reloadPage,
         updateModal: updateModal,
         schedule: schedule,
         resetParameters: resetParameters,
@@ -441,4 +449,4 @@ module.exports = function (name) {
 
     return sch;
 
-}();
+};
