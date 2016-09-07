@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "browserify -t hbsfy assets/js/main.js -o dashboard/static/testjs/bundle.js",
-    "test": "mocha --ui bdd --reporter spec --recursive assets/test",
+    "test": "mocha --ui bdd --reporter spec --recursive assets/test/*.js",
     "start": "source venv/bin/activate && python runserver.py"
   },
   "devDependencies": {
