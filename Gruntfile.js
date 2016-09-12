@@ -135,6 +135,9 @@ module.exports = function (grunt) {
                     ext: '.spec.js',   // Dest filepaths will have this extension.
                     extDot: 'first'   // Extensions in filenames begin after the first dot
                 }],
+/*                files: {
+                    './assets/test/build/schedule.spec.js': ['./assets/test/schedule.spec.js']
+                },*/
                 options: {
                     alias: browserifyAlias,
                     transform: ['browserify-shim'],

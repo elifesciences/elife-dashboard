@@ -29,7 +29,7 @@ module.exports = function (config) {
     // Variables
     {
         var data = {};
-        // data.articleId = null;
+        data.articleId = null;
         data.articleScheduled = null;
         data.scheduleData = {};
         data.scheduleDate = null;
@@ -226,19 +226,19 @@ module.exports = function (config) {
         data.articleScheduled = articleScheduled;
         data.scheduleActionType = $(e.currentTarget).attr('data-action-type');
 
-        var actionData = {actionType: 'schedule', includeArticleId: false};
-        if (schedule.scheduleActionType === 'schedule-cancel') {
-            actionData.actionType = 'cancel';
-        } else if (schedule.scheduleActionType === 'schedule-amend' || schedule.scheduleActionType === 'schedule' || schedule.scheduleActionType === 'future-schedule') {
-            actionData.actionType = 'schedule';
+        var action = {actionType: 'schedule', includeArticleId: false};
+        if (data.scheduleActionType === 'schedule-cancel') {
+            action.actionType = 'cancel';
+        } else if (data.scheduleActionType === 'schedule-amend' || data.scheduleActionType === 'schedule' || data.scheduleActionType === 'future-schedule') {
+            action.actionType = 'schedule';
         }
 
-        if (schedule.scheduleActionType === 'future-schedule') {
-            actionData.showArticleIdField = true;
+        if (data.scheduleActionType === 'future-schedule') {
+            action.showArticleIdField = true;
         }
 
-        $('#schedule-modal .modal-body').html(data.template.modalBody(actionData));
-        $('#schedule-modal .modal-footer').html(data.template.modalFooter(actionData));
+        $('#schedule-modal .modal-body').html(data.template.modalBody(action));
+        $('#schedule-modal .modal-footer').html(data.template.modalFooter(action));
 
     }
 
@@ -286,26 +286,26 @@ module.exports = function (config) {
             contentType: 'application/json',
             url: config.api.schedule_article_publication,
             data: JSON.stringify(scheduleData),
-            success: function (data) {
-                successCallback(data);
+            success: function (ReturnedData) {
+                successCallback(ReturnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (ReturnedData) {
+                errorCallback(ReturnedData);
             }
         });
     }
 
     /**
      * Success callback for publishing article
-     * @param data
+     * @param ReturnedData
      */
-    function scheduleArticlePublicationSuccess(returnedData) {
+    function scheduleArticlePublicationSuccess(ReturnedData) {
         log.info('Success: ' + config.api.schedule_article_publication);
-        log.info(returnedData);
+        log.info(ReturnedData);
         log.info(data.scheduleData);
         $('#schedule-modal .modal-body').html(data.template.modalStatus({
-            response: returnedData,
-            actionType: schedule.scheduleActionType
+            response: ReturnedData,
+            actionType: data.scheduleActionType
         }));
         $('#schedule-close', '#schedule-modal').text('Close');
         data.isScheduling = false;
@@ -314,14 +314,14 @@ module.exports = function (config) {
 
     /**
      * Error callback for publishing an article
-     * @param data
+     * @param ReturnedData
      */
-    function scheduleArticlePublicationError(returnedData) {
+    function scheduleArticlePublicationError(ReturnedData) {
         log.error(config.errors.en.type.api + ': ' + config.api.schedule_article_publication);
         log.info(data.scheduleData);
-        log.info(returnedData);
+        log.info(ReturnedData);
 
-        var errorInfo = utils.formatErrorInformation(returnedData);
+        var errorInfo = utils.formatErrorInformation(ReturnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'scheduleArticlePublicationError';
         errorInfo.type = config.errors.en.type.api;
@@ -381,9 +381,9 @@ module.exports = function (config) {
             $('#schedule-calendar').fullCalendar('render'); // render then go to the date incase its in the current month
             $('#schedule-calendar').fullCalendar('gotoDate', data.scheduleDateTime);
         } else {
-            schedule.resetParameters();
+            sch.resetParameters();
             if (data.isScheduling === false && data.isAllScheduled === true) {
-                schedule.reloadPage();
+                sch.reloadPage();
             }
         }
     }
@@ -430,7 +430,7 @@ module.exports = function (config) {
         }
     }
 
-    var schedule =  {
+    var sch =  {
         init: init,
         performSchedule: performSchedule,
         setParameters: setParameters,
@@ -447,6 +447,6 @@ module.exports = function (config) {
         scheduleArticlePublicationError: scheduleArticlePublicationError
     };
 
-    return schedule;
+    return sch;
 
 };
