@@ -1,66 +1,65 @@
-module.exports = function (name) {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
     global.jQuery = $;
 
-    if ($('.detail-page').length > 0) {
-        // Libs
-        {
-            var _ = require('underscore');
-            var moment = require('moment');
-            require('history');
-            $.pickadate = require('pickadate');
-            var bootstrap = require('bootstrap-sass');
-        }
+    // Libs
+    {
+        var _ = require('underscore');
+        var moment = require('moment');
+        require('history');
+        $.pickadate = require('pickadate');
+        var bootstrap = require('bootstrap-sass');
+    }
 
-        // Templates
-        {
-            require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
-            var template = require('./../templates');
-            var Swag = require('swag');
-            Swag.registerHelpers(Handlebars);
-        }
+    // Templates
+    {
+        require('./../helpers/templates-helpers.js');
+        var Handlebars = require('handlebars');
+        var template = require('./../templates');
+        var Swag = require('./../../libs/swag.js');
+        Swag.registerHelpers(Handlebars);
+    }
 
-        // App
-        {
-            var config = require('config');
-            var utils = require('utils');
-            var publish = require('publish');
-            var log = require('loglevel');
-            if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
-        }
-
-        // Variables
-        {
-            var detail = {};
-            detail.article = [];
-            detail.errors = [];
-            detail.detailEvents = [];
-            detail.detailArticle = [];
-            detail.scheduleStatus = [];
-            detail.queryParams = {};
-            detail.extraUrl = 'patterns/04-pages-01-detail/04-pages-01-detail.html?/';
-        }
-
-        {
-            // Templates
-            detail.template = {};
-            detail.template.loadingTemplate = template['loading-template'];
-            detail.template.errorMessage = template['error-message'];
-            detail.template.errorDetail = template['error-detail'];
-            detail.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
-            detail.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
-            detail.template.buttonsPublishTemplate = template['detail/buttons-publish'];
-            detail.template.articlesScheduledForTemplate = template['detail/article-scheduled-for'];
-            detail.template.articleTemplate = template['detail/article'];
-
+    // App
+    {
+        var utils = require('utils');
+        var publish = require('publish')(config);
+        var log = require('loglevel');
+        if (!_.isNull(config.logLevel)) {
+            log.setLevel(config.logLevel);
         }
     }
 
-    //
+    // Variables
+    {
+        var data = {};
+        data.article = [];
+        data.errors = [];
+        data.detailEvents = [];
+        data.detailArticle = [];
+        data.scheduleStatus = [];
+        data.queryParams = {};
+        data.currUrl = {};
+        data.extraUrl = 'patterns/04-pages-01-detail/04-pages-01-detail.html?/';
+    }
 
+    {
+        // Templates
+        data.template = {};
+        data.template.loadingTemplate = template['loading-template'];
+        data.template.errorMessage = template['error-message'];
+        data.template.errorDetail = template['error-detail'];
+        data.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
+        data.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
+        data.template.buttonsPublishTemplate = template['detail/buttons-publish'];
+        data.template.articlesScheduledForTemplate = template['detail/article-scheduled-for'];
+        data.template.articleTemplate = template['detail/article'];
+
+    }
+
+    //
 
     /**
      * Initialise the methods for the Detail page
@@ -71,11 +70,22 @@ module.exports = function (name) {
             setArticleParams();
             getArticle();
             bindEvents();
+            publish.init();
         }
     }
 
     function renderLoader() {
-        $('#article').empty().html(detail.template.loadingTemplate());
+        $('#article').empty().html(data.template.loadingTemplate());
+    }
+
+    /**
+     * Get URL hash from History
+     * @returns {*}
+     */
+    function getUrlHash() {
+        var state = History.getState();
+        var hash = state.hash;
+        return hash;
     }
 
     /**
@@ -92,10 +102,9 @@ module.exports = function (name) {
         var versionNumber;
         var runId;
         var url;
-        var state = History.getState();
-        var hash = state.hash;
+        var hash = detail.getUrlHash();
         if (config.ISPP) {
-            hash = hash.replace(detail.extraUrl, '');
+            hash = hash.replace(data.extraUrl, '');
         }
 
         url = hash;
@@ -108,17 +117,26 @@ module.exports = function (name) {
         url = (url.slice(-1) === '/') ? url.slice(0, -1) : url;
 
         if (_.isNull(versionNumber) && _.isNull(runId)) {
-            url += '/' + detail.queryParams.versionNumber + '/' + detail.queryParams.runId;
+            url += '/' + data.queryParams.versionNumber + '/' + data.queryParams.runId;
         }
 
         if (!_.isNull(versionNumber) && _.isNull(runId)) {
-            url += '/' + detail.queryParams.runId;
+            url += '/' + data.queryParams.runId;
         }
 
         if (config.ISPP) {
-            url = '/' + detail.extraUrl.slice(0, -1) + url;
+            url = '/' + data.extraUrl.slice(0, -1) + url;
         }
 
+        data.currUrl = url;
+        detail.detailReplaceState(url);
+    }
+
+    /**
+     * Replace url
+     * @param url
+     */
+    function detailReplaceState(url) {
         History.replaceState(null, null, url);
         // History.pushState(null, null, url);
     }
@@ -134,12 +152,12 @@ module.exports = function (name) {
     }
 
     /**
-     * On back/forwards update the article
+     * On back/forwards/page url change update the article
      * @param e
      */
     function stateChange(e) {
-        setArticleParams();
-        getArticle();
+        detail.setArticleParams();
+        detail.getArticle();
     }
 
     /**
@@ -149,51 +167,81 @@ module.exports = function (name) {
         e.preventDefault();
         var version = $(e.currentTarget).attr('data-version');
         var run = $(e.currentTarget).attr('data-run');
-        var url = '/article/' + detail.queryParams.articleId + '/' + version + '/' + run;
+        var url = '/article/' + data.queryParams.articleId + '/' + version + '/' + run;
 
         if (config.ISPP) {
-            url = '/' + detail.extraUrl.slice(0, -1) + url;
+            url = '/' + data.extraUrl.slice(0, -1) + url;
         }
 
+        data.currUrl = url;
+        detail.detailPushState(url);
+
+    }
+
+    /**
+     * Update history with new url
+     * @param url
+     */
+    function detailPushState(url) {
         // Create a new history item.
         history.pushState(null, null, url);
+    }
+
+    /**
+     * Detail Actions Success
+     * @param data
+     */
+    function getDetailActionsSuccess(returnedData) {
+        if (returnedData.articles.length === 1) {
+            data.scheduleStatus = returnedData.articles[0];
+            detail.renderDetailActions();
+        }
+    }
+
+    /**
+     * Detail Actions Error
+     * @param data
+     */
+    function getDetailActionsError(returnedData) {
+        log.error(config.errors.en.type.api + ': ' + config.api.current);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
+        errorInfo.errorType = null;
+        errorInfo.ref = 'getDetailActionsError';
+        errorInfo.type = config.errors.en.type.api;
+        $('#article').prepend(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
+    }
+
+    /**
+     * Fetch Detail Actions
+     * @param successCallback
+     * @param errorCallback
+     * @returns {*}
+     */
+    function fetchDetailActions(successCallback, errorCallback) {
+        var articleIds = [];
+        articleIds.push(data.queryParams.articleId);
+        return $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: config.api.article_scheduled_status,
+            data: JSON.stringify({articles: articleIds}),
+            success: function (returnedData) {
+                successCallback(returnedData);
+            },
+            error: function (returnedData) {
+                errorCallback(returnedData);
+            }
+        });
     }
 
     /**
      * Determine which action buttons to show for this page
      */
     function getDetailActions() {
-        if (!_.isNull(detail.queryParams.articleId)) {
-            var articleIds = [];
-            articleIds.push(detail.queryParams.articleId);
-
-            var getDetailActionsSuccess = function getDetailActionsSuccess(data) {
-                if (data.articles.length === 1) {
-                    detail.scheduleStatus = data.articles[0];
-                    renderDetailActions();
-                }
-            }
-
-            var getDetailActionsError = function getDetailActionsError(data) {
-                log.error(config.errors.en.type.api + ': ' + config.api.current);
-                log.info(data);
-
-                var errorInfo = utils.formatErrorInformation(data);
-                errorInfo.errorType = null;
-                errorInfo.ref = 'getDetailActionsError';
-                errorInfo.type = config.errors.en.type.api;
-                $('#article').prepend(detail.template.errorMessage(errorInfo));
-                $('#error-console').empty().html(detail.template.errorDetail(errorInfo));
-            }
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: config.api.article_scheduled_status,
-                data: JSON.stringify({articles: articleIds}),
-                success: getDetailActionsSuccess,
-                error: getDetailActionsError,
-            });
+        if (!_.isNull(data.queryParams.articleId)) {
+            detail.fetchDetailActions(getDetailActionsSuccess, getDetailActionsError);
         }
     }
 
@@ -201,70 +249,93 @@ module.exports = function (name) {
      * Determine which action buttons to show for this page
      */
     function renderDetailActions() {
-        if (!_.isEmpty(detail.scheduleStatus)) {
-            if (detail.scheduleStatus.scheduled > 0) {
-                $('.article-detail-actions', '#article').empty().html(detail.template.buttonsReScheduleTemplate({
-                    article: detail.article,
-                    currentArticle: detail.currentArticle,
-                    "scheduled-publication-date": detail.scheduleStatus.scheduled
+        if (!_.isEmpty(data.scheduleStatus)) {
+            if (data.scheduleStatus.scheduled > 0) {
+                $('.article-detail-actions', '#article').empty().html(data.template.buttonsReScheduleTemplate({
+                    article: data.article,
+                    currentArticle: data.currentArticle,
+                    "scheduled-publication-date": data.scheduleStatus.scheduled
                 }));
-                $('.article-detail-scheduled', '#article').empty().html(detail.template.articlesScheduledForTemplate({scheduleStatus: detail.scheduleStatus}));
+                $('.article-detail-scheduled', '#article').empty().html(data.template.articlesScheduledForTemplate({scheduleStatus: data.scheduleStatus}));
             } else {
-                var buttons = detail.template.buttonsScheduleTemplate({article: detail.article}) + detail.template.buttonsPublishTemplate({
-                        article: detail.article,
-                        currentArticle: detail.currentArticle,
-                        currentEvents: detail.currentEvents,
-                        currentVersion: detail.queryParams.versionNumber,
-                        currentRun: detail.queryParams.runId,
-                        scheduleStatus: detail.scheduleStatus,
+                var buttons = data.template.buttonsScheduleTemplate({article: data.article}) + data.template.buttonsPublishTemplate({
+                        article: data.article,
+                        currentArticle: data.currentArticle,
+                        currentEvents: data.currentEvents,
+                        currentVersion: data.queryParams.versionNumber,
+                        currentRun: data.queryParams.runId,
+                        scheduleStatus: data.scheduleStatus,
                     });
                 $('.article-detail-actions', '#article').empty().html(buttons);
             }
         } else {
-            var buttons = detail.template.buttonsPublishTemplate({
-                article: detail.article,
-                currentArticle: detail.currentArticle,
-                currentEvents: detail.currentEvents,
-                currentVersion: detail.queryParams.versionNumber,
-                currentRun: detail.queryParams.runId,
+            var buttons = data.template.buttonsPublishTemplate({
+                article: data.article,
+                currentArticle: data.currentArticle,
+                currentEvents: data.currentEvents,
+                currentVersion: data.queryParams.versionNumber,
+                currentRun: data.queryParams.runId,
             });
             $('.article-detail-actions', '#article').empty().html(buttons);
         }
     }
 
     /**
+     * Fetch article information
+     *
+     * @param successCallback
+     * @param errorCallback
+     * @returns {*}
+     */
+    function fetchArticle(successCallback, errorCallback) {
+        return $.ajax({
+            url: config.api.article + '/' + data.queryParams.articleId,
+            cache: false,
+            dataType: 'json',
+            success: function (returnedData) {
+                successCallback(returnedData);
+            },
+            error: function (returnedData) {
+                errorCallback(returnedData);
+            }
+        });
+    }
+
+    /**
+     * Success callback for fetching article information
+     * @param data
+     */
+    function getArticleSuccess(returnedData) {
+        data.article = returnedData;
+        detail.setLatestArticle();
+        data.currentArticle = getCurrentArticle();
+        data.currentEvents = getCurrentRun();
+        detail.renderArticle();
+        detail.getDetailActions();
+    }
+
+    /**
+     * Error callback for fetching article information
+     *
+     * @param data
+     */
+    function getArticleError(returnedData) {
+        log.error(config.errors.en.type.api + ': ' + config.api.article + '/' + data.queryParams.articleId);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
+        errorInfo.errorType = null;
+        errorInfo.ref = 'getArticleError';
+        errorInfo.type = config.errors.en.type.api;
+        $('#article').empty().html(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
+    }
+
+    /**
      * Get article from param in url
      */
     function getArticle() {
-        if (!_.isNull(detail.queryParams.articleId)) {
-
-            var getArticleSuccess = function(data) {
-                detail.article = data;
-                setLatestArticle();
-                detail.currentArticle = getCurrentArticle();
-                detail.currentEvents = getCurrentRun();
-                renderArticle();
-                getDetailActions();
-            }
-            var getArticleError = function(data) {
-                log.error(config.errors.en.type.api + ': ' + config.api.article + '/' + detail.queryParams.articleId);
-                log.info(data);
-                var errorInfo = utils.formatErrorInformation(data);
-                errorInfo.errorType = null;
-                errorInfo.ref = 'getArticleError';
-                errorInfo.type = config.errors.en.type.api;
-                $('#article').empty().html(detail.template.errorMessage(errorInfo));
-                $('#error-console').empty().html(detail.template.errorDetail(errorInfo));
-            }
-
-            $.ajax({
-                url: config.api.article + '/' + detail.queryParams.articleId,
-                cache: false,
-                dataType: 'json',
-                success: getArticleSuccess,
-                error: getArticleError,
-
-            });
+        if (!_.isNull(data.queryParams.articleId)) {
+            detail.fetchArticle(getArticleSuccess, getArticleError);
         } else {
             // var errorInfo = utils.formatErrorInformation(data);
             var errorInfo = {};
@@ -273,7 +344,7 @@ module.exports = function (name) {
             errorInfo.statusText = config.errors.en.missingInformation;
             errorInfo.type = config.errors.en.type.application;
             errorInfo.message = config.errors.en.noArticleId;
-            $('#article').empty().html(detail.template.errorMessage(errorInfo));
+            $('#article').empty().html(data.template.errorMessage(errorInfo));
 
         }
     }
@@ -282,44 +353,44 @@ module.exports = function (name) {
      * Render article to template
      */
     function renderArticle() {
-        if (article && _.isEmpty(detail.errors)) {
-            $('#article').empty().html(detail.template.articleTemplate(
+        if (data.article && _.isEmpty(data.errors)) {
+            $('#article').empty().html(data.template.articleTemplate(
                 {
-                    article: detail.article,
-                    currentArticle: detail.currentArticle,
-                    currentEvents: detail.currentEvents,
-                    currentVersion: detail.queryParams.versionNumber,
-                    currentRun: detail.queryParams.runId,
-                    scheduleStatus: detail.scheduleStatus,
+                    article: data.article,
+                    currentArticle: data.currentArticle,
+                    currentEvents: data.currentEvents,
+                    currentVersion: data.queryParams.versionNumber,
+                    currentRun: data.queryParams.runId,
+                    scheduleStatus: data.scheduleStatus,
                 }));
 
-            renderDetailActions();
+            detail.renderDetailActions();
         } else {
-            var errorInfo = utils.formatErrorInformation(detail.errors);
+            var errorInfo = utils.formatErrorInformation(data.errors);
             errorInfo.errorType = null;
             errorInfo.ref = 'renderArticleError';
             errorInfo.type = config.errors.en.type.application;
-            $('#article').empty().html(detail.template.errorMessage(detail.errors));
+            $('#article').empty().html(data.template.errorMessage(data.errors));
         }
 
-        updatePageUrl();
+        detail.updatePageUrl();
     }
 
     /**
      * Set latest article
      */
     function setLatestArticle() {
-        if (!detail.queryParams.versionNumber) {
-            detail.queryParams.versionNumber = utils.findLastKey(detail.article.versions);
+        if (!data.queryParams.versionNumber) {
+            data.queryParams.versionNumber = utils.findLastKey(data.article.versions);
         }
 
-        if (!detail.queryParams.runId) {
-            if (_.has(detail.article.versions, detail.queryParams.versionNumber)) {
-                var lastKey = utils.findLastKey(detail.article.versions[detail.queryParams.versionNumber].runs);
-                var runId = detail.article.versions[detail.queryParams.versionNumber].runs[lastKey]['run-id'];
-                detail.queryParams.runId = runId;
+        if (!data.queryParams.runId) {
+            if (_.has(data.article.versions, data.queryParams.versionNumber)) {
+                var lastKey = utils.findLastKey(data.article.versions[data.queryParams.versionNumber].runs);
+                var runId = data.article.versions[data.queryParams.versionNumber].runs[lastKey]['run-id'];
+                data.queryParams.runId = runId;
             } else {
-                detail.queryParams.runId = null;
+                data.queryParams.runId = null;
             }
         }
 
@@ -330,13 +401,13 @@ module.exports = function (name) {
      * @returns {*}
      */
     function getCurrentArticle() {
-        if (_.has(detail.article.versions, detail.queryParams.versionNumber)) {
-            return detail.article.versions[detail.queryParams.versionNumber].details;
+        if (_.has(data.article.versions, data.queryParams.versionNumber)) {
+            return data.article.versions[data.queryParams.versionNumber].details;
         } else {
-            detail.errors = {
-                    status: config.errors.en.type.application,
-                    statusText: config.errors.en.incorrectInformation,
-                    message: config.errors.en.noVersions + ' (' + detail.queryParams.versionNumber + ')'
+            data.errors = {
+                status: config.errors.en.type.application,
+                statusText: config.errors.en.incorrectInformation,
+                message: config.errors.en.noVersions + ' (' + data.queryParams.versionNumber + ')'
             };
             return false;
         }
@@ -347,17 +418,15 @@ module.exports = function (name) {
      * @returns {*}
      */
     function getCurrentRun() {
-        if (_.has(detail.article.versions, detail.queryParams.versionNumber)) {
-            if (_.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId})) {
-                return _.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId});
-            } else {
-                detail.errors = {
-                        status: config.errors.en.type.application,
-                        statusText: config.errors.en.incorrectInformation,
-                        message: config.errors.en.noRuns + ' (' + detail.queryParams.runId + ')'
-                };
-                return false;
-            }
+        if (_.has(data.article.versions, data.queryParams.versionNumber) && _.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId})) {
+            return _.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId});
+        } else {
+            data.errors = {
+                status: config.errors.en.type.application,
+                statusText: config.errors.en.incorrectInformation,
+                message: config.errors.en.noRuns + ' (' + data.queryParams.runId + ')'
+            };
+            return false;
         }
     }
 
@@ -366,11 +435,11 @@ module.exports = function (name) {
      * @param e
      */
     function updateRun(e) {
-        detail.queryParams.versionNumber = $(e.currentTarget).attr('data-version');
-        detail.queryParams.runId = $(e.currentTarget).attr('data-run');
-        setCurrentArticle(detail.article.versions[detail.queryParams.versionNumber].details);
-        if (_.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId})) {
-            setCurrentRun(_.findWhere(detail.article.versions[detail.queryParams.versionNumber].runs, {'run-id': detail.queryParams.runId}));
+        data.queryParams.versionNumber = $(e.currentTarget).attr('data-version');
+        data.queryParams.runId = $(e.currentTarget).attr('data-run');
+        setCurrentArticle(data.article.versions[data.queryParams.versionNumber].details);
+        if (_.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId})) {
+            setCurrentRun(_.findWhere(data.article.versions[data.queryParams.versionNumber].runs, {'run-id': data.queryParams.runId}));
         }
 
         renderArticle();
@@ -381,7 +450,7 @@ module.exports = function (name) {
      * @param details
      */
     function setCurrentArticle(details) {
-        detail.currentArticle = details;
+        data.currentArticle = details;
     }
 
     /**
@@ -389,7 +458,14 @@ module.exports = function (name) {
      * @param details
      */
     function setCurrentRun(run) {
-        detail.currentEvents = run;
+        data.currentEvents = run;
+    }
+
+    /**
+     * Returns Window Pathname
+     */
+    function getWindowPathname() {
+        return window.location.pathname;
     }
 
     /**
@@ -402,7 +478,7 @@ module.exports = function (name) {
         var articleId;
         var versionNumber;
         var runId;
-        var url = window.location.pathname;
+        var url = detail.getWindowPathname();
         if (config.ISPP) {
             // for use in the PP
             url = window.location.search;
@@ -422,11 +498,12 @@ module.exports = function (name) {
             runId = 'c03211f7-6e1e-492d-9312-e0a80857873c';
         }
 
-        detail.queryParams = {
+        data.queryParams = {
             articleId: articleId,
             versionNumber: versionNumber,
             runId: runId,
         };
+
     }
 
     /**
@@ -440,9 +517,48 @@ module.exports = function (name) {
         publish.displayQueueList();
     }
 
-    return {
-        init: init
+    /**
+     * Reset parameters
+     */
+    function resetParams() {
+        // detail = {};
+        data.article = [];
+        data.errors = [];
+        data.detailEvents = [];
+        data.detailArticle = [];
+        data.scheduleStatus = [];
+        data.queryParams = {};
     }
 
+    var detail = {
+        init: init,
+        bindEvents: bindEvents,
+        data: data,
+        renderLoader: renderLoader,
+        setArticleParams: setArticleParams,
+        getWindowPathname: getWindowPathname,
+        getArticle: getArticle,
+        fetchArticle: fetchArticle,
+        getArticleSuccess: getArticleSuccess,
+        getArticleError: getArticleError,
+        setLatestArticle: setLatestArticle,
+        getCurrentArticle: getCurrentArticle,
+        getCurrentRun: getCurrentRun,
+        resetParams: resetParams,
+        renderArticle: renderArticle,
+        getDetailActions: getDetailActions,
+        fetchDetailActions: fetchDetailActions,
+        renderDetailActions: renderDetailActions,
+        getDetailActionsError: getDetailActionsError,
+        getDetailActionsSuccess: getDetailActionsSuccess,
+        bindNavigationEvents: bindNavigationEvents,
+        detailPushState: detailPushState,
+        detailReplaceState: detailReplaceState,
+        updatePageUrl: updatePageUrl,
+        getUrlHash: getUrlHash,
+        config: config
+    };
 
-}();
+    return detail;
+
+};
