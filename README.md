@@ -1,26 +1,13 @@
 # eLife Dashboard
 
-This is the eLife Dashboard application and API. The eLife dashboard is comprised of three parts.
+This is the eLife Dashboard application and API. 
 
-1. [UX Pin](https://live.uxpin.com/593d5793b51645bc5dfb5a0a5ab7629065ef1743#/pages/22041535/sitemap) defines the UX and interactions
-1. [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) the front end code describing the UI (but not to include any behaviour)
-1. [Dashboard](https://github.com/elifesciences/elife-dashboard) this is the actual implementation of the front end functionality using the patterns from PatternLab.
-
-New front end features should be developed in the [Dashboard](https://github.com/elifesciences/elife-dashboard) and copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using ```bash -x copyfromdashboard.sh ~/Projects/eLife/elife-dashboard``` within the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
-
-# Things to ensure when developing
-
-* The [Dashboard](https://github.com/elifesciences/elife-dashboard) contains **all** interactions, before developing a new UI feature check that the html, js and css is up to date.
-* **Develop new features in the [Dashboard](https://github.com/elifesciences/elife-dashboard), the task will not be considered complete until any UI changes and all updated javascript has been copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the script provided in the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)**
-
+[Click here for frontend documentation](README-Frontend.md).
 
 ---
 
 # Requirements:
 
-* [Homebrew](http://brew.sh/) (OSX only)
-* [Node](https://nodejs.org/en/)
-* [Live Reload](http://livereload.com/) - [Chrome plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
 * [Scheduler](https://github.com/elifesciences/elife-article-scheduler)  
 * Working python development environment
 * Postgres should be installed (this is not required for the test services)
@@ -109,21 +96,6 @@ Environment:
 
 Add content roots to PYTHONPATH (checked)
 Add source roots to PYTHONPATH (checked)
-
----
-
-## Setup for frontend 
-* Install node, if on OSX run ```brew install node```
-* Install ```npm install```
-
-
-## Development of Front end
-
-* ```npm start``` to start python application - this will only work if you have setup the command line options above - if you already have the application running, skip this.
-* ```grunt dev``` in new terminal window to start build, and live reload. If you do not want the files to be watched enter ```grunt```
-* run test services.
-* Start Live Reload in your browser (if required)
-
 
 
 ## License

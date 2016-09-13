@@ -249,7 +249,9 @@ Handlebars.registerPartial("article-item", Handlebars.template({"1":function(con
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ">\n                <span class=\"fa fa-calendar\"></span>\n                Schedule\n            </button>\n            <button class=\"btn btn-default publish btn-publish btn-block\" data-toggle=\"modal\"\n                    data-target=\"#publish-modal\"\n                    type=\"button\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">\n                <span class=\"fa fa-globe\"></span>\n                Publish Now\n            </button>\n            <div class=\"checkbox\">\n                <label>\n                    <input type=\"checkbox\" class=\"toggle-publish-all\" "
+    + ">\n                <span class=\"fa fa-globe\"></span>\n                Publish Now\n            </button>\n            <div class=\"checkbox\">\n                <label>\n                    <input type=\"checkbox\" id=\"checkbox-"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"toggle-publish-all\" "
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.id : depth0),{"name":"unless","hash":{},"fn":container.program(70, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "> Batch Publishing\n                </label>\n            </div>\n";
 },"70":function(container,depth0,helpers,partials,data) {
@@ -845,7 +847,7 @@ this["eLife"]["templates"]["current/article"] = Handlebars.template({"1":functio
 this["eLife"]["templates"]["detail/article-scheduled-for"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "    <p><span class=\"text-muted\">Scheduled for <em><strong>"
+  return "    <p class=\"scheduled-for\"><span class=\"text-muted\">Scheduled for <em><strong>"
     + container.escapeExpression((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || helpers.helperMissing).call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.scheduleStatus : depth0)) != null ? stack1.scheduled : stack1),"MMMM D, YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
     + "</strong></em></span></p>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1124,18 +1126,20 @@ this["eLife"]["templates"]["scheduled/scheduled-switcher"] = Handlebars.template
     return "btn-primary";
 },"3":function(container,depth0,helpers,partials,data) {
     return "btn-default";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "active";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
   return "<div class=\"btn-group\">\n    <button type=\"button\" class=\"btn "
     + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,(depth0 != null ? depth0.currentView : depth0),"list",{"name":"is","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + " schedule-page-switch\" data-switch=\"list\"><span\n            class=\"fa fa-list-ul\" aria-hidden=\"true\"></span> List\n    </button>\n    <button type=\"button\" class=\"btn "
+    + " schedule-page-switch "
+    + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,(depth0 != null ? depth0.currentView : depth0),"list",{"name":"is","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " \" data-switch=\"list\"><span\n            class=\"fa fa-list-ul\" aria-hidden=\"true\"></span> List\n    </button>\n    <button type=\"button\" class=\"btn "
     + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,(depth0 != null ? depth0.currentView : depth0),"calendar",{"name":"is","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + " schedule-page-switch\" data-switch=\"calendar\"><span\n            class=\"fa fa-calendar\" aria-hidden=\"true\"></span> Calendar\n    </button>\n</div>";
-},"useData":true});
-
-this["eLife"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "test\n";
+    + " schedule-page-switch "
+    + ((stack1 = (helpers.is || (depth0 && depth0.is) || alias2).call(alias1,(depth0 != null ? depth0.currentView : depth0),"calendar",{"name":"is","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\" data-switch=\"calendar\"><span\n            class=\"fa fa-calendar\" aria-hidden=\"true\"></span> Calendar\n    </button>\n</div>";
 },"useData":true});
 
 if (typeof exports === 'object' && exports) {module.exports = this["eLife"]["templates"];}

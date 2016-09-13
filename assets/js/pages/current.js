@@ -1,10 +1,9 @@
-module.exports = function (name) {
+module.exports = function (config) {
     "use strict";
     // Libs
     var $ = require('jquery');
     global.jQuery = $;
 
-    if ($('.current-page').length > 0) {
         // Libs
         {
             var _ = require('underscore');
@@ -14,7 +13,7 @@ module.exports = function (name) {
         // Templates
         {
             require('./../helpers/templates-helpers.js');
-            var Handlebars = require('Handlebars');
+            var Handlebars = require('handlebars');
             var template = require('./../templates');
             var Swag = require('./../../libs/swag.js');
             Swag.registerHelpers(Handlebars);
@@ -22,36 +21,51 @@ module.exports = function (name) {
 
         // App
         {
-            var config = require('./../config.js');
             var utils = require('./../helpers/utils.js');
             var log = require('loglevel');
             if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
-            var publish = require('./../services/publish.js');
+            var publish = require('./../services/publish.js')(config);
         }
 
         // Variables
         {
-            var current = {};
-            current.articles = [];
+            var data = {};
+            data.articles = [];
         }
 
         // Templates
         {
-            current.template = {};
-            current.template.errorMessage = template['error-message'];
-            current.template.errorDetail = template['error-detail'];
-            current.template.loadingTemplate = template['loading-template'];
-            current.template.article = template['current/article'];
-            current.template.articleStats = template['current/article-stats-template'];
+            data.template = {};
+            data.template.errorMessage = template['error-message'];
+            data.template.errorDetail = template['error-detail'];
+            data.template.loadingTemplate = template['loading-template'];
+            data.template.article = template['current/article'];
+            data.template.articleStats = template['current/article-stats-template'];
         }
-    }
 
 
     function init() {
         if ($('.current-page').length > 0) {
             bindEvents();
+            renderLoading();
             renderArticles();
+            publish.init();
         }
+    }
+
+    /**
+     * Render loading template
+     */
+    function renderLoading() {
+        $('#articles').empty().html(data.template.loadingTemplate());
+    }
+
+    /**
+     * Fetch articles and render on the page.
+     * Renders both the 'summary' at the top of the page and the list below
+     */
+    function renderArticles() {
+        fetchArticles(fetchArticlesSuccess, fetchArticlesError);
     }
 
     /**
@@ -63,11 +77,11 @@ module.exports = function (name) {
             url: config.api.current,
             cache: false,
             dataType: 'json',
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }
@@ -77,8 +91,9 @@ module.exports = function (name) {
      * @param articles
      */
     var fetchArticlesSuccess = function (articles) {
-        $('#articles').empty().html(current.template.article(sortArticles(articles)));
-        $('#articleStats').empty().html(current.template.articleStats(sortArticles(articles)));
+        data.articles = articles;
+        $('#articles').empty().html(data.template.article(sortArticles(articles)));
+        $('#articleStats').empty().html(data.template.articleStats(sortArticles(articles)));
         $('.btn-publish-queued').hide();
         $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     }
@@ -87,28 +102,17 @@ module.exports = function (name) {
      * Fetch Articles Error
      * @param data
      */
-    var fetchArticlesError = function (data) {
+    var fetchArticlesError = function (returnedData) {
         log.info('error');
         log.error(config.errors.en.type.api + ': ' + config.api.current);
-        log.info(data);
-        var errorInfo = utils.formatErrorInformation(data);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
         errorInfo.ref = 'fetchArticlesError';
         errorInfo.type = config.errors.en.type.api;
         $('#articles').empty();
-        $('#articles').empty().html(current.template.errorMessage(errorInfo));
-        $('#articles').append(current.template.errorDetail(errorInfo));
-    }
-
-
-
-    /**
-     * Fetch articles and render on the page.
-     * Renders both the 'summary' at the top of the page and the list below
-     */
-    function renderArticles() {
-        $('#articles').empty().html(current.template.loadingTemplate());
-        fetchArticles(fetchArticlesSuccess, fetchArticlesError);
+        $('#articles').empty().html(data.template.errorMessage(errorInfo));
+        $('#articles').append(data.template.errorDetail(errorInfo));
     }
 
 
@@ -124,6 +128,7 @@ module.exports = function (name) {
 
     /**
      * Apply sticky header logic to the article headers
+     * Headers are only sticky if number of items >= to 2
      * @param e
      */
     function stickyHeaders(e) {
@@ -182,7 +187,7 @@ module.exports = function (name) {
                 if (checkedState === false) cnt++;
             });
 
-            if (cnt === current.articles.uir.length) $('.btn-publish-queued').hide();
+            if (cnt === data.articles.uir.length) $('.btn-publish-queued').hide();
         }
 
         publish.populateQueue($(e.target).parents('tr'));
@@ -209,12 +214,18 @@ module.exports = function (name) {
         publish.displayQueueList();
     }
 
-    return {
+    var current = {
         init: init,
+        data: data,
+        bindEvents: bindEvents,
+        renderLoading: renderLoading,
         renderArticles: renderArticles,
+        sortArticles: sortArticles,
         fetchArticlesSuccess: fetchArticlesSuccess,
         fetchArticlesError: fetchArticlesError
-    }
+    };
+
+    return current;
 
 
-}();
+};
