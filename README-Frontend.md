@@ -28,7 +28,7 @@ These requirements are for the front end only, additional requirements can be fo
 ## Quick Start
 
 You can setup the application to run in one of two ways, with **test services** or **live data**.  
-Both require the you setup the python application. The live data setup requires additional credentials.
+Both require the you setup the python application.
 
 * Follow the [setup instructions](README.md) for the python dashboard, installing the relevant requirements file.
 * Install all dependencies and build the assets ```npm install```
@@ -45,6 +45,7 @@ Both require the you setup the python application. The live data setup requires 
     var config = require('config')(options);
     ```
  * **Live services**
+   * The live data setup requires additional credentials.
    * run ```grunt shell:serve```
 
 
@@ -70,16 +71,13 @@ You can also view individual tests by running ```grunt browserify:test``` and op
 
 The front end workflow for the eLife dashboard is comprised of three parts.
 
-1. [UX Pin](https://live.uxpin.com/593d5793b51645bc5dfb5a0a5ab7629065ef1743#/pages/22041535/sitemap) defines the UX and interactions
-1. [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) the front end code describing the UI (but not to include any behaviour)
-1. [Dashboard](https://github.com/elifesciences/elife-dashboard) this is the actual implementation of the front end functionality using the patterns from PatternLab.
+1. [UX Pin](https://live.uxpin.com/593d5793b51645bc5dfb5a0a5ab7629065ef1743#/pages/22041535/sitemap): defines the UX and interactions
+1. [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend): the front end code describing the UI (but not to include any behaviour)
+1. [This dashboard](https://github.com/elifesciences/elife-dashboard): the actual implementation of the front end functionality using the patterns from PatternLab.
 
 
-New front end features should be developed in the [Dashboard](https://github.com/elifesciences/elife-dashboard) and copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the following within the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend).
-
-
-**Develop new features in the [Dashboard](https://github.com/elifesciences/elife-dashboard).
-The task will not be considered complete until any UI changes and all updated javascript has been copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the script provided in the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)**.
+**Develop new features in the [Dashboard](https://github.com/elifesciences/elife-dashboard).**  
+The task will not be considered complete until any UI changes and all updated javascript has been copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the script provided in the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend/blob/master/copyfromdashboard.sh).
 
 ## Maintaining Dashboard and Pattern Library
  Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
