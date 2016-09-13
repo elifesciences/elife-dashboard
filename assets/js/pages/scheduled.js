@@ -28,7 +28,7 @@ module.exports = function (config) {
         // App
         {
             var utils = require('utils');
-            var publish = require('publish');
+            var publish = require('publish')(config);
             var log = require('loglevel');
             if (!_.isNull(config.logLevel)) {
                 log.setLevel(config.logLevel);
@@ -399,7 +399,7 @@ module.exports = function (config) {
         log.info('updateCalendar')
         $('#schedule-calendar', data.$el).before(data.template.loadingTemplate());
         var fetch = fetchScheduledArticles(start, end, fetchScheduledArticlesSuccess, fetchScheduledArticlesError);
-        fetch.done(function (data) {
+        fetch.done(function (returnedData) {
             $('.loading-template', data.$el).remove();
             $('#schedule-calendar').fullCalendar('removeEvents');
             $('#schedule-calendar').fullCalendar('addEventSource', convertArticlesToCalendar(data.scheduled));

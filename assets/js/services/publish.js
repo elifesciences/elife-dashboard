@@ -181,11 +181,11 @@ module.exports = function (config) {
             contentType: 'application/json',
             url: config.api.queue_article_publication,
             data: JSON.stringify({articles: queued}),
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }
@@ -202,8 +202,8 @@ module.exports = function (config) {
         $('.modal-body', '#publish-modal').append(data.template.errorDetail(errorInfo));
     }
 
-    function queueArticlesSuccess(data) {
-        pollQueue(data.articles);
+    function queueArticlesSuccess(returnedData) {
+        pollQueue(returnedData.articles);
     }
 
     /**
@@ -224,11 +224,11 @@ module.exports = function (config) {
             contentType: 'application/json',
             url: config.api.article_publication_status,
             data: JSON.stringify({articles: queued}),
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }

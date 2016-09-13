@@ -25,7 +25,7 @@ module.exports = function (config) {
     // App
     {
         var utils = require('utils');
-        var publish = require('publish');
+        var publish = require('publish')(config);
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
             log.setLevel(config.logLevel);
@@ -70,6 +70,7 @@ module.exports = function (config) {
             setArticleParams();
             getArticle();
             bindEvents();
+            publish.init();
         }
     }
 
@@ -226,11 +227,11 @@ module.exports = function (config) {
             contentType: 'application/json',
             url: config.api.article_scheduled_status,
             data: JSON.stringify({articles: articleIds}),
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }
@@ -291,11 +292,11 @@ module.exports = function (config) {
             url: config.api.article + '/' + data.queryParams.articleId,
             cache: false,
             dataType: 'json',
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }

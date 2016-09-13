@@ -49,6 +49,7 @@ module.exports = function (config) {
             bindEvents();
             renderLoading();
             renderArticles();
+            publish.init();
         }
     }
 
@@ -76,11 +77,11 @@ module.exports = function (config) {
             url: config.api.current,
             cache: false,
             dataType: 'json',
-            success: function (data) {
-                successCallback(data);
+            success: function (returnedData) {
+                successCallback(returnedData);
             },
-            error: function (data) {
-                errorCallback(data);
+            error: function (returnedData) {
+                errorCallback(returnedData);
             }
         });
     }
