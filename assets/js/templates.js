@@ -1142,8 +1142,4 @@ this["eLife"]["templates"]["scheduled/scheduled-switcher"] = Handlebars.template
     + "\" data-switch=\"calendar\"><span\n            class=\"fa fa-calendar\" aria-hidden=\"true\"></span> Calendar\n    </button>\n</div>";
 },"useData":true});
 
-this["eLife"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "test\n";
-},"useData":true});
-
 if (typeof exports === 'object' && exports) {module.exports = this["eLife"]["templates"];}

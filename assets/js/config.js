@@ -6,10 +6,16 @@ module.exports = function config(options) {
     //
 
     config.logLevel = (_.has(options, 'logLevel')) ? options.logLevel : 0;
-    config.ISPP = (_.has(options, 'ISPP')) ? options.ISPP : false;
     config.colorAdvanceArticle = (_.has(options, 'colorAdvanceArticle')) ? options.colorAdvanceArticle : '#f1f1f1';
     config.colorArticle = (_.has(options, 'colorArticle')) ? options.colorArticle : '#cde1f1';
     config.colorText = (_.has(options, 'colorText')) ? options.colorText : '#111111';
+
+
+    // is pattern portfolio - used in the pattern library
+
+
+    config.ISPP = (_.has(options, 'ISPP')) ? options.ISPP : false;
+
 
     // API settings
 
