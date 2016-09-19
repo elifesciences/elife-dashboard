@@ -82,9 +82,9 @@
                     </dt>
                     <dd>
                         {{#if url}}
-                            <a href="/article/{{url}}">{{publication-date}}{{!--{{elFormatUnixDate publication-date "Do MMMM YYYY" }}--}}</a>
+                            <a href="/article/{{url}}">{{publication-date}}</a>
                         {{else}}
-                            {{publication-date}}{{!--{{elFormatUnixDate publication-date "Do MMMM YYYY" }}--}}
+                            {{publication-date}}
                         {{/if}}
                     </dd>
                 </dl>
@@ -113,7 +113,7 @@
     <td class="article__col article__col__action">
         {{#if scheduled-publication-date}}
             <p><strong><span
-                    class="text-uppercase">Scheduled</span><br/>{{elFormatUnixDate scheduled-publication-date "DD/MM/YYYY h:mma" }}
+                    class="text-uppercase">Scheduled</span><br/>{{elFormatDate scheduled-publication-date "fullConcise" }}
             </strong></p><br/>
             <button class="btn btn-default btn-block schedule schedule-amend-btn" data-action-type="schedule-amend" id="schedule-amend-{{ id }}" data-toggle="modal"
                     data-target="#schedule-modal"

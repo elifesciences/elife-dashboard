@@ -264,7 +264,7 @@ Handlebars.registerPartial("article-item", Handlebars.template({"1":function(con
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3=container.escapeExpression, alias4="function";
 
   return "\n                <p><strong><span\n                        class=\"text-uppercase\">Scheduled</span><br/>"
-    + alias3((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"DD/MM/YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
+    + alias3((helpers.elFormatDate || (depth0 && depth0.elFormatDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"fullConcise",{"name":"elFormatDate","hash":{},"data":data}))
     + "\n                </strong></p><br/>\n                <button class=\"btn btn-default btn-block schedule schedule-amend-btn\" data-action-type=\"schedule-amend\"  id=\"schedule-amend-"
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-toggle=\"modal\"\n                        data-target=\"#schedule-modal\"\n                        data-article-id=\""
@@ -399,9 +399,7 @@ Handlebars.registerPartial("article-event-timeline", Handlebars.template({"1":fu
     + "        <span class=\"line\"></span>\n    </div>\n    <div class=\"article-event-timeline__title\"><p>"
     + alias4(((helper = (helper = helpers["event-type"] || (depth0 != null ? depth0["event-type"] : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"event-type","hash":{},"data":data}) : helper)))
     + "</p></div>\n    <div class=\"article-event-timeline__detail\">\n        <div>\n            <dl>\n                <dt><i>Timestamp:</i></dt>\n                <dd class=\"divide\">"
-    + alias4((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["event-timestamp"] : depth0),"DD/MM/YYYY",{"name":"elFormatUnixDate","hash":{},"data":data}))
-    + " "
-    + alias4((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["event-timestamp"] : depth0),"HH:mm:ss",{"name":"elFormatUnixDate","hash":{},"data":data}))
+    + alias4((helpers.elFormatDate || (depth0 && depth0.elFormatDate) || alias2).call(alias1,(depth0 != null ? depth0["event-timestamp"] : depth0),"timestamp",{"name":"elFormatDate","hash":{},"data":data}))
     + "</dd>\n            </dl>\n            <dl>\n                <dt><i>Message:</i></dt>\n                <dd>"
     + alias4(((helper = (helper = helpers["event-message"] || (depth0 != null ? depth0["event-message"] : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"event-message","hash":{},"data":data}) : helper)))
     + "</dd>\n            </dl>\n        </div>\n    </div>\n</div>\n";
@@ -470,7 +468,7 @@ Handlebars.registerPartial("version-run-nav", Handlebars.template({"1":function(
     + "\">\n                                <span class=\"title\">Run "
     + alias4(((helper = (helper = helpers["run-number"] || (depth0 != null ? depth0["run-number"] : depth0)) != null ? helper : alias2),(typeof helper === alias5 ? helper.call(alias1,{"name":"run-number","hash":{},"data":data}) : helper)))
     + "</span>\n                                <span class=\"date\">"
-    + alias4((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["first-event-timestamp"] : depth0),"DD/MM/YYYY HH:mm:ss",{"name":"elFormatUnixDate","hash":{},"data":data}))
+    + alias4((helpers.elFormatDate || (depth0 && depth0.elFormatDate) || alias2).call(alias1,(depth0 != null ? depth0["first-event-timestamp"] : depth0),"timestamp",{"name":"elFormatDate","hash":{},"data":data}))
     + "</span>\n                                <span class=\"icon\"><span class=\"fa fa-chevron-right\"></span></span>\n                            </a>\n                        </li>\n";
 },"9":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
@@ -677,7 +675,7 @@ Handlebars.registerPartial("scheduled-article-item", Handlebars.template({"1":fu
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3=container.escapeExpression, alias4="function";
 
   return "            <p><strong><span\n                    class=\"text-uppercase\">Scheduled</span><br/>"
-    + alias3((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"DD/MM/YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
+    + alias3((helpers.elFormatDate || (depth0 && depth0.elFormatDate) || alias2).call(alias1,(depth0 != null ? depth0["scheduled-publication-date"] : depth0),"fullConcise",{"name":"elFormatDate","hash":{},"data":data}))
     + "\n            </strong></p><br/>\n            <button class=\"btn btn-default btn-block schedule schedule-amend-btn\" data-action-type=\"schedule-amend\" id=\"schedule-amend-"
     + alias3(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\" data-toggle=\"modal\"\n                    data-target=\"#schedule-modal\"\n                    data-article-id=\""
@@ -848,7 +846,7 @@ this["eLife"]["templates"]["detail/article-scheduled-for"] = Handlebars.template
     var stack1;
 
   return "    <p class=\"scheduled-for\"><span class=\"text-muted\">Scheduled for <em><strong>"
-    + container.escapeExpression((helpers.elFormatUnixDate || (depth0 && depth0.elFormatUnixDate) || helpers.helperMissing).call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.scheduleStatus : depth0)) != null ? stack1.scheduled : stack1),"MMMM D, YYYY h:mma",{"name":"elFormatUnixDate","hash":{},"data":data}))
+    + container.escapeExpression((helpers.elFormatDate || (depth0 && depth0.elFormatDate) || helpers.helperMissing).call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.scheduleStatus : depth0)) != null ? stack1.scheduled : stack1),"fullHuman",{"name":"elFormatDate","hash":{},"data":data}))
     + "</strong></em></span></p>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;

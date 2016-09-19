@@ -67,6 +67,7 @@
     "swag": "./assets/libs/swag.js",
     "templates": "./assets/js/templates.js",
     "utils": "./assets/js/helpers/utils.js",
+    "dates": "./assets/js/helpers/dates.js",
     "validate": "./assets/js/helpers/validate.js",
     "detail": "./assets/js/pages/detail.js",
     "history": "./assets/libs/jquery.history.js"

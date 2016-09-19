@@ -28,6 +28,7 @@ module.exports = function (config) {
         // App
         {
             var utils = require('utils');
+            var dates = require('dates');
             var publish = require('publish')(config);
             var log = require('loglevel');
             if (!_.isNull(config.logLevel)) {
@@ -355,7 +356,7 @@ module.exports = function (config) {
             },
             eventRender: function (event, element) {
                 //Show tooltip when hovering over an event title
-                var toolTipContent = '<strong>' + event.title + '</strong><br/>' + moment(event.start).format('MMMM D, YYYY') + ' ' + moment(event.start).format('h:mma');
+                var toolTipContent = '<strong>' + event.title + '</strong><br/>' + dates.format(event.start, 'fullHuman');
                 element.qtip({
                     content: toolTipContent,
                     hide: {fixed: true, delay: 200},
@@ -421,7 +422,7 @@ module.exports = function (config) {
             calendarArticle.backgroundColor = (a['is-temp']) ? config.colorAdvanceArticle : config.colorArticle;
             calendarArticle.borderColor = (a['is-temp']) ? config.colorAdvanceArticle : config.colorArticle;
             calendarArticle.textColor = config.colorText;
-            calendarArticle.start = moment.unix(a['scheduled-publication-date']).format('YYYY-MM-DD HH:mm Z');
+            calendarArticle.start = dates.format(a['scheduled-publication-date'], 'default');
             if (!(a['is-temp']) && !_.isNull(a.id)) {
                 calendarArticle.url = (config.ISPP) ? '/patterns/04-pages-01-detail/04-pages-01-detail.html?article/' + a.id : 'article/' + a.id;
             }
