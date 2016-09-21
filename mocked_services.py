@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for, render_template
 from flask_cors import CORS
 from time import sleep
 import random
@@ -8,7 +8,7 @@ import time
 import sys
 
 rng = random.Random()
-app = Flask(__name__)
+app = Flask(__name__, template_folder="dashboard/templates", static_folder='dashboard/static')
 CORS(app)
 
 articles = {}
@@ -94,7 +94,7 @@ def queue_article_publication():
 
 
 @app.route('/api/article_publication_status', methods=['POST'])
-def index():
+def publication_status():
 
     error = get_rate_error()
     if error is not None:
@@ -230,6 +230,31 @@ def get_rate_error(override_rate=None):
         return json.dumps(message)
     else:
         return None
+
+
+### these routes provide the page framework or the services
+
+@app.route('/')
+def index():
+    return redirect(url_for('current_page'))
+
+
+@app.route('/current')
+def current_page():
+    return render_template('current.html')
+
+
+@app.route('/scheduled')
+def scheduled_page():
+    return render_template('scheduled.html')
+
+
+@app.route('/article/<article_id>/<version>/<run_id>')
+@app.route('/article/<article_id>/<version>')
+@app.route('/article/<article_id>')
+def detail_page(article_id, version=None, run_id=None):
+    # article_id, version and run captured but not actually needed
+    return render_template("detail.html")
 
 
 if __name__ == '__main__':
