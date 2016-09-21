@@ -47,6 +47,12 @@ source venv/bin/activate
 pip install -r service-test-requirements.txt
 ```
 
+* Setup pattern lab
+
+```bash
+mkdir public
+cp -r ./core/styleguide ./public/
+```
 * Install all dependencies and build the assets 
 
 ```bash
