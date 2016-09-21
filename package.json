@@ -28,8 +28,6 @@
     "grunt-contrib-handlebars": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-phantomjs": "^3.0.0",
-    "grunt-sass": "^1.2.0",
-    "grunt-scss-lint": "^0.3.8",
     "grunt-serve": "^0.1.6",
     "grunt-shell": "^1.3.1",
     "jsdom": "^9.2.1",
@@ -40,17 +38,12 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "bootstrap-sass": "^3.3.6",
-    "font-awesome": "^4.6.3",
-    "fontawesome": "^4.5.0",
-    "fullcalendar": "^2.6.1",
     "handlebars": "^4.0.5",
     "hbsfy": "^2.7.0",
     "historyjs": "^1.8.0-b2",
     "jquery": "^1.11.3",
     "moment": "^2.13.0",
     "pickadate": "^3.5.6",
-    "qtip2": "^3.0.3",
     "underscore": "^1.8.3",
     "uniq": "^1.0.1"
   },
@@ -63,7 +56,10 @@
     ]
   },
   "browser": {
+    "bootstrap-sass": "./assets/libs/bootstrap-sass/assets/javascripts/bootstrap.js",
     "pickadate": "./assets/libs/pickadate/lib/index.js",
+    "fullcalendar": "./assets/libs/fullcalendar/dist/fullcalendar.js",
+    "qtip2": "./assets/libs/qtip2/dist/jquery.qtip.js",
     "swag": "./assets/libs/swag.js",
     "templates": "./assets/js/templates.js",
     "utils": "./assets/js/helpers/utils.js",

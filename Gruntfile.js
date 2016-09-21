@@ -1,9 +1,12 @@
 module.exports = function (grunt) {
 
     var browserifyAlias = {
+        "bootstrap-sass": "./assets/libs/bootstrap-sass/assets/javascripts/bootstrap.js",
         "swag": "./assets/libs/swag.js",
         "jqueryHistory": "./assets/libs/jquery.history.js",
         "pickadate": "./assets/libs/pickadate/lib/index.js",
+        "fullcalendar": "./assets/libs/fullcalendar/dist/fullcalendar.js",
+        "qtip2": "./assets/libs/qtip2/dist/jquery.qtip.js",
         "templates": "./assets/js/templates.js",
         "publish": "./assets/js/services/publish.js",
         "schedule": "./assets/js/services/schedule.js",
@@ -31,54 +34,6 @@ module.exports = function (grunt) {
             serve: {
                 command: 'source venv/bin/activate && python runserver.py'
             }
-        },
-
-        /**
-         * Concatenate
-         *
-         * CSS
-         *    libs.css  - dashboard/static/css/libs.css
-         *
-         */
-        concat: {
-            options: {
-                banner: '<%= banner %>',
-                stripBanners: true,
-            },
-            css: {
-                //put all the prerequisites in a file
-                files: {
-                    //app  js
-                    'dashboard/static/css/libs.css': [
-                        'node_modules/fullcalendar/dist/fullcalendar.css',
-                        'node_modules/qtip2/dist/jquery.qtip.css',
-                        'assets/libs/pickadate/lib/themes/classic.css',
-                        'assets/libs/pickadate/lib/themes/classic.date.css',
-                        'assets/libs/pickadate/lib/themes/classic.time.css',
-                        'node_modules/font-awesome/css/font-awesome.css',
-                    ],
-                },
-            },
-        },
-
-        /**
-         *  Compile SASS to css
-         *
-         *  dashboard/static/css/style.css
-         */
-        sass: {
-            dev: {
-                files: {
-                    'dashboard/static/css/style.css': 'assets/scss/style.scss'
-                },
-                options: {
-                    outputStyle: 'expanded',
-                    imagePath: '../images',
-                    sourceMap: true,
-                    outFile: 'source/css/',
-                    style: 'compressed'
-                },
-            },
         },
 
         /**
@@ -135,9 +90,9 @@ module.exports = function (grunt) {
                     ext: '.spec.js',   // Dest filepaths will have this extension.
                     extDot: 'first'   // Extensions in filenames begin after the first dot
                 }],
-/*                files: {
-                    './assets/test/build/schedule.spec.js': ['./assets/test/schedule.spec.js']
-                },*/
+                /*                files: {
+                 './assets/test/build/schedule.spec.js': ['./assets/test/schedule.spec.js']
+                 },*/
                 options: {
                     alias: browserifyAlias,
                     transform: ['browserify-shim'],
@@ -186,8 +141,6 @@ module.exports = function (grunt) {
         'grunt-contrib-concat',
         'grunt-contrib-watch',
         'grunt-contrib-handlebars',
-        'grunt-sass',
-        'grunt-scss-lint',
         'grunt-browserify',
         'grunt-mocha-phantomjs',
     ].forEach(function (task) {
@@ -200,7 +153,7 @@ module.exports = function (grunt) {
      * Default task
      */
 
-    grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass']);
-    grunt.registerTask('dev', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
+    grunt.registerTask('default', ['handlebars', 'browserify:app']);
+    grunt.registerTask('dev', ['handlebars', 'browserify:app', 'watch']);
     grunt.registerTask('test', ['handlebars', 'browserify:test', 'mocha_phantomjs']);
 };
