@@ -8,3 +8,4 @@
 DASHBOARD=$1
 
 cp -rp assets/libs/ "$DASHBOARD/assets/libs/"
+grunt

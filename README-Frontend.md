@@ -93,23 +93,38 @@ grunt browserify:test
 
 ## Documentation
 
-
 The front end workflow for the eLife dashboard is comprised of three parts.
 
 1. [UX Pin](https://live.uxpin.com/593d5793b51645bc5dfb5a0a5ab7629065ef1743#/pages/22041535/sitemap): defines the UX and interactions
 1. [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend): the front end code describing the UI (but not to include any behaviour)
-1. [This dashboard](https://github.com/elifesciences/elife-dashboard): the actual implementation of the front end functionality using the patterns from PatternLab.
+1. [The Dashboard](https://github.com/elifesciences/elife-dashboard): the actual implementation of the front end functionality using the patterns from PatternLab.
+
+![Dashboard Feature Lifecycle](https://raw.githubusercontent.com/digirati-co-uk/elife-monitoring-dashboard-frontend/feature/seperate-css/docs/DashboardFeatureLifecycle_20160921.png)
 
 
-**Develop new features in the [Dashboard](https://github.com/elifesciences/elife-dashboard).**  
-The task will not be considered complete until any UI changes and all updated javascript has been copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the script provided in the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend/blob/master/copyfromdashboard.sh).
 
 ## Maintaining Dashboard and Pattern Library
-Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
+
+
+### Copying [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) into [Dashboard](https://github.com/elifesciences/elife-dashboard)
+
+* Copies ```libs```, ```css```, ```images``` and ```fonts``` from the pattern portfolio to the dashboard and builds the changes
+* **Does not copy the html**, this will need to be copied over manually.
 
  ```sh
- bash -x copyfromdashboard.sh ~/Projects/eLife/elife-dashboard
+ bash -x copyfrompatternportfolio.sh ~/Projects/eLife/elife-monitoring-dashboard-frontend
  ```
+
+
+### Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
+
+
+* Copies any files in ```libs``` to the pattern portfolio ```assets/libs/```
+
+ ```sh
+ bash -x copytopatternportfolio.sh ~/Projects/eLife/elife-monitoring-dashboard-frontend 
+ ```
+
 
 
 ## License
