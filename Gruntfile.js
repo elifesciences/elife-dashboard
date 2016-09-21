@@ -25,8 +25,8 @@ module.exports = function (grunt) {
          * Shell commands
          */
         shell: {
-            serve_mock: {
-                command: 'source venv/bin/activate && python test_services.py'
+            mocked_services: {
+                command: 'source venv/bin/activate && python mocked_services.py'
             },
             serve: {
                 command: 'source venv/bin/activate && python runserver.py'

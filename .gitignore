@@ -18,3 +18,6 @@ uwsgi.ini
 /build/
 /.cache
 /assets/test/build
+/dashboard/static/css/*
+/dashboard/static/js/*
+/assets/js/templates.js
