@@ -2,6 +2,12 @@
 
 This is the eLife Dashboard application and API.
 
+This document covers the setup of the application from a front end perspective and explains how to run the application with no third party dependencies and mocked data. If this is not what you require please consult the main [readme](README.md).
+
+You can setup the application to run in one of two ways:  
+
+ * **mocked** which requires no dependencies, skip to [quick start](#quick-start) for this method
+ * **development** requires additional third party credentials and a more involved setup, please refer to the main [readme](README.md).
 
 ## Table of Contents
 
@@ -20,6 +26,7 @@ This is the eLife Dashboard application and API.
 
 These requirements are for the front end only, additional requirements can be found on the dashboard [setup instructions](README.md).
 
+* [Python](https://www.python.org/)
 * [Node](https://nodejs.org/en/)
 * [Grunt](http://gruntjs.com/)
 * [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
@@ -27,26 +34,36 @@ These requirements are for the front end only, additional requirements can be fo
 
 ## Quick Start
 
-You can setup the application to run in one of two ways, with **test services** or **live data**.  
-Both require the you setup the python application.
+* In the root of the project folder create your virtual environment and activate it. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
 
-* Follow the [setup instructions](README.md) for the python dashboard, installing the relevant requirements file.
-* Install all dependencies and build the assets ```npm install```
-* To watch for updates in the assets ```grunt dev```.
-* Run the application:
- * **Test services**
-   * run ```grunt shell:serve_mock```
-   * run ```grunt shell:serve``` (in separate windows.)
-   * open ```/assets/js/main.js``` and add the following to enable debug mode
-   ```sh     
-    var options = {
-        debug: true
-    };
-    var config = require('config')(options);
-    ```
- * **Live services**
-   * The live data setup requires additional credentials.
-   * run ```grunt shell:serve```
+```bash
+virtualenv venv
+source venv/bin/activate
+```  
+  
+* Install the dependencies.
+
+```bash
+pip install -r service-test-requirements.txt
+```
+
+* Install all dependencies and build the assets 
+
+```bash
+npm install
+```
+
+* If you wish to enable watch and live reload
+
+```bash
+grunt dev
+```
+
+* To serve the application, if you are running ```grunt dev``` you will need to run this in a new shell window
+
+```bash
+grunt shell:mocked_services
+```
 
 
 ## Aliases
@@ -56,18 +73,26 @@ Both require the you setup the python application.
 | ```grunt```                  | Builds all site assets                                                                           |
 | ```grunt dev```              | Builds all site assets and watches for changes                                                   |
 | ```grunt test```             | Run tests                                                                                        |
-| ```grunt shell:serve_mock``` | Alias for test services python command ```source venv/bin/activate && python test_services.py``` |
+| ```grunt shell:mocked_services``` | Alias for test services python command ```source venv/bin/activate && python mocked_services.py``` |
 | ```grunt shell:serve```      | Alias for run server python command ```source venv/bin/activate && python runserver.py```        |
 
 
 
 ## Tests
 
-In order to run the tests simply run ```grunt test```.  
-You can also view individual tests by running ```grunt browserify:test``` and opening the corresponding html file in ```/assets/test```
+```bash
+grunt test
+```
+
+You can view individual tests in the browser by opening the corresponding html file in ```/assets/test``` and running 
+
+```bash 
+grunt browserify:test
+```
 
 
 ## Documentation
+
 
 The front end workflow for the eLife dashboard is comprised of three parts.
 
@@ -80,7 +105,8 @@ The front end workflow for the eLife dashboard is comprised of three parts.
 The task will not be considered complete until any UI changes and all updated javascript has been copied back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend) using the script provided in the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend/blob/master/copyfromdashboard.sh).
 
 ## Maintaining Dashboard and Pattern Library
- Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
+Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
+
  ```sh
  bash -x copyfromdashboard.sh ~/Projects/eLife/elife-dashboard
  ```
