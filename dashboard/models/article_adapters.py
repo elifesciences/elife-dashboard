@@ -115,6 +115,7 @@ def get_detail_article_model(article_id):
     epoch = datetime.datetime.utcfromtimestamp(0)
 
     article = get_article(article_id)
+    logging.info("article data %s", str(article))
 
     model = {'id': article['article-identifier']}
     versions = article.get('versions')
@@ -123,10 +124,18 @@ def get_detail_article_model(article_id):
     version_zero_properties = version_zero.get('properties')
     model['versions'] = {}
     for version in versions:
-        if version != 0:
+        if version > 0:
+            logging.info("version %s", str(version))
+
             version_data = versions.get(version)
+            logging.info("version_data %s", str(version_data))
+
             version_properties = version_data.get('properties')
+            logging.info("version_properties data %s", str(version_properties))
+            
             merged_properties = version_zero_properties.copy()
+            logging.info("merged_properties data %s", str(merged_properties))
+
             merged_properties.update(version_properties)
 
             details = {'version-number': str(version)}
