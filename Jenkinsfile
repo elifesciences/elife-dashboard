@@ -11,9 +11,13 @@ elifePipeline {
 
     elifeMainlineOnly {
         stage 'End2end tests'
-        elifeEnd2EndTest {
-            builderDeployRevision 'elife-dashboard--end2end', commit
-        }
+        elifeSpectrum(
+            deploy: [
+                stackname: 'elife-dashboard--end2end',
+                revision: commit,
+                folder: '/srv/elife-dashboard'
+            ]
+        )
 
         stage 'Approval'
         elifeGitMoveToBranch commit, 'approved'
