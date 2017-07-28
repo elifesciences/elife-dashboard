@@ -74,6 +74,9 @@ and p.name = 'publication-status' \
 and p.version = %s \
 "
 
+clean_article_sql = "truncate article cascade"
+clean_message_sql = "truncate message cascade"
+
 
 def get_current_articles():
     return _get_articles_for_query(get_latest_articles_sql)
@@ -131,6 +134,11 @@ def get_latest_run(version):
         return run
     return None
 
+def clean():
+    conn, cur = _get_connection()
+    cur.execute(clean_article_sql)
+    cur.execute(clean_message_sql)
+    _commit_and_close_connection(conn, cur)
 
 def _get_articles_for_query(sql, params=None):
 
