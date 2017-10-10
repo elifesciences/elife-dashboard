@@ -43,6 +43,8 @@ def get_queue():
 def process_message(message):
     try:
         message_payload = json.loads(message.get_body())
+        if "TopicArn" in message_payload:
+            message_payload = json.loads(message_payload.get("Message"))
         message_type = message_payload.get('message_type')
 
         if message_type is not None:
