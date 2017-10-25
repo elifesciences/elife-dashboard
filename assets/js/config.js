@@ -25,6 +25,7 @@ module.exports = function config(options) {
     api.article_scheduled_status = (_.has(options, 'api') && _.has(options.api, 'article_scheduled_status')) ? options.api.article_scheduled_status : '/api/article_scheduled_status';
     api.article_schedule_for_range = (_.has(options, 'api') && _.has(options.api, 'article_schedule_for_range')) ? options.api.article_schedule_for_range : '/api/article_schedule_for_range';
     api.schedule_article_publication = (_.has(options, 'api') && _.has(options.api, 'schedule_article_publication')) ? options.api.schedule_article_publication : '/api/schedule_article_publication';
+    api.version_reason = (_.has(options, 'api') && _.has(options.api, 'version_reason')) ? options.api.version_reason : '/api/version_reason';
     api.current = (_.has(options, 'api') && _.has(options.api, 'current')) ? options.api.current : '/api/current';
     api.article = (_.has(options, 'api') && _.has(options.api, 'article')) ? options.api.article : '/api/article';
 
@@ -36,6 +37,7 @@ module.exports = function config(options) {
         api.article_scheduled_status = (_.has(options, 'api') && _.has(options.api, 'article_scheduled_status')) ? options.api.article_scheduled_status : 'http://localhost:8008/api/article_scheduled_status';
         api.article_schedule_for_range = (_.has(options, 'api') && _.has(options.api, 'article_schedule_for_range')) ? options.api.article_schedule_for_range : 'http://localhost:8008/api/article_schedule_for_range';
         api.schedule_article_publication = (_.has(options, 'api') && _.has(options.api, 'schedule_article_publication')) ? options.api.schedule_article_publication : 'http://localhost:8008/api/schedule_article_publication';
+        api.version_reason = (_.has(options, 'api') && _.has(options.api, 'version_reason')) ? options.api.version_reason : 'http://localhost:8008/api/version_reason';
         api.current = (_.has(options, 'api') && _.has(options.api, 'current')) ? options.api.current : 'http://localhost:8008/api/current';
         api.article = (_.has(options, 'api') && _.has(options.api, 'article')) ? options.api.article : 'http://localhost:8008/api/article';
     }

@@ -7,6 +7,7 @@ module.exports = function (grunt) {
         "templates": "./assets/js/templates.js",
         "publish": "./assets/js/services/publish.js",
         "schedule": "./assets/js/services/schedule.js",
+        "versionReason": "./assets/js/services/version-reason.js",
         "current": "./assets/js/pages/current.js",
         "detail": "./assets/js/pages/detail.js",
         "scheduled": "./assets/js/pages/scheduled.js",
@@ -158,7 +159,7 @@ module.exports = function (grunt) {
         // Watches for changes and runs relevant tasks
         watch: {
             options: {
-                livereload: true,
+                livereload: 1337,
             },
             js: {
                 files: ['assets/js/**/*.js'],

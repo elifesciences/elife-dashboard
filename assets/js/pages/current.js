@@ -25,6 +25,7 @@ module.exports = function (config) {
             var log = require('loglevel');
             if(!_.isNull(config.logLevel)) { log.setLevel(config.logLevel); }
             var publish = require('./../services/publish.js')(config);
+            var versionReason = require('./../services/version-reason.js')(config);
         }
 
         // Variables
@@ -50,6 +51,7 @@ module.exports = function (config) {
             renderLoading();
             renderArticles();
             publish.init();
+            versionReason.init();
         }
     }
 
