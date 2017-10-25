@@ -162,11 +162,13 @@ module.exports = function (config) {
         var articlesErrors = utils.generateUrl(unsortedArticles.error);
         var articlesInProgress = utils.generateUrl(unsortedArticles['in-progress']);
         var articlesUir = utils.generateUrl(unsortedArticles.uir);
+        var articlesUirvr = utils.generateUrl(unsortedArticles.uirvr);
         var articlesScheduled = utils.generateUrl(unsortedArticles.scheduled);
         var sortedArticles = {
             error: articlesErrors,
             inProgress: articlesInProgress,
             uir: articlesUir,
+            uirvr: articlesUirvr,
             scheduled: articlesScheduled
         };
         return sortedArticles;

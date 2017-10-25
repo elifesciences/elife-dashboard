@@ -17,7 +17,8 @@
   }
 
   .article-stats__section {
-    @include make-xs-column(3, 0px);
+    @include make-xs-column(2, 0px);
+    width: 20%;
     text-align: center;
   }
 

@@ -100,5 +100,50 @@
       "version": 2,
       "preview-link": "http://www.somedrupalsite/1/1/00288.html"
     }
+  ],
+  "uirvr": [
+    {
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.00558",
+      "event-status": "end",
+      "event-timestamp": 1439467210,
+      "event-type": "Convert images",
+      "id": "002898",
+      "publication-date": 1449832105,
+      "run": 1,
+      "run-id": "fsdfsdfass",
+      "status": "VOR",
+      "title": "This is the v2 title",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html"
+    },{
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.005582",
+      "event-status": "end",
+      "event-timestamp": 1439467210,
+      "event-type": "Convert images",
+      "id": "0028982",
+      "publication-date": 1449832105,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title 1",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html"
+    },{
+      "corresponding-authors": "These are the v2 authors",
+      "doi": "10.7554/elife.005583",
+      "event-status": "end",
+      "event-timestamp": 1439467210,
+      "event-type": "Convert images",
+      "id": "0028983",
+      "publication-date": 1449832105,
+      "run": 1,
+      "run-id": "def",
+      "status": "VOR",
+      "title": "This is the v2 title 2",
+      "version": 2,
+      "preview-link": "http://www.somedrupalsite/1/1/00288.html"
+    }
   ]
 }
