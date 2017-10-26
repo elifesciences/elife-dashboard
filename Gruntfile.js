@@ -204,4 +204,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass']);
     grunt.registerTask('dev', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
     grunt.registerTask('test', ['handlebars', 'browserify:test', 'mocha_phantomjs']);
+    grunt.registerTask('mock_services', ['shell:mocked_services']);
 };

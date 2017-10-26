@@ -591,6 +591,13 @@ describe('Current', function () {
                         "version": 2
                     }
                 ],
+                "uirvr": [
+                    {
+                        "id": "09178",
+                        "run-id": "f479d752-b1d5-4248-8fae-sffdfd",
+                        "version": 2
+                    }
+                ],
                 "in-progress": [
                     {
                         "id": "09178",
@@ -617,6 +624,14 @@ describe('Current', function () {
                     }
                 ],
                 "uir": [
+                    {
+                        "id": "09178",
+                        "run-id": "f479d752-b1d5-4248-8fae-sffdfd",
+                        "version": 2,
+                        "url": "09178/2/f479d752-b1d5-4248-8fae-sffdfd"
+                    }
+                ],
+                "uirvr": [
                     {
                         "id": "09178",
                         "run-id": "f479d752-b1d5-4248-8fae-sffdfd",

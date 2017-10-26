@@ -1,0 +1,242 @@
+
+{
+	"id": "28801",
+	"versions": {
+		"1": {
+			"details": {
+				"article-type": "research-article",
+				"authors": "Nicolas Fiorini, David J Lipman, Zhiyong Lu",
+				"corresponding-authors": "Nicolas Fiorini, Zhiyong Lu",
+				"doi": "10.7554/eLife.28801",
+				"preview-link": "https://preview--journal.elifesciences.org/content/6/e28801v1",
+				"publication-date": "2017-10-30T00:00:00Z",
+				"publication-status": "ready to publish",
+				"status": "VOR",
+				"title": "Towards PubMed 2.0",
+				"version-number": "1"
+			},
+			"runs": {
+				"1": {
+					"events": [
+						{
+							"event-message": "Finished Version Lookup for article 28801 version: 1",
+							"event-status": "end",
+							"event-timestamp": 1508757710,
+							"event-type": "Version Lookup"
+						},
+						{
+							"event-message": "Finished expansion of article 28801 for version 1 run b3598f57-40a5-4975-bd44-9f2bd696bd44 into 28801.1/b3598f57-40a5-4975-bd44-9f2bd696bd44",
+							"event-status": "end",
+							"event-timestamp": 1508757711,
+							"event-type": "Expand Article"
+						},
+						{
+							"event-message": "Finished applying version number to article 28801 for version 1 run b3598f57-40a5-4975-bd44-9f2bd696bd44",
+							"event-status": "end",
+							"event-timestamp": 1508757712,
+							"event-type": "Apply Version Number"
+						},
+						{
+							"event-message": "Finished Verification. No Glencoe media tags found in xml. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757713,
+							"event-type": "Verify Glencoe"
+						},
+						{
+							"event-message": "Finished converting images for 28801: 2 images processed ",
+							"event-status": "end",
+							"event-timestamp": 1508757714,
+							"event-type": "Convert Images To JPG"
+						},
+						{
+							"event-message": "Deposited Ingest assets for article 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757715,
+							"event-type": "Deposit Ingest Assets"
+						},
+						{
+							"event-message": "Glencoe returned 404, therefore article has no videos",
+							"event-status": "end",
+							"event-timestamp": 1508757715,
+							"event-type": "Copy Glencoe Still Images"
+						},
+						{
+							"event-message": "Finished Verification. All endpoints work. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757716,
+							"event-type": "Verify Image Server"
+						},
+						{
+							"event-message": "Finished preparation of article for Lax. Ingest sent to Lax28801",
+							"event-status": "end",
+							"event-timestamp": 1508757717,
+							"event-type": "Ingest To Lax"
+						},
+						{
+							"event-message": " Finished Verification. Lax has responded with result: ingested. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757720,
+							"event-type": "Verify Lax Response"
+						},
+						{
+							"event-message": "Finished scheduling of crossref deposit 28801 for version 1 run b3598f57-40a5-4975-bd44-9f2bd696bd44",
+							"event-status": "end",
+							"event-timestamp": 1508757720,
+							"event-type": "Schedule Crossref"
+						},
+						{
+							"event-message": "XML converted to EIF for article 28801 to 28801.1/b3598f57-40a5-4975-bd44-9f2bd696bd44/elife-28801-v1.json",
+							"event-status": "end",
+							"event-timestamp": 1508757722,
+							"event-type": "Convert JATS"
+						},
+						{
+							"event-message": "Ending setting of publish status for 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757723,
+							"event-type": "Set Publication Status"
+						},
+						{
+							"event-message": "Deposited assets for article 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757726,
+							"event-type": "Deposit assets"
+						},
+						{
+							"event-message": "CloudFront Invalidation command sent for article 28801.",
+							"event-status": "end",
+							"event-timestamp": 1508757726,
+							"event-type": "CloudFront Invalidate Cdn"
+						},
+						{
+							"event-message": "Finished preparation of article for EIF 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757727,
+							"event-type": "Prepare Post EIF"
+						},
+						{
+							"event-message": "Finished Post EIF Bridge 28801",
+							"event-status": "end",
+							"event-timestamp": 1508757731,
+							"event-type": "Post EIF Bridge"
+						}
+					],
+					"first-event-timestamp": 1508757710,
+					"run-id": "b3598f57-40a5-4975-bd44-9f2bd696bd44",
+					"run-number": "1",
+					"version-number": "1"
+				},
+				"2": {
+					"events": [
+						{
+							"event-message": "Finished Version Lookup for article 28801 version: 1",
+							"event-status": "end",
+							"event-timestamp": 1508840236,
+							"event-type": "Version Lookup"
+						},
+						{
+							"event-message": "Finished expansion of article 28801 for version 1 run 9717319e-37b6-46cd-9bf7-00e94e63f9bc into 28801.1/9717319e-37b6-46cd-9bf7-00e94e63f9bc",
+							"event-status": "end",
+							"event-timestamp": 1508840237,
+							"event-type": "Expand Article"
+						},
+						{
+							"event-message": "Finished applying version number to article 28801 for version 1 run 9717319e-37b6-46cd-9bf7-00e94e63f9bc",
+							"event-status": "end",
+							"event-timestamp": 1508840238,
+							"event-type": "Apply Version Number"
+						},
+						{
+							"event-message": "Finished Verification. No Glencoe media tags found in xml. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840238,
+							"event-type": "Verify Glencoe"
+						},
+						{
+							"event-message": "Finished converting images for 28801: 2 images processed ",
+							"event-status": "end",
+							"event-timestamp": 1508840239,
+							"event-type": "Convert Images To JPG"
+						},
+						{
+							"event-message": "Deposited Ingest assets for article 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840240,
+							"event-type": "Deposit Ingest Assets"
+						},
+						{
+							"event-message": "Glencoe returned 404, therefore article has no videos",
+							"event-status": "end",
+							"event-timestamp": 1508840241,
+							"event-type": "Copy Glencoe Still Images"
+						},
+						{
+							"event-message": "Finished Verification. All endpoints work. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840242,
+							"event-type": "Verify Image Server"
+						},
+						{
+							"event-message": "Finished preparation of article for Lax. Ingest sent to Lax28801",
+							"event-status": "end",
+							"event-timestamp": 1508840242,
+							"event-type": "Ingest To Lax"
+						},
+						{
+							"event-message": " Finished Verification. Lax has responded with result: ingested. Article: 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840245,
+							"event-type": "Verify Lax Response"
+						},
+						{
+							"event-message": "Finished scheduling of crossref deposit 28801 for version 1 run 9717319e-37b6-46cd-9bf7-00e94e63f9bc",
+							"event-status": "end",
+							"event-timestamp": 1508840245,
+							"event-type": "Schedule Crossref"
+						},
+						{
+							"event-message": "XML converted to EIF for article 28801 to 28801.1/9717319e-37b6-46cd-9bf7-00e94e63f9bc/elife-28801-v1.json",
+							"event-status": "end",
+							"event-timestamp": 1508840247,
+							"event-type": "Convert JATS"
+						},
+						{
+							"event-message": "Ending setting of publish status for 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840248,
+							"event-type": "Set Publication Status"
+						},
+						{
+							"event-message": "Deposited assets for article 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840250,
+							"event-type": "Deposit assets"
+						},
+						{
+							"event-message": "CloudFront Invalidation command sent for article 28801.",
+							"event-status": "end",
+							"event-timestamp": 1508840250,
+							"event-type": "CloudFront Invalidate Cdn"
+						},
+						{
+							"event-message": "Finished preparation of article for EIF 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840250,
+							"event-type": "Prepare Post EIF"
+						},
+						{
+							"event-message": "Finished Post EIF Bridge 28801",
+							"event-status": "end",
+							"event-timestamp": 1508840254,
+							"event-type": "Post EIF Bridge"
+						}
+					],
+					"first-event-timestamp": 1508840235,
+					"run-id": "9717319e-37b6-46cd-9bf7-00e94e63f9bc",
+					"run-number": "2",
+					"version-number": "1"
+				}
+			}
+		}
+	}
+}

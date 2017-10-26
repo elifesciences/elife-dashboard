@@ -1,0 +1,106 @@
+{
+	"id": "21451",
+	"versions": {
+		"1": {
+			"details": {
+				"article-type": "research-article",
+				"authors": "Silas Boye Nissen, Tali Magidson, Kevin Gross, Carl T Bergstrom, Peter Rodgers",
+				"corresponding-authors": "Kevin Gross, Carl T Bergstrom",
+				"doi": "10.7554/eLife.21451",
+				"preview-link": "https://continuumtestpreview--journal.elifesciences.org/content/533/e21451v1",
+				"publication-status": "publication in progress",
+				"status": "POA",
+				"title": "Publication bias and the canonization of false facts",
+				"version-number": "1"
+			},
+			"runs": {
+				"1": {
+					"events": [
+						{
+							"event-message": "Finished Version Lookup for article 21451 version: 1",
+							"event-status": "end",
+							"event-timestamp": 1489416648,
+							"event-type": "Version Lookup"
+						},
+						{
+							"event-message": "Finished expansion of article 21451 for version 1 run 42081273-be9c-4a12-a4e9-fc9542dde754 into 21451.1/42081273-be9c-4a12-a4e9-fc9542dde754",
+							"event-status": "end",
+							"event-timestamp": 1489416650,
+							"event-type": "Expand Article"
+						},
+						{
+							"event-message": "Finished applying version number to article 21451 for version 1 run 42081273-be9c-4a12-a4e9-fc9542dde754",
+							"event-status": "end",
+							"event-timestamp": 1489416653,
+							"event-type": "Apply Version Number"
+						},
+						{
+							"event-message": "Finished Verification. No Glencoe media tags found in xml. Article: 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416654,
+							"event-type": "Verify Glencoe"
+						},
+						{
+							"event-message": "Finished preparation of article for Lax. Ingest sent to Lax21451",
+							"event-status": "end",
+							"event-timestamp": 1489416655,
+							"event-type": "Ingest To Lax"
+						},
+						{
+							"event-message": " Finished Verification. Lax has responded with result: ingested. Article: 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416662,
+							"event-type": "Verify Lax Response"
+						},
+						{
+							"event-message": "Finished scheduling of crossref deposit 21451 for version 1 run 42081273-be9c-4a12-a4e9-fc9542dde754",
+							"event-status": "end",
+							"event-timestamp": 1489416664,
+							"event-type": "Schedule Crossref"
+						},
+						{
+							"event-message": "XML converted to EIF for article 21451 to 21451.1/42081273-be9c-4a12-a4e9-fc9542dde754/elife-21451-v1.json",
+							"event-status": "end",
+							"event-timestamp": 1489416665,
+							"event-type": "Convert JATS"
+						},
+						{
+							"event-message": "Ending setting of publish status for 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416666,
+							"event-type": "Set Publication Status"
+						},
+						{
+							"event-message": "Finished converting images for  2145111 images processed ",
+							"event-status": "end",
+							"event-timestamp": 1489416779,
+							"event-type": "Resize Images"
+						},
+						{
+							"event-message": "Deposited assets for article 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416784,
+							"event-type": "Deposit assets"
+						},
+						{
+							"event-message": "Finished Verification. All endpoints work. Article: 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416793,
+							"event-type": "Verify Image Server"
+						},
+						{
+							"event-message": "Finished preparation of article for EIF 21451",
+							"event-status": "end",
+							"event-timestamp": 1489416794,
+							"event-type": "Prepare Post EIF"
+						}
+					],
+					"first-event-timestamp": 1489416648,
+					"run-id": "42081273-be9c-4a12-a4e9-fc9542dde754",
+					"run-number": "1",
+					"version-number": "1"
+				}
+			}
+		}
+	}
+}
