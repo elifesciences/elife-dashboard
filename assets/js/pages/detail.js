@@ -26,6 +26,7 @@ module.exports = function (config) {
     {
         var utils = require('utils');
         var publish = require('publish')(config);
+        var versionReason = require('versionReason')(config);
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
             log.setLevel(config.logLevel);
@@ -37,6 +38,7 @@ module.exports = function (config) {
         var data = {};
         data.article = [];
         data.errors = [];
+        data.articleActions = [];
         data.detailEvents = [];
         data.detailArticle = [];
         data.scheduleStatus = [];
@@ -51,6 +53,7 @@ module.exports = function (config) {
         data.template.loadingTemplate = template['loading-template'];
         data.template.errorMessage = template['error-message'];
         data.template.errorDetail = template['error-detail'];
+        data.template.buttonsVersionReason = template['detail/buttons-version-reason'];
         data.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
         data.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
         data.template.buttonsPublishTemplate = template['detail/buttons-publish'];
@@ -71,6 +74,7 @@ module.exports = function (config) {
             getArticle();
             bindEvents();
             publish.init();
+            versionReason.init();
         }
     }
 
@@ -240,8 +244,24 @@ module.exports = function (config) {
      * Determine which action buttons to show for this page
      */
     function getDetailActions() {
-        if (!_.isNull(data.queryParams.articleId)) {
+        console.log('getDetailActions', config.articleActions, data.currentArticle["publication-status"]);
+        data.articleActions = getArticleActions(data.currentArticle["publication-status"]);
+        if (!_.isNull(data.queryParams.articleId) && data.currentArticle["publication-status"] === "ready to publish") {
+            console.log('checking for scheduled status');
             detail.fetchDetailActions(getDetailActionsSuccess, getDetailActionsError);
+        }
+    }
+
+    /**
+     * 
+     * @param status
+     * @returns {Array|*}
+     */
+    function getArticleActions(status) {
+        if(_.has(config.articleActions,status)) {
+            if(!_.isEmpty(config.articleActions[status],'actions')) {
+                return config.articleActions[status].actions; 
+            }
         }
     }
 
@@ -278,6 +298,16 @@ module.exports = function (config) {
             });
             $('.article-detail-actions', '#article').empty().html(buttons);
         }
+
+        var buttonsVersionReason = data.template.buttonsVersionReason({
+            article: data.article,
+            currentArticle: data.currentArticle,
+            currentEvents: data.currentEvents,
+            currentVersion: data.queryParams.versionNumber,
+            currentRun: data.queryParams.runId,
+        });
+        // $('.article-detail-actions', '#article').append().html(buttonsVersionReason);
+        
     }
 
     /**

@@ -159,7 +159,7 @@ module.exports = function (grunt) {
         // Watches for changes and runs relevant tasks
         watch: {
             options: {
-                livereload: 1337,
+                livereload: 1338,
             },
             js: {
                 files: ['assets/js/**/*.js'],
