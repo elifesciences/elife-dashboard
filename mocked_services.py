@@ -53,26 +53,20 @@ def article(article_id):
     if error is not None:
         return error, 500
 
+
+    detail_files = {
+         "21230": "error",
+         "21451": "in_progress",
+         "28801": "scheduled",
+         "00010": "uirvr",
+         "00354": "uir"
+    }
     
-    error_id = '21230' # error 21230
-    in_progress_id = '21451' # in progress 21451
-    scheduled_id = '28801' # scheduled 28801
-    uirvr_id = '00010' # reason for version (uir) 00010
-    uir_id = '002898' # ready to publish (uir) 002898
-    
-    if(article_id) == error_id:
-        filename = 'details--error.json'
-    elif(article_id) == in_progress_id:
-        filename = 'details--in-progress.json'
-    elif(article_id) == scheduled_id:
-        filename = 'details--scheduled.json'
-    elif(article_id) == uirvr_id:
-        filename = 'details--reason-for-version.json'
-    elif(article_id) == uir_id:
-        filename = 'details.json'
+    if article_id in detail_files:
+        filename = "details--" + detail_files[article_id] + ".json"
     else:
-        filename = 'details.json'
-      
+        filename = "details.json"
+
     with open(filename, 'r+') as f:
         article_view = f.read()
         f.close()

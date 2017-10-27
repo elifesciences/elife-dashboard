@@ -1,5 +1,5 @@
 {
-	"id": "00353",
+	"id": "00010",
 	"versions": {
 		"1": {
 			"details": {
@@ -9,9 +9,9 @@
 				"doi": "10.7554/eLife.00353",
 				"preview-link": "http://54.84.81.117/content/1/e00353v1",
 				"publication-date": "2012-12-13T00:00:00Z",
-				"publication-status": "ready to publish",
+				"publication-status": "version reason required",
 				"status": "VOR",
-				"title": "A general example",
+				"title": "A reason for version example",
 				"version-number": "1"
 			},
 			"runs": {
@@ -125,9 +125,9 @@
 				"doi": "10.7554/eLife.00353",
 				"preview-link": "http://54.84.81.117/content/1/e00353v1",
 				"publication-date": "2012-12-13T00:00:00Z",
-				"publication-status": "ready to publish",
+				"publication-status": "version reason required",
 				"status": "VOR",
-				"title": "A general example",
+				"title": "A reason for version example",
 				"version-number": "2"
 			},
 			"runs": {
