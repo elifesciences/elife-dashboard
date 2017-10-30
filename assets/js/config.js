@@ -71,31 +71,5 @@ module.exports = function config(options) {
 
     // end errors
     
-    // options
-    
-    config.articleActions = {
-        "reason for version": {
-            "actions": ["version-reason"]
-        },
-        "publication in progress": {
-            "actions": []
-        },
-        "ready to publish": {
-            "actions": ["publish", "schedule"]
-        },
-        "scheduled": {
-            "actions": ["reschedule"]
-        },
-        "error": {
-            "actions": []
-        },
-        "published": {
-            "actions": []
-        }
-    };
-    
-    //
-    
-    
     return config;
 };

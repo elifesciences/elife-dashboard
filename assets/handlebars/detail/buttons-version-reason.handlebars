@@ -1,8 +1,8 @@
-<button class="btn btn-default  btn-block schedule schedule-btn" id="version-reason-{{ id }}" data-toggle="modal"
+<button class="btn btn-default schedule schedule-btn" id="version-reason-{{ id }}" data-toggle="modal"
         data-action-type="version-reason"
         data-title="Reason for Version"
         data-target="#version-reason-modal"
-        data-article-id="{{ id }}" {{#unless id}}disabled="disabled"{{/unless}}>
+        data-article-id="{{ article.id }}" {{#unless article.id}}disabled="disabled"{{/unless}}>
     <span class="fa fa-history"></span>
     Reason for Version
 </button>
