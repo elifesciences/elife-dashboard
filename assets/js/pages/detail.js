@@ -310,7 +310,9 @@ module.exports = function (config) {
         console.log("event status:", lastCurrentEventStatus);
 
         var buttons = "";
+        
         // if we're calling after fetching the scheduled status
+        // show reschedule buttons - schedule trumps everything
         if (!_.isEmpty(data.scheduleStatus)) {
             if (data.scheduleStatus.scheduled > 0) {
                buttons += detail.renderRescheduleCancelButtons();
@@ -318,6 +320,7 @@ module.exports = function (config) {
             }
         }
         
+        // if an error, show nothing, otherwise show relevant buttons
         if (!_.isNull(data.queryParams.articleId)) {
             if(lastCurrentEventStatus !== 'error') {
                 switch (publicationStatus) {
