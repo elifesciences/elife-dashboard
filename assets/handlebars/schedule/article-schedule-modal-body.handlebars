@@ -2,47 +2,54 @@
     {{#if showArticleIdField}}
         <p>Please enter the numeric ID of the article you wish to publish:</p>
         <br/>
-        <div class="form-group">
-            <div class="col-sm-12">
+        <div class="form-group clearfix">
+            <div class="col-sm-9">
                 <input id="schedule-id" name="id" class="form-control article-id schedule-field" data-required data-validation="numeric" type="number" placeholder="Article ID" min="0">
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary" id="find-article-action">Find Article</button>
             </div>
         </div>
         <br/>
         <hr/>
         <br/>
     {{/if}}
-    <p>When do you want to schedule this article?</p>
-    <p class="article-cancel-info"></p>
-    <br/>
-    <div class="form-group">
-        <div class="col-sm-12">
-            <input id="schedule-date" name="date" class="form-control datepicker schedule-field" data-required type="text" placeholder="Date">
+    {{#if showScheduleDatepicker}}
+    <div class="schedule-modal-datepicker">
+        <p>When do you want to schedule this article?</p>
+        <p class="article-cancel-info"></p>
+        <br/>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <input id="schedule-date" name="date" class="form-control datepicker schedule-field" data-required type="text" placeholder="Date">
+            </div>
         </div>
-    </div>
-    <br/>
-    <br/>
-    <div class="form-group">
-        <div class="col-sm-12">
-            <div class="timepicker-container">
-                <div class="timepicker-hour">
-                    <input id="schedule_hour_submit" name="schedule_hour_submit"
-                           class="form-control timepicker hourpicker schedule-field"
-                           type="number" placeholder="Hour"  data-required data-min="0" data-actual-min="1" data-max="13" data-actual-max="12" maxlength="2" data-validation="numeric">
-                </div>
-                <div class="timepicker-divider">:</div>
-                <div class="timepicker-minute">
-                    <input id="schedule_minute_submit" name="schedule_minute_submit"
-                           class="form-control timepicker minutepicker schedule-field"  data-required type="number" placeholder="Minute" data-min="-1" data-actual-min="0" data-max="60" data-actual-max="59"  maxlength="2" data-validation="numeric">
-                </div>
-                <div class="timepicker-ampm">
-                    <select id="schedule_ampm_submit" class="form-control timepicker ampmpicker schedule-field"  data-required name="schedule_ampm_submit">
-                        <option value="am">am</option>
-                        <option value="pm" selected="selected">pm</option>
-                    </select>
+        <br/>
+        <br/>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="timepicker-container">
+                    <div class="timepicker-hour">
+                        <input id="schedule_hour_submit" name="schedule_hour_submit"
+                               class="form-control timepicker hourpicker schedule-field"
+                               type="number" placeholder="Hour"  data-required data-min="0" data-actual-min="1" data-max="13" data-actual-max="12" maxlength="2" data-validation="numeric">
+                    </div>
+                    <div class="timepicker-divider">:</div>
+                    <div class="timepicker-minute">
+                        <input id="schedule_minute_submit" name="schedule_minute_submit"
+                               class="form-control timepicker minutepicker schedule-field"  data-required type="number" placeholder="Minute" data-min="-1" data-actual-min="0" data-max="60" data-actual-max="59"  maxlength="2" data-validation="numeric">
+                    </div>
+                    <div class="timepicker-ampm">
+                        <select id="schedule_ampm_submit" class="form-control timepicker ampmpicker schedule-field"  data-required name="schedule_ampm_submit">
+                            <option value="am">am</option>
+                            <option value="pm" selected="selected">pm</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    {{/if}}
     <br/>
 {{/is}}
 {{#is actionType 'cancel'}}

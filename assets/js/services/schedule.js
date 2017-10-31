@@ -39,6 +39,7 @@ module.exports = function (config) {
         data.scheduleActionType = null;
         data.isScheduling = false;
         data.isAllScheduled = false;
+        data.queryParams = {};
     }
 
     {
@@ -77,6 +78,7 @@ module.exports = function (config) {
         $(document).on('change mousewheel input', '.hourpicker, .minutepicker', loopPicker.bind(this));
         $(document).on('change', '.hourpicker, .minutepicker', padInput.bind(this));
         $(document).on('change blur keyup', '.schedule-field', validateForm.bind(this));
+        $(document).on('click', '#schedule-modal #find-article-action', getArticle.bind(this));
     }
 
     /**
@@ -254,10 +256,12 @@ module.exports = function (config) {
             action.actionType = 'schedule';
         }
 
+        action.showScheduleDatepicker = true;
         if (data.scheduleActionType === 'future-schedule') {
             action.showArticleIdField = true;
+            action.showScheduleDatepicker = false;
         }
-
+        
         $('#schedule-modal .modal-body').html(data.template.modalBody(action));
         $('#schedule-modal .modal-footer').html(data.template.modalFooter(action));
 
@@ -451,6 +455,72 @@ module.exports = function (config) {
         }
     }
 
+
+    /**
+     * Get article
+     */
+    function getArticle() {
+        console.log('getArticle');
+        data.queryParams.articleId = $('#schedule-id', '#schedule-modal').val();
+        if (data.queryParams.articleId) {
+            sch.fetchArticle(sch.getArticleSuccess, sch.getArticleError);
+        }   
+    }
+
+    /**
+     * Fetch article information
+     *
+     * @param successCallback
+     * @param errorCallback
+     * @returns {*}
+     */
+    function fetchArticle(successCallback, errorCallback) {
+        console.log(config.api.article + '/' + data.queryParams.articleId);
+        return $.ajax({
+            url: config.api.article + '/' + data.queryParams.articleId,
+            cache: false,
+            dataType: 'json',
+            success: function (returnedData) {
+                successCallback(returnedData);
+            },
+            error: function (returnedData) {
+                errorCallback(returnedData);
+            }
+        });
+    }
+
+
+    /**
+     * Success callback for fetching article information
+     * @param data
+     */
+    function getArticleSuccess(returnedData) {
+        console.log('getArticleSuccess');
+        console.log(returnedData);
+        // data.article = returnedData;
+        // detail.setLatestArticle();
+        // data.currentArticle = getCurrentArticle();
+        // data.currentEvents = getCurrentRun();
+        // detail.renderArticle();
+        // detail.getDetailActions();
+    }
+
+    /**
+     * Error callback for fetching article information
+     *
+     * @param data
+     */
+    function getArticleError(returnedData) {
+        log.error(config.errors.en.type.api + ': ' + config.api.article + '/' + data.queryParams.articleId);
+        log.info(returnedData);
+        var errorInfo = utils.formatErrorInformation(returnedData);
+        errorInfo.errorType = null;
+        errorInfo.ref = 'getArticleError';
+        errorInfo.type = config.errors.en.type.api;
+        $('#article').empty().html(data.template.errorMessage(errorInfo));
+        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
+    }
+
     var sch =  {
         init: init,
         performSchedule: performSchedule,
@@ -465,7 +535,11 @@ module.exports = function (config) {
         checkScheduledTimeValid: checkScheduledTimeValid,
         scheduleArticlePublication: scheduleArticlePublication,
         scheduleArticlePublicationSuccess: scheduleArticlePublicationSuccess,
-        scheduleArticlePublicationError: scheduleArticlePublicationError
+        scheduleArticlePublicationError: scheduleArticlePublicationError,
+        getArticle: getArticle,
+        fetchArticle: fetchArticle,
+        getArticleSuccess: getArticleSuccess,
+        getArticleError: getArticleError
     };
 
     return sch;
