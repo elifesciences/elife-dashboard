@@ -1,6 +1,7 @@
 <button class="btn btn-default schedule schedule-amend-btn" data-action-type="schedule-amend" id="schedule-amend-{{ article.id }}" data-toggle="modal"
         data-target="#schedule-modal"
         data-article-id="{{ article.id }}"
+        {{#if currentArticle.expected-publication-date}}data-expected-publication-date="{{currentArticle.expected-publication-date}}"{{/if}}
         data-title="Re-schedule Article">
     <span class="fa fa-calendar"></span>
     Re-Schedule

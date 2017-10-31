@@ -31,6 +31,7 @@ module.exports = function (config) {
         var data = {};
         data.articleId = null;
         data.articleScheduled = null;
+        data.articleExpectedPublicationDate = null;
         data.scheduleData = {};
         data.scheduleDate = null;
         data.scheduleTime = null;
@@ -84,6 +85,15 @@ module.exports = function (config) {
     function initDateTime() {
         var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
 
+
+        var datePickerInit = {
+            format: 'mmmm d, yyyy',
+            formatSubmit: 'dd/mm/yyyy',
+            onStart: datePickerOnStart,
+            onSet: datePickerOnSet
+        };
+
+
         function datePickerOnStart() {
             var day = moment.unix(data.articleScheduled).format('DD');
             var month = moment.unix(data.articleScheduled).format('MM');
@@ -91,6 +101,19 @@ module.exports = function (config) {
             month--; //only month for dates are zero indexed
             if (data.articleScheduled) {
                 this.set('select', new Date(year, month, day));
+            }
+
+            if(data.articleExpectedPublicationDate > 0) {
+                var exemptDay = moment.unix(data.articleExpectedPublicationDate).format('DD');
+                var exemptMonth = moment.unix(data.articleExpectedPublicationDate).format('MM');
+                var exemptYear = moment.unix(data.articleExpectedPublicationDate).format('YYYY');
+                exemptMonth--; //only month for dates are zero indexed
+                var exemptDate = new Date(exemptYear, exemptMonth, exemptDay);
+                datePickerInit["disable"] = [
+                    true,
+                    exemptDate
+                ];
+                this.set('select', exemptDate);
             }
         }
 
@@ -104,13 +127,9 @@ module.exports = function (config) {
             data.scheduleDate = selectedDate;
             validateForm();
         }
+        
 
-        $('.datepicker').pickadate({
-            format: 'mmmm d, yyyy',
-            formatSubmit: 'dd/mm/yyyy',
-            onStart: datePickerOnStart,
-            onSet: datePickerOnSet
-        });
+        $('.datepicker').pickadate(datePickerInit);
 
         // if we're rescheduling we will have an existing time date
         if (data.articleScheduled) {
@@ -222,8 +241,10 @@ module.exports = function (config) {
         setModalTitle($(e.currentTarget));
         var articleId = ($(e.currentTarget).attr('data-article-id')) ? $(e.currentTarget).attr('data-article-id') : false;
         var articleScheduled = ($(e.currentTarget).attr('data-scheduled')) ? $(e.currentTarget).attr('data-scheduled') : false;
+        var articleExpectedPublicationDate = ($(e.currentTarget).attr('data-expected-publication-date')) ? $(e.currentTarget).attr('data-expected-publication-date') : false;
         data.articleId = articleId;
         data.articleScheduled = articleScheduled;
+        data.articleExpectedPublicationDate = articleExpectedPublicationDate;
         data.scheduleActionType = $(e.currentTarget).attr('data-action-type');
 
         var action = {actionType: 'schedule', includeArticleId: false};

@@ -148,6 +148,7 @@
                     data-action-type="schedule"
                     data-title="Schedule Article"
                     data-target="#schedule-modal"
+                    {{#if expected-publication-date}}data-expected-publication-date="{{expected-publication-date}}"{{/if}} 
                     data-article-id="{{ id }}" {{#unless id}}disabled="disabled"{{/unless}}>
                 <span class="fa fa-calendar"></span>
                 Schedule
@@ -184,6 +185,7 @@
                         data-target="#schedule-modal"
                         data-article-id="{{ id }}"
                         data-title="Re-schedule Article"
+                        {{#if expected-publication-date}}data-expected-publication-date="{{expected-publication-date}}"{{/if}}
                         data-scheduled="{{scheduled-publication-date}}" {{#unless id}}disabled="disabled"{{/unless}}>
                     <span class="fa fa-calendar"></span>
                     Re-Schedule
