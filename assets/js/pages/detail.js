@@ -26,6 +26,7 @@ module.exports = function (config) {
     {
         var utils = require('utils');
         var publish = require('publish')(config);
+        var versionReason = require('versionReason')(config);
         var log = require('loglevel');
         if (!_.isNull(config.logLevel)) {
             log.setLevel(config.logLevel);
@@ -51,6 +52,7 @@ module.exports = function (config) {
         data.template.loadingTemplate = template['loading-template'];
         data.template.errorMessage = template['error-message'];
         data.template.errorDetail = template['error-detail'];
+        data.template.buttonsVersionReason = template['detail/buttons-version-reason'];
         data.template.buttonsScheduleTemplate = template['detail/buttons-schedule'];
         data.template.buttonsReScheduleTemplate = template['detail/buttons-reschedule'];
         data.template.buttonsPublishTemplate = template['detail/buttons-publish'];
@@ -71,6 +73,7 @@ module.exports = function (config) {
             getArticle();
             bindEvents();
             publish.init();
+            versionReason.init();
         }
     }
 
@@ -191,9 +194,11 @@ module.exports = function (config) {
      * Detail Actions Success
      * @param data
      */
-    function getDetailActionsSuccess(returnedData) {
+    function checkScheduledStatusSuccess(returnedData) {
         if (returnedData.articles.length === 1) {
             data.scheduleStatus = returnedData.articles[0];
+            // data.scheduleStatus = {"scheduled": null};
+            console.log('checkScheduledStatusSuccess() -> renderDetailActions()');
             detail.renderDetailActions();
         }
     }
@@ -202,24 +207,24 @@ module.exports = function (config) {
      * Detail Actions Error
      * @param data
      */
-    function getDetailActionsError(returnedData) {
+    function checkScheduledStatusError(returnedData) {
         log.error(config.errors.en.type.api + ': ' + config.api.current);
         log.info(returnedData);
         var errorInfo = utils.formatErrorInformation(returnedData);
         errorInfo.errorType = null;
-        errorInfo.ref = 'getDetailActionsError';
+        errorInfo.ref = 'checkScheduledStatusError';
         errorInfo.type = config.errors.en.type.api;
         $('#article').prepend(data.template.errorMessage(errorInfo));
         $('#error-console').empty().html(data.template.errorDetail(errorInfo));
     }
 
     /**
-     * Fetch Detail Actions
+     * Check scheduled status
      * @param successCallback
      * @param errorCallback
      * @returns {*}
      */
-    function fetchDetailActions(successCallback, errorCallback) {
+    function checkScheduledStatus(successCallback, errorCallback) {
         var articleIds = [];
         articleIds.push(data.queryParams.articleId);
         return $.ajax({
@@ -236,49 +241,107 @@ module.exports = function (config) {
         });
     }
 
+
+
     /**
-     * Determine which action buttons to show for this page
+     * Render the version reason button when called
      */
-    function getDetailActions() {
-        if (!_.isNull(data.queryParams.articleId)) {
-            detail.fetchDetailActions(getDetailActionsSuccess, getDetailActionsError);
-        }
+    function renderVersionReasonButton() {
+        var buttons = data.template.buttonsVersionReason({
+            article: data.article,
+            currentArticle: data.currentArticle,
+            currentEvents: data.currentEvents,
+            currentVersion: data.queryParams.versionNumber,
+            currentRun: data.queryParams.runId,
+        });
+        return buttons;
+    }
+
+    /**
+     * Render the publish now button when called
+     */
+    function renderPublishNowButton() {
+        var buttons = data.template.buttonsPublishTemplate({
+            article: data.article,
+            currentArticle: data.currentArticle,
+            currentEvents: data.currentEvents,
+            currentVersion: data.queryParams.versionNumber,
+            currentRun: data.queryParams.runId,
+            scheduleStatus: data.scheduleStatus,
+        });
+        return buttons;
+    }
+
+    /**
+     * Render reschedule and cancel buttons
+     */
+    function renderRescheduleCancelButtons() {
+        // re-schedule and cancel schedule buttons
+        var buttons = data.template.buttonsReScheduleTemplate({
+            article: data.article,
+            currentArticle: data.currentArticle,
+            "scheduled-publication-date": data.scheduleStatus.scheduled
+        });
+        return buttons;
+    }
+
+    /**
+     * Render schedule button
+     */
+    function renderScheduleButton() {
+        // schedule button
+        var buttons = data.template.buttonsScheduleTemplate({article: data.article,  currentArticle: data.currentArticle});
+        return buttons;
     }
 
     /**
      * Determine which action buttons to show for this page
+     * Called after renderArticle() and checkScheduledStatusSuccess()
      */
     function renderDetailActions() {
+        console.error('renderDetailActions');
+
+
+        var lastCurrentEventStatus = _.last(data.currentEvents.events)["event-status"];
+        var publicationStatus = data.currentArticle["publication-status"];
+
+
+        console.log("publication status:", publicationStatus);
+        console.log("event status:", lastCurrentEventStatus);
+
+        var buttons = "";
         
+        // if we're calling after fetching the scheduled status
+        // show reschedule buttons - schedule trumps everything
         if (!_.isEmpty(data.scheduleStatus)) {
             if (data.scheduleStatus.scheduled > 0) {
-                $('.article-detail-actions', '#article').empty().html(data.template.buttonsReScheduleTemplate({
-                    article: data.article,
-                    currentArticle: data.currentArticle,
-                    "scheduled-publication-date": data.scheduleStatus.scheduled
-                }));
+               buttons += detail.renderRescheduleCancelButtons();
                 $('.article-detail-scheduled', '#article').empty().html(data.template.articlesScheduledForTemplate({scheduleStatus: data.scheduleStatus}));
-            } else {
-                var buttons = data.template.buttonsScheduleTemplate({article: data.article, currentArticle: data.currentArticle}) + data.template.buttonsPublishTemplate({
-                        article: data.article,
-                        currentArticle: data.currentArticle,
-                        currentEvents: data.currentEvents,
-                        currentVersion: data.queryParams.versionNumber,
-                        currentRun: data.queryParams.runId,
-                        scheduleStatus: data.scheduleStatus,
-                    });
-                $('.article-detail-actions', '#article').empty().html(buttons);
             }
-        } else {
-            var buttons = data.template.buttonsPublishTemplate({
-                article: data.article,
-                currentArticle: data.currentArticle,
-                currentEvents: data.currentEvents,
-                currentVersion: data.queryParams.versionNumber,
-                currentRun: data.queryParams.runId,
-            });
-            $('.article-detail-actions', '#article').empty().html(buttons);
         }
+        
+        // if an error, show nothing, otherwise show relevant buttons
+        if (!_.isNull(data.queryParams.articleId)) {
+            if(lastCurrentEventStatus !== 'error') {
+                switch (publicationStatus) {
+                    case "ready to publish":
+                        console.log(_.isNull(data.scheduleStatus.scheduled));
+                        if(!_.isEmpty(data.scheduleStatus) && _.isNull(data.scheduleStatus.scheduled)) {
+                            buttons += detail.renderScheduleButton(); 
+                        }
+                        buttons += detail.renderPublishNowButton();
+                        break;
+                    case "version reason required":
+                        buttons += detail.renderVersionReasonButton();
+                        break;
+                }
+            }
+        }
+   
+        
+        
+        $('.article-detail-actions', '#article').empty().html(buttons);
+        
     }
 
     /**
@@ -312,7 +375,10 @@ module.exports = function (config) {
         data.currentArticle = getCurrentArticle();
         data.currentEvents = getCurrentRun();
         detail.renderArticle();
-        detail.getDetailActions();
+        if (!_.isNull(data.queryParams.articleId)) {
+            console.log('call checkScheduledStatus');
+            detail.checkScheduledStatus(checkScheduledStatusSuccess, checkScheduledStatusError);
+        }
     }
 
     /**
@@ -365,6 +431,7 @@ module.exports = function (config) {
                     scheduleStatus: data.scheduleStatus,
                 }));
 
+            console.log('renderArticle() -> renderDetailActions()');
             detail.renderDetailActions();
         } else {
             var errorInfo = utils.formatErrorInformation(data.errors);
@@ -547,11 +614,14 @@ module.exports = function (config) {
         getCurrentRun: getCurrentRun,
         resetParams: resetParams,
         renderArticle: renderArticle,
-        getDetailActions: getDetailActions,
-        fetchDetailActions: fetchDetailActions,
+        checkScheduledStatus: checkScheduledStatus,
         renderDetailActions: renderDetailActions,
-        getDetailActionsError: getDetailActionsError,
-        getDetailActionsSuccess: getDetailActionsSuccess,
+        renderPublishNowButton: renderPublishNowButton,
+        checkScheduledStatusError: checkScheduledStatusError,
+        checkScheduledStatusSuccess: checkScheduledStatusSuccess,
+        renderVersionReasonButton: renderVersionReasonButton,
+        renderRescheduleCancelButtons: renderRescheduleCancelButtons,
+        renderScheduleButton: renderScheduleButton,
         bindNavigationEvents: bindNavigationEvents,
         detailPushState: detailPushState,
         detailReplaceState: detailReplaceState,
