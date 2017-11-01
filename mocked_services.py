@@ -48,7 +48,7 @@ def get_random_message():
 
 @app.route('/api/article/<article_id>')
 def article(article_id):
-
+    
     error = get_rate_error()
     if error is not None:
         return error, 500

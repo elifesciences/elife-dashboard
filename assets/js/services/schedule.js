@@ -547,8 +547,8 @@ module.exports = function (config) {
         errorInfo.errorType = null;
         errorInfo.ref = 'getArticleError';
         errorInfo.type = config.errors.en.type.api;
-        $('#article').empty().html(data.template.errorMessage(errorInfo));
-        $('#error-console').empty().html(data.template.errorDetail(errorInfo));
+        $('.modal-body', '#schedule-modal').empty().html(data.template.errorMessage(errorInfo));
+        $('.modal-body', '#schedule-modal').append(data.template.errorDetail(errorInfo));
     }
 
     /**
