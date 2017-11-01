@@ -225,6 +225,14 @@ def scheduled_status():
 
     return jsonify({"articles": lst})
 
+@app.route('/api/version_reason', methods=['POST'])
+def version_reason():
+
+    error = get_rate_error()
+    if error is not None:
+        return error, 500
+
+    return jsonify({'result': 'success'})
 
 def hours(h):
     return h * 3600000

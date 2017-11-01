@@ -76,7 +76,6 @@ module.exports = function (config) {
         var fields = $('[data-required]', '#version-reason-modal');
         errors += validate.fieldRequired(fields,errors);
 
-
         if (errors == 0) {
             $('#version-reason-action', '#version-reason-modal').prop('disabled', false).removeClass('disabled');
             return true;
@@ -94,6 +93,18 @@ module.exports = function (config) {
     function setupData(e) {
         console.log($(e.relatedTarget), $(e.relatedTarget).attr('data-article-id'));
         data.articleId = $(e.relatedTarget).attr('data-article-id');
+
+
+        $('#version-reason-date').pickadate({
+            format: 'mmmm d, yyyy',
+            formatSubmit: 'dd/mm/yyyy',
+            clear: ''
+        });
+        var picker = $('#version-reason-date').pickadate('picker');
+        var today = moment();
+        picker.set('select', today);
+
+
     }
 
     /**
@@ -103,11 +114,11 @@ module.exports = function (config) {
         console.log('performAction');
         var isValid = avr.validateForm();
         console.log(isValid, data);
-        if(isValid && data.articleId !== undefined) {
+        if(isValid && data.articleId !== undefined && $('#version-reason-date').val() !== '') {
             
+            data.versionReasonDate = moment($('#version-reason-modal #version-reason-date').val()).format('X');
             data.versionReasonText = $('#version-reason-modal #version-reason-text').val();
         
-
             $('#version-reason-modal #version-reason-action').hide();
             $('#version-reason-modal #version-reason-close').hide();
             submitVersionReason(data, submitVersionReasonSuccess, submitVersionReasonError);

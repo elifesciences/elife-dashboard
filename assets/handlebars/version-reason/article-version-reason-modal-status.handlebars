@@ -1,23 +1,5 @@
-<span class="article-status {{{sanitize publication-status "-"}}}">
-    {{#is publication-status 'error'}}
-        <span class="status-icon fa e-icon sm danger fa-times"></span>
-        <br />
-        <span class="text-muted status-message">{{capitalizeFirst publication-status}}{{#if message}}:{{/if}} {{message}}</span>
-    {{/is}}
-    {{#is publication-status 'queued'}}
-        <div class="status-icon throbber-loader throbber-loader--small "></div>
-        <br />
-        <span class="text-muted status-message">{{capitalizeFirst publication-status}}{{#if message}}:{{/if}} {{message}}</span>
-    {{/is}}
-    {{#is publication-status 'ready to publish'}}
-        <div class="status-icon throbber-loader throbber-loader--small "></div>
-        <br />
-        <span class="text-muted status-message">{{capitalizeFirst publication-status}}{{#if message}}:{{/if}} {{message}}</span>
-    {{/is}}
-    {{#is publication-status 'published'}}
-        <span class="status-icon fa e-icon sm success fa-check"></span>
-        <br />
-        <span class="text-muted status-message">{{capitalizeFirst publication-status}}{{#if message}}:{{/if}} {{message}}</span>
-    {{/is}}
-</span>
-
+{{#is response.result 'success'}}
+    <div class="alert alert-success" id="success-message">
+            <p class="message">Your version reason has been successfully submitted.</p>
+    </div>
+{{/is}}
