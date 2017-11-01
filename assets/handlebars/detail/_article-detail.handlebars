@@ -51,6 +51,12 @@
                 <dd>{{currentArticle.authors}}</dd>
             </dl>
         {{/if}}
+        {{#if currentArticle.version-reason}}
+            <dl>
+                <dt><i>Version reason:</i></dt>
+                <dd>{{currentArticle.version-reason}}</dd>
+            </dl>
+        {{/if}}
 
     </div>
 </section>
