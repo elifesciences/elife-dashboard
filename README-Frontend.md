@@ -6,14 +6,14 @@ This document covers the setup of the application from a front end perspective a
 
 You can setup the application to run in one of two ways:  
 
- * **mocked** which requires no dependencies, skip to [quick start](#quick-start) for this method
- * **development** requires additional third party credentials and a more involved setup, please refer to the main [readme](README.md).
+ * **mocked services** which requires no dependencies, [quick start mocked services](#quick-start-mocked-services) for this method
+ * **development** requires additional third party credentials and a more involved setup, please refer to the main [readme](README.md). You may want to run `grunt` to ensure you have the correct site assets.
 
 ## Table of Contents
 
 
 * [Requirements](#requirements)
-* [Quick start](#quick-start)
+* [Quick start mocked services](#quick-start)
 * [Aliases](#aliases)
 * [Tests](#tests)
 * [Documentation](#documentation)
@@ -27,12 +27,15 @@ You can setup the application to run in one of two ways:
 These requirements are for the front end only, additional requirements can be found on the dashboard [setup instructions](README.md).
 
 * [Python](https://www.python.org/)
-* [Node](https://nodejs.org/en/)
+* [Node](https://nodejs.org/en/) 
+  * v7.0.0
+  * [avn](https://github.com/wbyoung/avn) Automatic Version Switching for Node (optional but recommended)
 * [Grunt](http://gruntjs.com/)
+  * ```npm install -g grunt grunt-cli```
 * [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
 * [Live Reload](http://livereload.com/) - [Chrome plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) (optional)
 
-## Quick Start
+## Quick start mocked services
 
 * In the root of the project folder create your virtual environment and activate it. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
 
