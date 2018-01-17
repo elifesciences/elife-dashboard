@@ -1,0 +1,97 @@
+{
+  "id": "09003",
+  "versions": {
+    "2": {
+      "runs": {
+        "1": {
+          "run-id": "ce3068ce-b248-4172-9b1e-ebb4f73d2400",
+          "first-event-timestamp": 1515150754.0,
+          "run-number": "1",
+          "events": [
+            {
+              "event-type": "Version Lookup",
+              "event-timestamp": 1515150754.0,
+              "event-message": "Finished Version Lookup for article 09003 version: 1",
+              "event-status": "end"
+            },
+            {
+              "event-type": "Expand Article",
+              "event-timestamp": 1515150762.0,
+              "event-message": "Finished expansion of article 09003 for version 1 run ce3068ce-b248-4172-9b1e-ebb4f73d2400 into 29913.1/ce3068ce-b248-4172-9b1e-ebb4f73d2400",
+              "event-status": "end"
+            }
+          ],
+          "version-number": "2"
+        }
+      },
+      "details": {
+        "corresponding-authors": "Christopher Fang-Yen",
+        "version-number": "2",
+        "article-type": "research-article",
+        "doi": "10.7554/eLife.09003",
+        "status": "VOR",
+        "publication-status": "ready to publish",
+        "publication-date": "2018-01-16",
+        "preview-link": "",
+        "title": "Distributed rhythm generators and Caenorhabditis",
+        "authors": "Anthony D Fouad, Shelly Teng, Julian R Mark"
+      }
+    },
+    "1": {
+      "runs": {
+        "2": {
+          "run-id": "ce3068ce-b248-4172-9b1e-ebb4f73d2400",
+          "first-event-timestamp": 1515150754.0,
+          "run-number": "2",
+          "events": [
+            {
+              "event-type": "Version Lookup",
+              "event-timestamp": 1515150754.0,
+              "event-message": "Finished Version Lookup for article 09003 version: 1",
+              "event-status": "end"
+            },
+            {
+              "event-type": "Expand Article",
+              "event-timestamp": 1515150762.0,
+              "event-message": "Finished expansion of article 09003 for version 1 run ce3068ce-b248-4172-9b1e-ebb4f73d2400 into 29913.1/ce3068ce-b248-4172-9b1e-ebb4f73d2400",
+              "event-status": "end"
+            }
+          ],
+          "version-number": "1"
+        },
+        "1": {
+          "run-id": "8e9e5c86-c592-4013-ba2b-16eb9a14c666",
+          "first-event-timestamp": 1515150089.0,
+          "run-number": "1",
+          "events": [
+            {
+              "event-type": "Version Lookup",
+              "event-timestamp": 1515150089.0,
+              "event-message": "Finished Version Lookup for article 09003 version: 1",
+              "event-status": "end"
+            },
+            {
+              "event-type": "Expand Article",
+              "event-timestamp": 1515150097.0,
+              "event-message": "Finished expansion of article 09003 for version 1 run 8e9e5c86-c592-4013-ba2b-16eb9a14c666 into foo",
+              "event-status": "end"
+            }
+          ],
+          "version-number": "1"
+        }
+      },
+      "details": {
+        "corresponding-authors": "Christopher Fang-Yen",
+        "version-number": "1",
+        "article-type": "research-article",
+        "doi": "10.7554/eLife.09003",
+        "status": "VOR",
+        "publication-status": "ready to publish",
+        "publication-date": "2018-01-16",
+        "preview-link": "",
+        "title": "Distributed rhythm generators and Caenorhabditis",
+        "authors": "Anthony D Fouad, Shelly Teng, Julian R Mark"
+      }
+    }
+  }
+}
