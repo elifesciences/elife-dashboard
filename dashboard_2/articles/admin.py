@@ -7,7 +7,13 @@ from .models import (
 	Property
 )
 
+
+class PropertyAdmin(admin.ModelAdmin):
+    model = Property
+    search_fields = ('property_id',)
+
+
 admin.site.register(Article)
 admin.site.register(Event)
 admin.site.register(Message)
-admin.site.register(Property)
+admin.site.register(Property, PropertyAdmin)

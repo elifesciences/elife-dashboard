@@ -55,6 +55,7 @@ def test_will_not_add_property_if_version_value_is_zero(article):
 	data = Article.versions.all(article_id=article.article_identifier)
 	assert data == {}
 
+
 @pytest.mark.django_db
 def test_can_check_if_article_has_certain_version(article, property_authors_v1):
 	assert Article.versions.has_version(article.article_identifier, 1)
