@@ -105,6 +105,9 @@ class ArticleVersionManager(models.Manager):
 		event_data = []
 
 		for event in events:
+			# TODO check if event by type already exists in list
+
+
 			event_data.append({
 				"event-message": event.message,
 				"event-status": event.status,
@@ -169,18 +172,20 @@ class ArticleVersionManager(models.Manager):
 		properties = Property.objects.filter(article__article_identifier=article_id)
 
 		for prop in properties:
-			version = str(prop.version)
-			if version not in versions:
-				versions[version] = {
-					'details': {
-						'preview-link': '', # "https://preview--journal.elifesciences.org/content/7/e29913v1"
-						'version-number': version
-					},
-					'runs': {}
-				}
+			# check for prop.version == 0 (can possibily be of `name` 'article-id')
+			if prop.version > 0:
+				version = str(prop.version)
+				if version not in versions:
+					versions[version] = {
+						'details': {
+							'preview-link': '', # "https://preview--journal.elifesciences.org/content/7/e29913v1"
+							'version-number': version
+						},
+						'runs': {}
+					}
 
-			# process details
-			versions[version]['details'][prop.name] = prop.__dict__['{}_value'.format(prop.property_type)]
+				# process details
+				versions[version]['details'][prop.name] = prop.__dict__['{}_value'.format(prop.property_type)]
 
 		# process runs for each version
 		sorted_runs = Article.versions.get_runs(article_id=article_id)
