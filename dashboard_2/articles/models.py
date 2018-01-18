@@ -78,8 +78,6 @@ class ArticleVersionManager(models.Manager):
 		for event in events:
 			event_version = str(event.version)
 
-			# print(article_id, event.version, event.run, event.type, event.status, event.timestamp, event.event_id)  # debug
-
 			# Setup runs dict --------------------------------
 			if event_version not in runs:
 				runs[event_version] = {'runs': {}}
@@ -99,8 +97,7 @@ class ArticleVersionManager(models.Manager):
 			# -----------------------------------------------
 
 			# make sure only the latest event is processed here
-			if events_by_type.get(event.type, None):
-				# compare timestamps
+			if events_by_type[event_version][event.run].get(event.type, None):
 				if event.timestamp > events_by_type[event_version][event.run][event.type].timestamp:
 					# if newer, replace the existing event for that type e.g. 'Version Lookup'
 					events_by_type[event_version][event.run][event.type] = event
