@@ -10,7 +10,7 @@ from .models import (
 
 class PropertyAdmin(admin.ModelAdmin):
     model = Property
-    search_fields = ('property_id',)
+    search_fields = ('property_id', 'name')
 
 
 admin.site.register(Article)

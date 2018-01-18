@@ -58,24 +58,60 @@ class ArticleVersionManager(models.Manager):
 	# TODO break up and move logic
 
 	def get_runs(self, article_id: str) -> Dict:
-		"""
+		"""Each article has versions, each version has its own run(s),
+		each run consists of `Event`s, each run should only contain the
+		most recent `Event` of its `type`.
+
+		e.g. no run should contain x2 `Event`s of type 'Version Lookup'
+
+		example return value:
+
+		{}
 
 		:param article_id: str
 		:return:
 		"""
-
+		events_by_type = {}
 		runs = {}
 		events = Event.objects.filter(article__article_identifier=article_id)
 
 		for event in events:
 			event_version = str(event.version)
+
+			# print(article_id, event.version, event.run, event.type, event.status, event.timestamp, event.event_id)  # debug
+
+			# Setup runs dict --------------------------------
 			if event_version not in runs:
 				runs[event_version] = {'runs': {}}
 
 			if event.run not in runs[event_version]['runs']:
 				runs[event_version]['runs'][event.run] = []
+			# -----------------------------------------------
 
-			runs[event_version]['runs'][event.run].append(event)
+			# Setup event_by_type dict ----------------------
+			# set default dict if not present
+			if event_version not in events_by_type:
+				events_by_type[event_version] = {}
+
+			# set default dict if not present
+			if event.run not in events_by_type[event_version]:
+				events_by_type[event_version][event.run] = {}
+			# -----------------------------------------------
+
+			# make sure only the latest event is processed here
+			if events_by_type.get(event.type, None):
+				# compare timestamps
+				if event.timestamp > events_by_type[event_version][event.run][event.type].timestamp:
+					# if newer, replace the existing event for that type e.g. 'Version Lookup'
+					events_by_type[event_version][event.run][event.type] = event
+			else:
+				events_by_type[event_version][event.run][event.type] = event
+
+		# add latest events to runs
+		for version, temp_runs in events_by_type.items():
+			for run, events in temp_runs.items():
+				for event_name, event in events.items():
+					runs[version]['runs'][run].append(event)
 
 		sorted_runs = self.sort_runs(runs)
 
@@ -105,9 +141,6 @@ class ArticleVersionManager(models.Manager):
 		event_data = []
 
 		for event in events:
-			# TODO check if event by type already exists in list
-
-
 			event_data.append({
 				"event-message": event.message,
 				"event-status": event.status,
@@ -135,6 +168,11 @@ class ArticleVersionManager(models.Manager):
 				}
 			}
 		}
+
+		example return value:
+
+		{}
+
 		"""
 		sorted_runs = {}
 
@@ -265,7 +303,7 @@ class Event(models.Model):
 		ordering = ['version', 'article__article_id', 'event_id']
 
 	def __str__(self):
-		return 'ID: {0}, Article: {1}'.format(self.id, self.article_id)
+		return 'ID: {0}, Article: {1}'.format(self.event_id, self.article_id)
 
 
 class Message(models.Model):
