@@ -2,6 +2,7 @@ import time
 from typing import Dict, List, Set
 
 from django.db import models
+from django.conf import settings
 from django.db.models import Max, Q
 
 
@@ -18,14 +19,14 @@ class ArticleDetailManager(models.Manager):
 		details = {}
 
 		# get properties for that version
-		properties = Property.objects.filter(article__article_identifier=article_id, version=version)
+		properties = list(Property.objects.filter(article__article_identifier=article_id, version=version))
 
 		# dynamically add properties to data
 		for prop in properties:
 			details[prop.name] = prop.__dict__['{}_value'.format(prop.property_type)]
 
 		# find latest run for target version
-		latest_runs = Article.versions.get_runs(article_id, events=events).get(str(version))  # TODO Always pass events???
+		latest_runs = Article.versions.get_runs(article_id, events=events).get(str(version))
 		latest_run = latest_runs[max(latest_runs.keys())]  # TODO handle latest_runs not be present
 
 		# then find the latest event and add data from latest run
@@ -42,16 +43,40 @@ class ArticleDetailManager(models.Manager):
 
 		# add publication properties
 		# details['_publication-data'] = ''
-		# details['path'] = ''  # optional
+
 		# details['publication-status'] = ''
 
 		# add last few local base properties
-		details['preview-link'] = ''
+		preview_link_data = self.get_preview_link(properties=properties)
+
+		details['path'] = preview_link_data.get('path', '')
+		details['preview-link'] = preview_link_data.get('preview_link', '')
 		details['article-id'] = article_id
 		details['id'] = article_id
 		details['version'] = version
 
 		return details
+
+	@staticmethod
+	def get_preview_link(article_id: str = None, properties: List['Property'] = None) -> Dict:
+		"""Generate a preview_link string for a base url (provided from settings) and
+		a `Property` of name 'path'
+
+		:param article_id: str
+		:param properties: List[Property]
+		:return: Dict: {'preview_link': '', 'path': ''}
+		"""
+		# TODO possibily move this directly to a `Property` utility method
+
+		path = ''
+		preview_base = settings.PREVIEW_BASE_URL or ''
+
+		# filter properties for 'path' name values
+		for prop in properties:
+			if prop.name == 'path':
+				path = prop.text_value
+
+		return {'preview_link': preview_base + path, 'path': path}
 
 
 class ArticleVersionManager(models.Manager):

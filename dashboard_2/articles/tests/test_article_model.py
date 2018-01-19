@@ -78,7 +78,8 @@ def test_can_find_the_latest_version_with_events_arg(article, events_for_09003,
 
 @pytest.mark.django_db
 def test_can_get_article_detail(article, events_for_09003,
-                                properties_v1, properties_v2,):
+                                properties_v1, properties_v2,
+                                property_path_v1):
 	details = Article.details.get(article.article_identifier, 1)
 	assert details == {
 		'article-id': '09003',
@@ -90,7 +91,8 @@ def test_can_get_article_detail(article, events_for_09003,
 		'event-timestamp': 1515150762.0,
 		'event-type': "Expand Article",
 		'id': '09003',
-		'preview-link': "",
+		'path': 'content/7/e33511v1',
+		'preview-link': "https://foo.test.org/content/7/e33511v1",
 		'publication-date': "2018-01-16",
 		'publication-status': "ready to publish",
 		'run-id': "ce3068ce-b248-4172-9b1e-ebb4f73d2400",
@@ -99,6 +101,20 @@ def test_can_get_article_detail(article, events_for_09003,
 		'title': "Distributed rhythm generators and Caenorhabditis",
 		'version': 1,
 	}
+
+
+@pytest.mark.django_db
+def test_can_get_preview_link_for_article(article):
+	preview_base = 'https://foo.test.org/'
+	path = 'content/7/e33511v1'
+
+	prop = Property.objects.create(article_id=article.article_id,
+	                               name='path',
+	                               text_value=path,
+	                               property_type='text',
+	                               version=1)
+	preview_link = Article.details.get_preview_link(properties=[prop])['preview_link']
+	assert preview_link == preview_base + path
 
 """
 Current Article fields:

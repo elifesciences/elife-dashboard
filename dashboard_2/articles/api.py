@@ -19,7 +19,6 @@ class CurrentArticlesAPIView(APIView):
 		"""
 
 		:param request:
-		:param format:
 		:return:
 		"""
 		articles_by_status = {
