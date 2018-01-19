@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -26,7 +25,6 @@ SECRET_KEY = '(%7lenpn&wwj^t9p!nki60odcw9*87ldb1c2+ruj7jrlfehl-o'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 INTERNAL_IPS = '127.0.0.1'
 
@@ -74,11 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dashboard.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -93,10 +86,6 @@ DATABASES = {
     #     'NAME': os.environ.get('DB_NAME', 'postgres'),
     # }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -114,9 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -127,9 +113,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -191,12 +174,26 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': 'ddt_request_history.panels.request_history.allow_ajax',
-# }
-
 DEBUG_TOOLBAR_CONFIG = {
     'RESULTS_STORE_SIZE': 100,
 }
 
+
+# eLife
 PREVIEW_BASE_URL = 'https://foo.test.org/'
+
+# AWS
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+
+# SQS
+SQS_REGION = 'eu-west-1'
+EVENT_MONITOR_QUEUE = 'CHANGEME-event-property-incoming-queue'
+WORK_FLOW_STARTER_QUEUE = 'CHANGEME-workflow-starter-queue'
+EVENT_QUEUE_POOL_SIZE = 5
+EVENT_QUEUE_MESSAGE_COUNT = 5
+
+# Article scheduler
+# article_scheduler_url = 'http://localhost:8000/schedule/v1/article_scheduled_status/'
+# article_schedule_publication_url = 'http://localhost:8000/schedule/v1/schedule_article_publication/'
+# article_schedule_range = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
