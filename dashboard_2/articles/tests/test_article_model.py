@@ -1,5 +1,5 @@
 import pytest
-from articles.models import Article, Property
+from articles.models import Article, Event, Property
 
 
 @pytest.mark.django_db
@@ -69,6 +69,14 @@ def test_can_find_the_latest_version(article, events_for_09003,
 
 
 @pytest.mark.django_db
+def test_can_find_the_latest_version_with_events_arg(article, events_for_09003,
+                                     properties_v1, properties_v2):
+	events = list(Event.objects.filter(article__article_identifier=article.article_identifier))
+	latest_version = Article.versions.latest(events=events)
+	assert latest_version == 2
+
+
+@pytest.mark.django_db
 def test_can_get_article_detail(article, events_for_09003,
                                 properties_v1, properties_v2,):
 	details = Article.details.get(article.article_identifier, 1)
@@ -91,7 +99,6 @@ def test_can_get_article_detail(article, events_for_09003,
 		'title': "Distributed rhythm generators and Caenorhabditis",
 		'version': 1,
 	}
-
 
 """
 Current Article fields:

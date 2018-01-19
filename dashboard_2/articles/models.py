@@ -7,7 +7,7 @@ from django.db.models import Max, Q
 
 class ArticleDetailManager(models.Manager):
 
-	def get(self, article_id: str, version: int):
+	def get(self, article_id: str, version: int, events: List['Event'] = None):
 		"""Get detail information for a given article version.
 
 		:param article_id:
@@ -25,7 +25,7 @@ class ArticleDetailManager(models.Manager):
 			details[prop.name] = prop.__dict__['{}_value'.format(prop.property_type)]
 
 		# find latest run for target version
-		latest_runs = Article.versions.get_runs(article_id).get(str(version))
+		latest_runs = Article.versions.get_runs(article_id, events=events).get(str(version))  # TODO Always pass events???
 		latest_run = latest_runs[max(latest_runs.keys())]  # TODO handle latest_runs not be present
 
 		# then find the latest event and add data from latest run
@@ -57,7 +57,7 @@ class ArticleDetailManager(models.Manager):
 class ArticleVersionManager(models.Manager):
 	# TODO break up and move logic
 
-	def get_runs(self, article_id: str) -> Dict:
+	def get_runs(self, article_id: str = None, events: List['Event'] = None) -> Dict:
 		"""Each article has versions, each version has its own run(s),
 		each run consists of `Event`s, each run should only contain the
 		most recent `Event` of its `type`.
@@ -69,11 +69,14 @@ class ArticleVersionManager(models.Manager):
 		{}
 
 		:param article_id: str
+		:param events: List[Event]
 		:return:
 		"""
 		events_by_type = {}
 		runs = {}
-		events = Event.objects.filter(article__article_identifier=article_id)
+
+		if not events:
+			events = Event.objects.filter(article__article_identifier=article_id)
 
 		for event in events:
 			event_version = str(event.version)
@@ -122,16 +125,28 @@ class ArticleVersionManager(models.Manager):
 		:param version: int
 		:return: bool
 		"""
-		return Property.objects.filter(article__article_identifier=article_id).filter(version=version).count() > 0
+		return Property.objects\
+			       .filter(article__article_identifier=article_id)\
+			       .filter(version=version).count() > 0
 
-	def latest(self, article_id: str) -> int:
+	def latest(self, article_id: str = None, events: List['Event'] = None) -> int:
 		"""Finds the latest article version from its stored Events.
 
-		:param article_id: str
+		:param article_id:
+		:param events: List[Event]
 		:return: int
 		"""
-		result = Event.objects.filter(article__article_identifier=article_id).aggregate(Max('version'))
-		return result.get('version__max', 0)
+
+		if events:
+			latest = max(events, key=lambda e: e.version)
+			return latest.version
+		elif article_id:
+			result = Event.objects\
+				.filter(article__article_identifier=article_id)\
+				.aggregate(Max('version'))
+			return result.get('version__max', 0)
+		else:
+			raise Exception('Please provide args')  # TODO need to flesh out
 
 	@staticmethod
 	def sort_events(events: List['Event']) -> List:
@@ -204,7 +219,7 @@ class ArticleVersionManager(models.Manager):
 		"""
 		versions = {}
 
-		properties = Property.objects.filter(article__article_identifier=article_id)
+		properties = Article.objects.get(article_identifier=article_id).properties.all()
 
 		for prop in properties:
 			# check for prop.version == 0 (can possibily be of `name` 'article-id')
@@ -213,7 +228,7 @@ class ArticleVersionManager(models.Manager):
 				if version not in versions:
 					versions[version] = {
 						'details': {
-							'preview-link': '', # "https://preview--journal.elifesciences.org/content/7/e29913v1"
+							'preview-link': '',  # "https://preview--journal.elifesciences.org/content/7/e29913v1"
 							'version-number': version
 						},
 						'runs': {}
@@ -224,18 +239,14 @@ class ArticleVersionManager(models.Manager):
 
 		# process runs for each version
 		sorted_runs = Article.versions.get_runs(article_id=article_id)
+
 		for version in versions:
-			# TODO sort out the typing mess!
 			try:
-				# versions[str(int(version) + 1)]['runs'] = sorted_runs[version]
 				versions[version]['runs'] = sorted_runs[version]
 			except KeyError:
 				pass
 
 		return versions
-
-	def get(self, article_id, version_number):
-		pass
 
 
 class PropertyFinderManager(models.Manager):
@@ -258,8 +269,8 @@ class PropertyFinderManager(models.Manager):
 		"""
 
 		articles = Property.objects\
-			.filter(self.Q_FIND_PUB_STATUS)\
-			.exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL)\
+			.filter(self.Q_FIND_PUB_STATUS) \
+			.exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL) \
 			.values_list('article__article_identifier', flat=True)
 
 		# extract unique article identifiers
@@ -271,7 +282,7 @@ class PropertyFinderManager(models.Manager):
 class Article(models.Model):
 	# adding 'article_' to the property name is required by legacy db model
 	article_id = models.AutoField(primary_key=True, db_index=True)
-	article_identifier = models.CharField(max_length=512, null=False, unique=True)
+	article_identifier = models.CharField(max_length=512, null=False, unique=True, db_index=True)
 
 	objects = models.Manager()
 	details = ArticleDetailManager()

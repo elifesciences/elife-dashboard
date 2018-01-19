@@ -71,6 +71,14 @@ def test_can_get_article_detail(article,
 	assert response.status_code == 200
 	assert response.data == article_detail_response_data
 
+
+@pytest.mark.django_db
+def test_will_return_404_if_article_does_not_exist(client):
+	response = client.get('/api/article/9999')
+	assert response.status_code == 404
+	assert response.data == {'msg': 'article 9999 does not exist'}
+
+
 """
 Current Article fields:
 
