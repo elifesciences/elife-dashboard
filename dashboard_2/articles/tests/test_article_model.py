@@ -40,6 +40,7 @@ def test_can_get_version_data_for_multi_version_article(article,
                                                         events_for_09003,
                                                         properties_v1,
                                                         properties_v2,
+                                                        property_path_v1, property_path_v2,
                                                         article_mutli_version_response_data):
 	data = Article.versions.all(article_id=article.article_identifier)
 	assert data == article_mutli_version_response_data
@@ -121,9 +122,6 @@ Current Article fields:
 
 {
   "_publication-data": "eyJ3b3JrZmxvd19uYW1lIj",
-  "path": "content/7/e31149v1",
-  ** "preview-link": "https://preview--journal.elifesciences.org/content/7/e31149v1",
-  "publication-status": "publication issues",
 }
 
 """

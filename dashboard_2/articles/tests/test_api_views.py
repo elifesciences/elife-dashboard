@@ -63,10 +63,9 @@ def test_only_get_current_articles_back(article, article_detail_response_data, c
 @pytest.mark.django_db
 def test_can_get_article_detail(article,
                                 article_detail_response_data,
-                                client,
-                                events_for_09003,
-                                properties_v1,
-                                properties_v2):
+                                client, events_for_09003,
+                                properties_v1, properties_v2,
+                                property_path_v1, property_path_v2):
 	response = client.get('/api/article/09003')
 	assert response.status_code == 200
 	assert response.data == article_detail_response_data

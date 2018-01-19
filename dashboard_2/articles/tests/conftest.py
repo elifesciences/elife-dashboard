@@ -112,6 +112,16 @@ def property_path_v1(article):
 
 @pytest.fixture
 @pytest.mark.django_db
+def property_path_v2(article):
+    return Property.objects.create(article_id=article.article_id,
+                                   name='path',
+                                   text_value='content/7/e33511v1',
+                                   property_type='text',
+                                   version=2)
+
+
+@pytest.fixture
+@pytest.mark.django_db
 def property_publication_date_v1(article):
     return Property.objects.create(article_id=article.article_id,
                                    name='publication-date',

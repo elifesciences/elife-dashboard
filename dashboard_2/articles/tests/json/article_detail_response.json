@@ -32,7 +32,8 @@
         "status": "VOR",
         "publication-status": "ready to publish",
         "publication-date": "2018-01-16",
-        "preview-link": "",
+        "path": "content/7/e33511v1",
+        "preview-link": "https://foo.test.org/content/7/e33511v1",
         "title": "Distributed rhythm generators and Caenorhabditis",
         "authors": "Anthony D Fouad, Shelly Teng, Julian R Mark"
       }
@@ -88,7 +89,8 @@
         "status": "VOR",
         "publication-status": "ready to publish",
         "publication-date": "2018-01-16",
-        "preview-link": "",
+        "path": "content/7/e33511v1",
+        "preview-link": "https://foo.test.org/content/7/e33511v1",
         "title": "Distributed rhythm generators and Caenorhabditis",
         "authors": "Anthony D Fouad, Shelly Teng, Julian R Mark"
       }

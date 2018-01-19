@@ -253,7 +253,7 @@ class ArticleVersionManager(models.Manager):
 				if version not in versions:
 					versions[version] = {
 						'details': {
-							'preview-link': '',  # "https://preview--journal.elifesciences.org/content/7/e29913v1"
+							'preview-link': Article.details.get_preview_link(properties=properties)['preview_link'],
 							'version-number': version
 						},
 						'runs': {}
