@@ -31,24 +31,19 @@ class ArticleDetailManager(models.Manager):
 
 		# then find the latest event and add data from latest run
 		latest_event = latest_run.get('events')[-1]
+		preview_link_data = self.get_preview_link(properties=properties)
 
 		# add latest run properties
 		details['run-id'] = latest_run.get('run-id')
 		details['run'] = int(latest_run.get('run-number'))
+		details['_publication-data'] = Article.details.get_publication_data(properties=properties)
 
 		# add latest event properties
 		details['event-status'] = latest_event.get('event-status')
 		details['event-timestamp'] = latest_event.get('event-timestamp')
 		details['event-type'] = latest_event.get('event-type')
 
-		# add publication properties
-		# details['_publication-data'] = ''
-
-		# details['publication-status'] = ''
-
 		# add last few local base properties
-		preview_link_data = self.get_preview_link(properties=properties)
-
 		details['path'] = preview_link_data.get('path', '')
 		details['preview-link'] = preview_link_data.get('preview_link', '')
 		details['article-id'] = article_id
@@ -77,6 +72,23 @@ class ArticleDetailManager(models.Manager):
 				path = prop.text_value
 
 		return {'preview_link': preview_base + path, 'path': path}
+
+	@staticmethod
+	def get_publication_data(article_id: str = None, properties: List['Property'] = None) -> str:
+		"""Get _publication-data string from a `Property` of name '_publication-data'
+
+		:param article_id: str
+		:param properties: List[Property]
+		:return: str
+		"""
+		# TODO possibily move this directly to a `Property` utility method
+
+		pub_data = ''
+		for prop in properties:
+			if prop.name == '_publication-data':
+				pub_data = prop.text_value
+
+		return pub_data
 
 
 class ArticleVersionManager(models.Manager):

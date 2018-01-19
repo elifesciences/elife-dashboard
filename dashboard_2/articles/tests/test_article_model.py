@@ -94,6 +94,7 @@ def test_can_get_article_detail(article, events_for_09003,
 		'id': '09003',
 		'path': 'content/7/e33511v1',
 		'preview-link': "https://foo.test.org/content/7/e33511v1",
+		'_publication-data': '',
 		'publication-date': "2018-01-16",
 		'publication-status': "ready to publish",
 		'run-id': "ce3068ce-b248-4172-9b1e-ebb4f73d2400",
@@ -117,11 +118,14 @@ def test_can_get_preview_link_for_article(article):
 	preview_link = Article.details.get_preview_link(properties=[prop])['preview_link']
 	assert preview_link == preview_base + path
 
-"""
-Current Article fields:
 
-{
-  "_publication-data": "eyJ3b3JrZmxvd19uYW1lIj",
-}
+@pytest.mark.django_db
+def test_can_get_publication_data_for_article(article):
+	pub_data = 'eyJ3b3JrZmxvd19uYW1lIj...'
+	prop = Property.objects.create(article_id=article.article_id,
+	                               name='_publication-data',
+	                               text_value=pub_data,
+	                               property_type='text',
+	                               version=1)
 
-"""
+	assert Article.details.get_publication_data(properties=[prop]) == pub_data
