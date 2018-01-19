@@ -311,9 +311,34 @@ class PropertyFinderManager(models.Manager):
 			.values_list('article__article_identifier', flat=True)
 
 		# extract unique article identifiers
-		latest_article_ids = {article for article in articles}
+		return {article for article in articles}
 
-		return latest_article_ids
+
+class EventUtilityManager(models.Manager):
+
+	def to_article_map(self, article_ids: List[str]) -> Dict:
+		"""
+
+		# TODO **complete**
+
+		:param article_ids:
+		:return: Dict
+		"""
+
+		all_events = list(Event.objects
+		                  .select_related('article')
+		                  .filter(article__article_identifier__in=article_ids))
+
+		event_map = {}
+
+		# populate event map
+		for event in all_events:
+			if not event_map.get(event.article.article_identifier, None):
+				event_map[event.article.article_identifier] = [event]
+			else:
+				event_map[event.article.article_identifier].append(event)
+
+		return event_map
 
 
 class Article(models.Model):
@@ -342,6 +367,9 @@ class Event(models.Model):
 	timestamp = models.DateTimeField(null=False)
 	type = models.CharField(max_length=255, null=False)
 	version = models.IntegerField(default=0)
+
+	objects = models.Manager()
+	utils = EventUtilityManager()
 
 	class Meta:
 		db_table = 'event'

@@ -18,3 +18,15 @@ def test_can_create_event(event_convert_jats_v1):
 def test_can_delete_event(event_convert_jats_v1):
 	event_convert_jats_v1.delete()
 	assert Event.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_can_create_event_to_article_id_map(article, events_for_09003):
+	# get articles ids you want to include in the event_map
+	article_ids = [article.article_identifier]
+
+	event_map = Event.utils.to_article_map(article_ids=article_ids)
+
+	assert len(event_map[article.article_identifier]) == 6
+	assert type(event_map[article.article_identifier][0]) == Event
+
