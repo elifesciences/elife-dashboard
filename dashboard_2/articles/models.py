@@ -156,18 +156,6 @@ class ArticleVersionManager(models.Manager):
 
 		return sorted_runs
 
-	def has_version(self, article_id: str, version: int) -> bool:
-		# TODO Needs to be moved from here!
-		"""Allows checking whether an article has a certain version.
-
-		:param article_id: str
-		:param version: int
-		:return: bool
-		"""
-		return Property.objects\
-			       .filter(article__article_identifier=article_id)\
-			       .filter(version=version).count() > 0
-
 	def latest(self, article_id: str = None, events: List['Event'] = None) -> int:
 		"""Finds the latest article version from its stored Events.
 
@@ -305,6 +293,17 @@ class PropertyFinderManager(models.Manager):
 	Q_FIND_HIDDEN = Q(text_value__exact='hidden')
 	Q_FIND_PUBLISHED = Q(text_value__exact='published')
 	Q_FIND_NULL = Q(text_value__isnull=True)
+
+	def article_has_version(self, article_id: str, version: int) -> bool:
+		"""Allows checking whether an article has a certain version.
+
+		:param article_id: str
+		:param version: int
+		:return: bool
+		"""
+		return self.model.objects\
+			       .filter(article__article_identifier=article_id)\
+			       .filter(version=version).count() > 0
 
 	def latest_articles(self) -> Set[str]:
 		"""Find latest `Article`s by article_identifier by using `Property` values.

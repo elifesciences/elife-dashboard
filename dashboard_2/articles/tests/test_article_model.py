@@ -58,11 +58,6 @@ def test_will_not_add_property_if_version_value_is_zero(article):
 
 
 @pytest.mark.django_db
-def test_can_check_if_article_has_certain_version(article, property_authors_v1):
-	assert Article.versions.has_version(article.article_identifier, 1)
-
-
-@pytest.mark.django_db
 def test_can_find_the_latest_version(article, events_for_09003,
                                      properties_v1, properties_v2):
 	latest_version = Article.versions.latest(article_id=article.article_identifier)

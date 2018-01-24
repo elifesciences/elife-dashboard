@@ -79,3 +79,8 @@ def test_can_get_publication_data_for_article(article):
 	                               version=1)
 
 	assert Property.find.publication_data(properties=[prop]) == pub_data
+
+
+@pytest.mark.django_db
+def test_can_check_if_article_has_certain_version(article, property_authors_v1):
+	assert Property.find.article_has_version(article.article_identifier, 1)
