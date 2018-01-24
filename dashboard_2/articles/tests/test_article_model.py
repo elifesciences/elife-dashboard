@@ -129,3 +129,27 @@ def test_can_get_publication_data_for_article(article):
 	                               version=1)
 
 	assert Article.details.get_publication_data(properties=[prop]) == pub_data
+
+
+@pytest.mark.django_db
+def test_can_get_publication_status_for_article(article_complete):
+	status, msg = Article.versions.get_publication_status(article_id=article_complete.article_identifier,
+	                                                      version=1, run=1)
+	assert status == 'ready to publish'
+	assert msg == ''
+
+
+@pytest.mark.django_db
+def test_can_get_error_pub_status_and_message(article_complete):
+	Event.objects.create(version=1,
+	                     run='8e9e5c86-c592-4013-ba2b-16eb9a14c666',
+	                     type='Some bad things',
+	                     timestamp='2019-01-08 14:14:49.619248',
+	                     status='error',
+	                     message='Some error with 09003',
+	                     article_id=article_complete.article_id)
+
+	status, msg = Article.versions.get_publication_status(article_id=article_complete.article_identifier,
+	                                                      version=1, run=1)
+	assert status == 'error'
+	assert msg == 'Some error with 09003'
