@@ -18,10 +18,9 @@ class ArticleDetailManager(models.Manager):
 	def get(self, article_id: str, version: int, events: List['Event'] = None) -> Dict:
 		"""Get detail information for a given article version.
 
-		:param article_id:
-		:param version:
-		:param events: List[Event]
-		:return:
+		example return value:
+
+		{}  # TODO complete
 		"""
 
 		details = {}
@@ -69,10 +68,6 @@ class ArticleVersionManager(models.Manager):
 	def get_publication_status(self, article_id: str, version: int, run: int) -> Tuple[str, str]:
 		"""Return publication status string target version. Run value is used if
 		publication status has a value of ERROR_STATUS.
-
-		:param article_id: str
-		:param version: int
-		:return: Tuple(str, str)
 		"""
 		publication_status = ''
 		message = ''  # will always be empty unless publication_status == ERROR_STATUS
@@ -105,11 +100,7 @@ class ArticleVersionManager(models.Manager):
 
 		example return value:
 
-		{}
-
-		:param article_id: str
-		:param events: List[Event]
-		:return: Dict
+		{}  # TODO complete
 		"""
 		events_by_type = {}
 		runs = {}
@@ -157,26 +148,21 @@ class ArticleVersionManager(models.Manager):
 		return sorted_runs
 
 	def latest(self, article_id: str = None, events: List['Event'] = None) -> int:
-		"""Finds the latest article version from its stored Events.
-
-		:param article_id:
-		:param events: List[Event]
-		:return: int
-		"""
+		"""Finds the latest article version from its stored Events."""
 
 		if events:
 			latest = max(events, key=lambda e: e.version)
 			return latest.version
 		elif article_id:
-			result = Event.objects\
-				.filter(article__article_identifier=article_id)\
-				.aggregate(Max('version'))
+			result = Event.objects.filter(article__article_identifier=article_id).aggregate(Max('version'))
 			return result.get('version__max', 0)
 		else:
 			raise Exception('Please provide args')  # TODO need to flesh out
 
 	@staticmethod
-	def sort_events(events: List['Event']) -> List:
+	def sort_events(events: List['Event']) -> List[Dict]:
+		"""Returns a sorted representation of `Event` objects"""
+
 		event_data = []
 
 		for event in events:
@@ -210,8 +196,7 @@ class ArticleVersionManager(models.Manager):
 
 		example return value:
 
-		{}
-
+		{}  # TODO complete
 		"""
 		sorted_runs = {}
 
@@ -230,8 +215,9 @@ class ArticleVersionManager(models.Manager):
 				}
 
 			run_num = 1
+			run_values = [run for run in runs_by_first_event.values()]
 
-			for run in sorted([run for run in runs_by_first_event.values()], key=lambda x: x.get('first-event-timestamp')):
+			for run in sorted(run_values, key=lambda x: x.get('first-event-timestamp')):
 				sorted_runs[version][str(run_num)] = run
 				sorted_runs[version][str(run_num)]['run-number'] = str(run_num)
 				run_num += 1
@@ -239,10 +225,54 @@ class ArticleVersionManager(models.Manager):
 		return sorted_runs
 
 	def all(self, article_id: str) -> Dict:
-		"""
+		"""Return detailed article data by versions and runs.
 
-		:param article_id: str
-		:return: Dict
+		example return value:
+
+		{
+		  "1": {
+		    "details": {
+		      "article-type": "research-article",
+		      "authors": "Anthony D Fouad, Shelly Teng, Julian R Mark",
+		      "corresponding-authors": "Christopher Fang-Yen",
+		      "doi": "10.7554/eLife.29913",
+		      "preview-link": "https://preview--journal.elifesciences.org/content/7/e29913v1",
+		      "publication-date": "2018-01-16",
+		      "publication-status": "ready to publish",
+		      "status": "VOR",
+		      "title": "Distributed rhythm generators underlie <italic>Caenorhabditis ...",
+		      "version-number": "1"
+		    },
+		    "runs": {
+		      "1": {
+		        "events": [
+		          {
+		            "event-message": "Finished Version Lookup for article 29913 version: 1",
+		            "event-status": "end",
+		            "event-timestamp": 1515150089,
+		            "event-type": "Version Lookup"
+		          },
+		          {
+		            "event-message": "Finished expansion of article 29913 for version 1 run 8e9e5c86-c5ba2b-1...",
+		            "event-status": "end",
+		            "event-timestamp": 1515150097,
+		            "event-type": "Expand Article"
+		          },
+		          {
+		            "event-message": "Error in send of article properties to dashboard for article ...",
+		            "event-status": "error",
+		            "event-timestamp": 1515168085,
+		            "event-type": "Send dashboard properties"
+		          }
+		        ],
+		        "first-event-timestamp": 1515150089,
+		        "run-id": "8e9e5c86-c592-4013-ba2b-16eb9a14c666",
+		        "run-number": "1",
+		        "version-number": "1"
+		      }
+		    }
+		  }
+		}
 		"""
 
 		properties = []
@@ -295,12 +325,7 @@ class PropertyFinderManager(models.Manager):
 	Q_FIND_NULL = Q(text_value__isnull=True)
 
 	def article_has_version(self, article_id: str, version: int) -> bool:
-		"""Allows checking whether an article has a certain version.
-
-		:param article_id: str
-		:param version: int
-		:return: bool
-		"""
+		"""Allows checking whether an article has a certain version."""
 		return self.model.objects\
 			       .filter(article__article_identifier=article_id)\
 			       .filter(version=version).count() > 0
@@ -310,8 +335,6 @@ class PropertyFinderManager(models.Manager):
 
 		latest/current article(s) are defined by having a `Property` with the `name`
 		of 'publication-status' and not having the value 'hidden' or 'published'
-
-		:return: Set[str]
 		"""
 
 		articles = self.model.objects\
@@ -322,17 +345,13 @@ class PropertyFinderManager(models.Manager):
 		# extract unique article identifiers
 		return {article for article in articles}
 
-	def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict:
+	def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict[str, str]:
 		"""Generate a preview_link string including a base url and a `Property` of name 'path'.
 
 		If an article_id is provided the `Property` objects will be obtained.
 
 		If properties are provided then they will be used, negating the need for a query.
 		(this helps reduce queries if you already have access to the `Property` objects)
-
-		:param article_id: str
-		:param properties: List[Property]
-		:return: Dict: {'preview_link': '', 'path': ''}
 		"""
 
 		path = ''
@@ -353,10 +372,6 @@ class PropertyFinderManager(models.Manager):
 
 		If properties are provided then they will be used, negating the need for a query.
 		(this helps reduce queries if you already have access to the `Property` objects)
-
-		:param article_id: str
-		:param properties: List[Property]
-		:return: str
 		"""
 
 		pub_data = ''
@@ -373,7 +388,7 @@ class PropertyFinderManager(models.Manager):
 
 class EventUtilityManager(models.Manager):
 
-	def to_article_map(self, article_ids: List[str]) -> Dict:
+	def to_article_map(self, article_ids: List[str]) -> Dict[str, List['Event']]:
 		"""Return a dict of article_id keys with a list of `Event` objects as a value.
 
 		example return value:
@@ -385,9 +400,6 @@ class EventUtilityManager(models.Manager):
 				<Event: ID: 94344, Article: 09003>
 			]
 		}
-
-		:param article_ids: List[str]
-		:return: Dict
 		"""
 
 		all_events = list(self.model.objects
@@ -471,22 +483,6 @@ class Property(models.Model):
 	class Meta:
 		db_table = 'property'
 		verbose_name_plural = 'Properties'
-
-	"""
-	some possible property names from messages:
-	- _publication-data
-	- article-id
-	- article-type
-	- authors
-	- corresponding-authors
-	- doi
-	- path
-	- publication-date
-	- publication-status
-	- status
-	- title
-
-	"""
 
 	def __str__(self) -> str:
 		return 'ID: {0}, Article: {1}'.format(self.property_id, self.article_id)

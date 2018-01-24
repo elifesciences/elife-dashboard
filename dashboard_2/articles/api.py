@@ -3,6 +3,7 @@ import logging
 from django.db.models import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,11 +16,9 @@ logger = logging.getLogger(__name__)
 
 class CurrentArticlesAPIView(APIView):
 
-	def get(self, request):
+	def get(self, request: Request) -> Response:
 		""" TODO **complete**
-
-		:param request:
-		:return:
+		
 		"""
 		articles_by_status = {
 			'error': [],
@@ -40,7 +39,7 @@ class CurrentArticlesAPIView(APIView):
 			latest_version = Article.versions.latest(article_id, events=events)
 			current_articles[article_id] = Article.details.get(article_id, latest_version, events=events)
 
-		# get scheduled publication dates (from article-scheduler)
+		# TODO get scheduled publication dates (from article-scheduler)
 		current_schedules = {}
 
 		# Assign articles to status lists
@@ -67,9 +66,9 @@ class CurrentArticlesAPIView(APIView):
 
 class ArticleDetailAPIView(APIView):
 
-	def get(self, request, article_id):
+	def get(self, request: Request, article_id: str) -> Response:
 		"""
-		Return article detail data.
+		Return article detail data for target article_id.
 
 		example return data:
 		{
@@ -131,7 +130,7 @@ class ArticleDetailAPIView(APIView):
 
 class ArticlePublicationStatusAPIView(APIView):
 
-	def post(self, request):
+	def post(self, request: Request) -> Response:
 		"""Return publication status data for target article version.
 
 		expected input data:
@@ -157,9 +156,6 @@ class ArticlePublicationStatusAPIView(APIView):
 		        }
 		    ]
 		}
-
-		:param request:
-		:return:
 		"""
 		publication_statuses = []
 
