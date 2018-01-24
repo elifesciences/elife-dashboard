@@ -106,18 +106,6 @@ def test_can_get_article_detail(article, events_for_09003,
 
 
 @pytest.mark.django_db
-def test_can_get_publication_data_for_article(article):
-	pub_data = 'eyJ3b3JrZmxvd19uYW1lIj...'
-	prop = Property.objects.create(article_id=article.article_id,
-	                               name='_publication-data',
-	                               text_value=pub_data,
-	                               property_type='text',
-	                               version=1)
-
-	assert Article.details.get_publication_data(properties=[prop]) == pub_data
-
-
-@pytest.mark.django_db
 def test_can_get_publication_status_for_article(article_complete):
 	status, msg = Article.versions.get_publication_status(article_id=article_complete.article_identifier,
 	                                                      version=1, run=1)

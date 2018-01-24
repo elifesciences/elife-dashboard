@@ -67,3 +67,15 @@ def test_can_get_preview_link_for_article(article):
 	                               version=1)
 	preview_link = Property.find.preview_link(properties=[prop])['preview_link']
 	assert preview_link == preview_base + path
+
+
+@pytest.mark.django_db
+def test_can_get_publication_data_for_article(article):
+	pub_data = 'eyJ3b3JrZmxvd19uYW1lIj...'
+	prop = Property.objects.create(article_id=article.article_id,
+	                               name='_publication-data',
+	                               text_value=pub_data,
+	                               property_type='text',
+	                               version=1)
+
+	assert Property.find.publication_data(properties=[prop]) == pub_data

@@ -44,7 +44,7 @@ class ArticleDetailManager(models.Manager):
 		# add latest run properties
 		details['run-id'] = latest_run.get('run-id')
 		details['run'] = int(latest_run.get('run-number'))
-		details['_publication-data'] = self.model.details.get_publication_data(properties=properties)
+		details['_publication-data'] = Property.find.publication_data(properties=properties)
 
 		# add latest event properties
 		details['event-status'] = latest_event.get('event-status')
@@ -59,23 +59,6 @@ class ArticleDetailManager(models.Manager):
 		details['version'] = version
 
 		return details
-
-	@staticmethod
-	def get_publication_data(article_id: str = None, properties: List['Property'] = None) -> str:
-		"""Get _publication-data string from a `Property` of name '_publication-data'
-
-		:param article_id: str
-		:param properties: List[Property]
-		:return: str
-		"""
-		# TODO possibily move this directly to a `Property` utility method
-
-		pub_data = ''
-		for prop in properties:
-			if prop.name == '_publication-data':
-				pub_data = prop.text_value
-
-		return pub_data
 
 
 class ArticleVersionManager(models.Manager):
@@ -323,6 +306,23 @@ class PropertyFinderManager(models.Manager):
 	Q_FIND_PUBLISHED = Q(text_value__exact='published')
 	Q_FIND_NULL = Q(text_value__isnull=True)
 
+	def latest_articles(self) -> Set[str]:
+		"""Find latest `Article`s by article_identifier by using `Property` values.
+
+		latest/current article(s) are defined by having a `Property` with the `name`
+		of 'publication-status' and not having the value 'hidden' or 'published'
+
+		:return: Set[str]
+		"""
+
+		articles = self.model.objects\
+			.filter(self.Q_FIND_PUB_STATUS) \
+			.exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL) \
+			.values_list('article__article_identifier', flat=True)
+
+		# extract unique article identifiers
+		return {article for article in articles}
+
 	def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict:
 		"""Generate a preview_link string including a base url and a `Property` of name 'path'.
 
@@ -347,22 +347,29 @@ class PropertyFinderManager(models.Manager):
 
 		return {'preview_link': self.PREVIEW_BASE_URL + path, 'path': path}
 
-	def latest_articles(self) -> Set[str]:
-		"""Find latest `Article`s by article_identifier by using `Property` values.
+	def publication_data(self, article_id: str = None, properties: List['Property'] = None) -> str:
+		"""Get publication data string from a `Property` of name '_publication-data'
 
-		latest/current article(s) are defined by having a `Property` with the `name`
-		of 'publication-status' and not having the value 'hidden' or 'published'
+		If an article_id is provided the `Property` objects will be obtained.
 
-		:return: Set[str]
+		If properties are provided then they will be used, negating the need for a query.
+		(this helps reduce queries if you already have access to the `Property` objects)
+
+		:param article_id: str
+		:param properties: List[Property]
+		:return: str
 		"""
 
-		articles = self.model.objects\
-			.filter(self.Q_FIND_PUB_STATUS) \
-			.exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL) \
-			.values_list('article__article_identifier', flat=True)
+		pub_data = ''
 
-		# extract unique article identifiers
-		return {article for article in articles}
+		if article_id:
+			properties = self.model.objects.filter(article__article_identifier=article_id)
+
+		for prop in properties:
+			if prop.name == '_publication-data':
+				pub_data = prop.text_value
+
+		return pub_data
 
 
 class EventUtilityManager(models.Manager):
