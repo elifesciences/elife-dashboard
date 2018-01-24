@@ -53,3 +53,17 @@ def test_can_get_latest_article_ids_excluding_hidden_articles(article, propertie
 
 	# make sure 'already published' article id is not present
 	assert article_2.article_identifier not in latest_article_ids
+
+
+@pytest.mark.django_db
+def test_can_get_preview_link_for_article(article):
+	preview_base = 'https://foo.test.org/'
+	path = 'content/7/e33511v1'
+
+	prop = Property.objects.create(article_id=article.article_id,
+	                               name='path',
+	                               text_value=path,
+	                               property_type='text',
+	                               version=1)
+	preview_link = Property.find.preview_link(properties=[prop])['preview_link']
+	assert preview_link == preview_base + path

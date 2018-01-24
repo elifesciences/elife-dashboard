@@ -34,17 +34,17 @@ class ArticleDetailManager(models.Manager):
 			details[prop.name] = prop.__dict__['{}_value'.format(prop.property_type)]
 
 		# find latest run for target version
-		latest_runs = Article.versions.get_runs(article_id, events=events).get(str(version))
+		latest_runs = self.model.versions.get_runs(article_id, events=events).get(str(version))
 		latest_run = latest_runs[max(latest_runs.keys())]  # TODO handle latest_runs not be present
 
 		# then find the latest event and add data from latest run
 		latest_event = latest_run.get('events')[-1]
-		preview_link_data = self.get_preview_link(properties=properties)
+		preview_link_data = Property.find.preview_link(properties=properties)
 
 		# add latest run properties
 		details['run-id'] = latest_run.get('run-id')
 		details['run'] = int(latest_run.get('run-number'))
-		details['_publication-data'] = Article.details.get_publication_data(properties=properties)
+		details['_publication-data'] = self.model.details.get_publication_data(properties=properties)
 
 		# add latest event properties
 		details['event-status'] = latest_event.get('event-status')
@@ -59,27 +59,6 @@ class ArticleDetailManager(models.Manager):
 		details['version'] = version
 
 		return details
-
-	@staticmethod
-	def get_preview_link(article_id: str = None, properties: List['Property'] = None) -> Dict:
-		"""Generate a preview_link string for a base url (provided from settings) and
-		a `Property` of name 'path'
-
-		:param article_id: str
-		:param properties: List[Property]
-		:return: Dict: {'preview_link': '', 'path': ''}
-		"""
-		# TODO possibily move this directly to a `Property` utility method
-
-		path = ''
-		preview_base = settings.PREVIEW_BASE_URL or ''
-
-		# filter properties for 'path' name values
-		for prop in properties:
-			if prop.name == 'path':
-				path = prop.text_value
-
-		return {'preview_link': preview_base + path, 'path': path}
 
 	@staticmethod
 	def get_publication_data(article_id: str = None, properties: List['Property'] = None) -> str:
@@ -115,7 +94,7 @@ class ArticleVersionManager(models.Manager):
 		publication_status = ''
 		message = ''  # will always be empty unless publication_status == ERROR_STATUS
 
-		article_versions = Article.versions.all(article_id=article_id)
+		article_versions = self.model.versions.all(article_id=article_id)
 
 		# grab data for only the required version
 		target_version = article_versions.get(str(version)) or {}
@@ -147,7 +126,7 @@ class ArticleVersionManager(models.Manager):
 
 		:param article_id: str
 		:param events: List[Event]
-		:return:
+		:return: Dict
 		"""
 		events_by_type = {}
 		runs = {}
@@ -292,14 +271,14 @@ class ArticleVersionManager(models.Manager):
 		"""
 
 		:param article_id: str
-		:return:
+		:return: Dict
 		"""
 
 		properties = []
 		versions = {}
 
 		try:
-			properties = Article.objects.get(article_identifier=article_id).properties.all()
+			properties = self.model.objects.get(article_identifier=article_id).properties.all()
 		except ObjectDoesNotExist as err:
 			logger.exception(err)
 
@@ -310,7 +289,7 @@ class ArticleVersionManager(models.Manager):
 				if version not in versions:
 					versions[version] = {
 						'details': {
-							'preview-link': Article.details.get_preview_link(properties=properties)['preview_link'],
+							'preview-link': Property.find.preview_link(properties=properties)['preview_link'],
 							'version-number': version
 						},
 						'runs': {}
@@ -335,6 +314,7 @@ class ArticleVersionManager(models.Manager):
 
 class PropertyFinderManager(models.Manager):
 
+	PREVIEW_BASE_URL = settings.PREVIEW_BASE_URL or ''
 	PUBLICATION_STATUS = 'publication-status'
 	HIDDEN_STATUSES = ('hidden', 'published')
 
@@ -342,6 +322,30 @@ class PropertyFinderManager(models.Manager):
 	Q_FIND_HIDDEN = Q(text_value__exact='hidden')
 	Q_FIND_PUBLISHED = Q(text_value__exact='published')
 	Q_FIND_NULL = Q(text_value__isnull=True)
+
+	def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict:
+		"""Generate a preview_link string including a base url and a `Property` of name 'path'.
+
+		If an article_id is provided the `Property` objects will be obtained.
+
+		If properties are provided then they will be used, negating the need for a query.
+		(this helps reduce queries if you already have access to the `Property` objects)
+
+		:param article_id: str
+		:param properties: List[Property]
+		:return: Dict: {'preview_link': '', 'path': ''}
+		"""
+
+		path = ''
+
+		if article_id:
+			properties = self.model.objects.filter(article__article_identifier=article_id)
+
+		for prop in properties:
+			if prop.name == 'path':
+				path = prop.text_value
+
+		return {'preview_link': self.PREVIEW_BASE_URL + path, 'path': path}
 
 	def latest_articles(self) -> Set[str]:
 		"""Find latest `Article`s by article_identifier by using `Property` values.
@@ -364,11 +368,19 @@ class PropertyFinderManager(models.Manager):
 class EventUtilityManager(models.Manager):
 
 	def to_article_map(self, article_ids: List[str]) -> Dict:
-		"""
+		"""Return a dict of article_id keys with a list of `Event` objects as a value.
 
-		# TODO **complete**
+		example return value:
 
-		:param article_ids:
+		{
+			'09003': [
+				<Event: ID: 94342, Article: 09003>,
+				<Event: ID: 94343, Article: 09003>,
+				<Event: ID: 94344, Article: 09003>
+			]
+		}
+
+		:param article_ids: List[str]
 		:return: Dict
 		"""
 
