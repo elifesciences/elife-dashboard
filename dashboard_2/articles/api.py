@@ -2,10 +2,12 @@ import logging
 
 from django.db.models import ObjectDoesNotExist
 from rest_framework import status
-from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Article, Event, Property
+from .serializers import ArticlePublicationStatusSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 class CurrentArticlesAPIView(APIView):
 
 	def get(self, request):
-		"""
+		""" TODO **complete**
 
 		:param request:
 		:return:
@@ -69,6 +71,7 @@ class ArticleDetailAPIView(APIView):
 		"""
 		Return article detail data.
 
+		example return data:
 		{
 			"id": "29913
 			"versions": {
@@ -118,13 +121,71 @@ class ArticleDetailAPIView(APIView):
 		}
 		"""
 
-		try:
-			data = {
-				'id': article_id,
-				'versions': Article.versions.all(article_id=article_id)
-			}
-		except ObjectDoesNotExist:
-			return Response({'msg': 'article {} does not exist'.format(article_id)},
-			                status=status.HTTP_404_NOT_FOUND)
+		data = {
+			'id': article_id,
+			'versions': Article.versions.all(article_id=article_id)
+		}
 
 		return Response(data, status=status.HTTP_200_OK)
+
+
+class ArticlePublicationStatusAPIView(APIView):
+
+	def post(self, request):
+		"""Return publication status data for target article version.
+
+		expected input data:
+		{
+			"articles": [
+				{
+					"id": "31149",
+					"version": 1,
+					"run": 1
+				}
+			]
+		}
+
+		example return value:
+		{
+		    "articles": [
+		        {
+		            "id": "31149",
+		            "message": " Lax has not published article 31149 result from lax:error; message from lax: lax failed attempting to handle our request: failed to parse response from lax, expecting json, got error 'Expecting value: line 1 column 1 (char 0)' from stdout ''",
+		            "publication-status": "error",
+		            "run": 1,
+		            "version": 1
+		        }
+		    ]
+		}
+
+		:param request:
+		:return:
+		"""
+		publication_statuses = []
+
+		serializer = ArticlePublicationStatusSerializer(data=request.data.get('articles'), many=True)
+
+		try:
+			if serializer.is_valid(raise_exception=True):
+				target_articles = serializer.data
+
+				for article in target_articles:
+					_id = article.get('id')
+					run = article.get('run')
+					version = article.get('version')
+
+					pub_status, msg = Article.versions.get_publication_status(article_id=_id, version=version, run=run)
+
+					publication_statuses.append({
+						'id': _id,
+						'message': msg,
+						'publication-status': pub_status,
+						'run': run,
+						'version': version
+					})
+
+		except (AttributeError, ObjectDoesNotExist, ValidationError) as err:
+			logger.exception(err)
+			return Response({'msg': err}, status=status.HTTP_400_BAD_REQUEST)
+
+		return Response({'articles': publication_statuses}, status=status.HTTP_200_OK)

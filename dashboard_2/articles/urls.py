@@ -1,10 +1,11 @@
 from django.urls import path
-from .api import ArticleDetailAPIView, CurrentArticlesAPIView
+from .api import (
+    ArticleDetailAPIView, ArticlePublicationStatusAPIView,
+    CurrentArticlesAPIView
+)
 from .views import (
-    IndexView,
-    CurrentPageView,
-    DetailPageView,
-    ScheduledPageView,
+    CurrentPageView, DetailPageView,
+    IndexView, ScheduledPageView,
 )
 
 app_name = 'articles'
@@ -19,15 +20,15 @@ urlpatterns = [
          DetailPageView.as_view(),
          name='detail-id-version-run_id'),
     path('api/article/<str:article_id>', ArticleDetailAPIView.as_view(), name='api-article-detail'),
+    path('api/article_publication_status', ArticlePublicationStatusAPIView.as_view(), name='api-article-pub-status'),
     path('api/current', CurrentArticlesAPIView.as_view(), name='api-current-articles'),
     path('', IndexView.as_view(), name='index'),
 
-
-    # '/api/article_publication_status', methods=['POST']
     # '/api/article_schedule_for_range/from/<from_date>/to/<to_date>/'
-    # '/api/article_scheduled_status', methods=['POST']
-    # '/api/queue_article_publication', methods=['POST'] + remote [POST]
-    # '/api/schedule_article_publication', methods=['POST']
+
+    # '/api/article_scheduled_status', methods=['POST'] + remote[POST]
+    # '/api/queue_article_publication', methods=['POST'] + remote SQS
+    # '/api/schedule_article_publication', methods=['POST'] + remote[POST]
 
 ]
 

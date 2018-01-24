@@ -3,6 +3,8 @@ import os
 import time
 
 import pytest
+from rest_framework.test import APIClient
+
 from articles.models import (
     Article,
     Event,
@@ -17,9 +19,20 @@ def json_data_path():
 
 
 @pytest.fixture
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture
 @pytest.mark.django_db
 def article():
     return Article.objects.create(article_identifier='09003')
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def article_complete(article, events_for_09003, properties_v1, properties_v2):
+    return article
 
 
 @pytest.fixture

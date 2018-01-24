@@ -1,18 +1,26 @@
+import logging
 import time
-from typing import Dict, List, Set
+from typing import (
+	Dict, List, Set, Tuple
+)
 
 from django.db import models
 from django.conf import settings
 from django.db.models import Max, Q
+from django.db.models import ObjectDoesNotExist
+
+
+logger = logging.getLogger(__name__)
 
 
 class ArticleDetailManager(models.Manager):
 
-	def get(self, article_id: str, version: int, events: List['Event'] = None):
+	def get(self, article_id: str, version: int, events: List['Event'] = None) -> Dict:
 		"""Get detail information for a given article version.
 
 		:param article_id:
 		:param version:
+		:param events: List[Event]
 		:return:
 		"""
 
@@ -92,7 +100,39 @@ class ArticleDetailManager(models.Manager):
 
 
 class ArticleVersionManager(models.Manager):
-	# TODO break up and move logic
+
+	ERROR_STATUS = 'error'
+	PUBLISHED_STATUS = 'published'
+
+	def get_publication_status(self, article_id: str, version: int, run: int) -> Tuple[str, str]:
+		"""Return publication status string target version. Run value is used if
+		publication status has a value of ERROR_STATUS.
+
+		:param article_id: str
+		:param version: int
+		:return: Tuple(str, str)
+		"""
+		publication_status = ''
+		message = ''  # will always be empty unless publication_status == ERROR_STATUS
+
+		article_versions = Article.versions.all(article_id=article_id)
+
+		# grab data for only the required version
+		target_version = article_versions.get(str(version)) or {}
+		publication_status = target_version.get('details', {}).get('publication-status')
+
+		try:
+			if publication_status != self.PUBLISHED_STATUS:
+				# if not published, check the status of the last event in the run
+				last_event = target_version.get('runs', {}).get(str(version), {}).get('events', [])[-1] or {}
+
+				if last_event['event-status'] == self.ERROR_STATUS:
+					publication_status = last_event['event-status']
+					message = last_event['event-message']
+		except IndexError as err:
+			logger.exception(err)
+
+		return publication_status, message
 
 	def get_runs(self, article_id: str = None, events: List['Event'] = None) -> Dict:
 		"""Each article has versions, each version has its own run(s),
@@ -248,15 +288,20 @@ class ArticleVersionManager(models.Manager):
 
 		return sorted_runs
 
-	def all(self, article_id: str):
+	def all(self, article_id: str) -> Dict:
 		"""
 
 		:param article_id: str
 		:return:
 		"""
+
+		properties = []
 		versions = {}
 
-		properties = Article.objects.get(article_identifier=article_id).properties.all()
+		try:
+			properties = Article.objects.get(article_identifier=article_id).properties.all()
+		except ObjectDoesNotExist as err:
+			logger.exception(err)
 
 		for prop in properties:
 			# check for prop.version == 0 (can possibily be of `name` 'article-id')
@@ -285,6 +330,8 @@ class ArticleVersionManager(models.Manager):
 
 		return versions
 
+	# TODO get method for a single version
+
 
 class PropertyFinderManager(models.Manager):
 
@@ -297,7 +344,7 @@ class PropertyFinderManager(models.Manager):
 	Q_FIND_NULL = Q(text_value__isnull=True)
 
 	def latest_articles(self) -> Set[str]:
-		"""Find latest `Article`s by identifier by using `Property` values.
+		"""Find latest `Article`s by article_identifier by using `Property` values.
 
 		latest/current article(s) are defined by having a `Property` with the `name`
 		of 'publication-status' and not having the value 'hidden' or 'published'
@@ -305,7 +352,7 @@ class PropertyFinderManager(models.Manager):
 		:return: Set[str]
 		"""
 
-		articles = Property.objects\
+		articles = self.model.objects\
 			.filter(self.Q_FIND_PUB_STATUS) \
 			.exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL) \
 			.values_list('article__article_identifier', flat=True)
@@ -325,7 +372,7 @@ class EventUtilityManager(models.Manager):
 		:return: Dict
 		"""
 
-		all_events = list(Event.objects
+		all_events = list(self.model.objects
 		                  .select_related('article')
 		                  .filter(article__article_identifier__in=article_ids))
 
@@ -354,7 +401,7 @@ class Article(models.Model):
 		db_table = 'article'
 		ordering = ['article_id']
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return 'ID: {0}, {1}'.format(self.article_id, self.article_identifier)
 
 
@@ -375,7 +422,7 @@ class Event(models.Model):
 		db_table = 'event'
 		ordering = ['version', 'article__article_id', 'event_id']
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return 'ID: {0}, Article: {1}'.format(self.event_id, self.article_id)
 
 
@@ -386,7 +433,7 @@ class Message(models.Model):
 	class Meta:
 		db_table = 'message'
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return 'ID: {0}, {1}'.format(self.message_id, self.timestamp)
 
 
@@ -423,5 +470,5 @@ class Property(models.Model):
 
 	"""
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return 'ID: {0}, Article: {1}'.format(self.property_id, self.article_id)
