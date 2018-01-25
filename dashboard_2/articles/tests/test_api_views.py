@@ -1,23 +1,27 @@
+from typing import Dict
+
+from django.test import Client
 import pytest
+from rest_framework.test import APIClient
 
 from articles.models import Article, Event, Property
 
 
 @pytest.mark.django_db
-def test_can_get_current_articles(article_complete, article_detail_response_data, client):
+def test_can_get_current_articles(article_complete: Article,    client: Client):
 	response = client.get('/api/current')
 	assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_can_find_article_in_uir_status(article_complete, article_detail_response_data, client):
+def test_can_find_article_in_uir_status(article_complete: Article, client: Client):
 	response = client.get('/api/current')
 	assert response.status_code == 200
 	assert len(response.data['uir']) == 1
 
 
 @pytest.mark.django_db
-def test_can_find_article_in_error_status(article_complete, article_detail_response_data, client):
+def test_can_find_article_in_error_status(article_complete: Article, client: Client):
 	Event.objects.create(version=2,
 	                     run='ce3068ce-b248-4172-9b1e-ebb4f73d2400',
 	                     type='Some bad things',
@@ -38,7 +42,7 @@ def test_can_find_article_in_error_status(article_complete, article_detail_respo
 
 @pytest.mark.skip
 @pytest.mark.django_db
-def test_only_get_current_articles_back(article_complete, article_detail_response_data, client):
+def test_only_get_current_articles_back(article_complete: Article, client: Client):
 	# init exsiting articles
 	# create an already published article
 	article_2 = Article.objects.create(article_identifier='01234')
@@ -56,15 +60,16 @@ def test_only_get_current_articles_back(article_complete, article_detail_respons
 
 
 @pytest.mark.django_db
-def test_can_get_article_detail(article_complete, article_detail_response_data,
-                                client, property_path_v1, property_path_v2):
+def test_can_get_article_detail(article_complete: Article, article_detail_response_data: Dict,
+                                client: Client, property_path_v1: Property,
+                                property_path_v2: Property):
 	response = client.get('/api/article/09003')
 	assert response.status_code == 200
 	assert response.data == article_detail_response_data
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_of_target_article(article_complete, api_client):
+def test_can_get_publication_status_of_target_article(article_complete: Article, api_client: Client):
 	data = {'articles': [{'id': '09003', 'run': 1, 'version': 1}]}
 
 	response = api_client.post('/api/article_publication_status', data=data, format='json')
@@ -81,7 +86,7 @@ def test_can_get_publication_status_of_target_article(article_complete, api_clie
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_and_error_message(article_complete, api_client):
+def test_can_get_publication_status_and_error_message(article_complete: Article, api_client: Client):
 	data = {'articles': [{'id': '09003', 'run': 1, 'version': 1}]}
 
 	Event.objects.create(version=1,
@@ -106,7 +111,7 @@ def test_can_get_publication_status_and_error_message(article_complete, api_clie
 
 
 @pytest.mark.django_db
-def test_publication_status_is_none_if_not_found(api_client):
+def test_publication_status_is_none_if_not_found(api_client: Client):
 	data = {'articles': [{'id': '99999', 'run': 1, 'version': 1}]}
 
 	response = api_client.post('/api/article_publication_status', data=data, format='json')
@@ -123,7 +128,7 @@ def test_publication_status_is_none_if_not_found(api_client):
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_of_multiple_articles(article_complete, api_client):
+def test_can_get_publication_status_of_multiple_articles(article_complete: Article, api_client: Client):
 	data = {
 		'articles': [
 			{'id': '09003', 'run': 1, 'version': 1},
@@ -149,3 +154,6 @@ def test_can_get_publication_status_of_multiple_articles(article_complete, api_c
 			"version": 1
 		}
 	]}
+
+
+# TODO ArticleScheduledStatusAPIView

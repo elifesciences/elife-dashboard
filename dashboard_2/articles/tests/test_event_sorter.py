@@ -4,7 +4,7 @@ from articles.models import Article, Event
 
 
 @pytest.mark.django_db
-def test_will_only_use_latest_instance_of_event_type_per_version(article):
+def test_will_only_use_latest_instance_of_event_type_per_version(article: Article):
 	# create two events with the same type and version, but different status
 	Event.objects.create(version=1,
 	                     run='b6ef5d1f-23b3-4f4e-9ba3-7de24f885171',
@@ -77,7 +77,7 @@ def test_will_only_use_latest_instance_of_event_type_per_version(article):
 
 
 @pytest.mark.django_db
-def test_can_sort_events_into_runs(article):
+def test_can_sort_events_into_runs(article: Article):
 	Event.objects.create(version=1,
 	                     run='b6ef5d1f-23b3-4f4e-9ba3-7de24f885171',
 	                     type='Convert JATS',

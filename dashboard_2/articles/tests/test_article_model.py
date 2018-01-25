@@ -1,15 +1,17 @@
+from typing import Dict, List
+
 import pytest
 from articles.models import Article, Event, Property
 
 
 @pytest.mark.django_db
-def test_can_create_article(article):
+def test_can_create_article(article: Article):
 	assert article.article_id == 1
 	assert article.article_identifier == '09003'
 
 
 @pytest.mark.django_db
-def test_can_delete_article(article):
+def test_can_delete_article(article: Article):
 	article.delete()
 	assert Article.objects.count() == 0
 
@@ -22,32 +24,30 @@ def test_can_get_article_detail():
 
 @pytest.mark.skip
 @pytest.mark.django_db
-def test_can_get_runs_data(article, events_for_09003, runs_event_data):
+def test_can_get_runs_data(article: Article, events_for_09003: List[Event], runs_event_data: Dict):
 	runs = Article.versions.get_runs(article_id=article.article_identifier)
 	assert runs == {"1": {"runs": {}}, "2": {"runs": {}}}  # runs_event_data
 
 
 @pytest.mark.skip
 @pytest.mark.django_db
-def test_can_get_all_version_data_for_an_article(article, properties_v1,
-                                                 events_for_09003):
+def test_can_get_all_version_data_for_an_article(article: Article, properties_v1: Property,
+                                                 events_for_09003: List[Event]):
 	data = Article.versions.all(article_id=article.article_identifier)
 	assert data == {}
 
 
 @pytest.mark.django_db
-def test_can_get_version_data_for_multi_version_article(article,
-                                                        events_for_09003,
-                                                        properties_v1,
-                                                        properties_v2,
-                                                        property_path_v1, property_path_v2,
-                                                        article_mutli_version_response_data):
+def test_can_get_version_data_for_multi_version_article(article: Article, events_for_09003: List[Event],
+                                                        properties_v1: Property, properties_v2: Property,
+                                                        property_path_v1: Property, property_path_v2: Property,
+                                                        article_mutli_version_response_data: Dict):
 	data = Article.versions.all(article_id=article.article_identifier)
 	assert data == article_mutli_version_response_data
 
 
 @pytest.mark.django_db
-def test_will_not_add_property_if_version_value_is_zero(article):
+def test_will_not_add_property_if_version_value_is_zero(article: Article):
 	Property.objects.create(article_id=article.article_id,
 	                        name='article-type',
 	                        text_value='research-article',
@@ -58,24 +58,23 @@ def test_will_not_add_property_if_version_value_is_zero(article):
 
 
 @pytest.mark.django_db
-def test_can_find_the_latest_version(article, events_for_09003,
-                                     properties_v1, properties_v2):
+def test_can_find_the_latest_version(article: Article, events_for_09003: List[Event],
+                                     properties_v1: Property, properties_v2: Property):
 	latest_version = Article.versions.latest(article_id=article.article_identifier)
 	assert latest_version == 2
 
 
 @pytest.mark.django_db
-def test_can_find_the_latest_version_with_events_arg(article, events_for_09003,
-                                     properties_v1, properties_v2):
+def test_can_find_the_latest_version_with_events_arg(article: Article, events_for_09003: List[Event],
+                                                     properties_v1: Property, properties_v2: Property):
 	events = list(Event.objects.filter(article__article_identifier=article.article_identifier))
 	latest_version = Article.versions.latest(events=events)
 	assert latest_version == 2
 
 
 @pytest.mark.django_db
-def test_can_get_article_detail(article, events_for_09003,
-                                properties_v1, properties_v2,
-                                property_path_v1):
+def test_can_get_article_detail(article: Article, events_for_09003: List[Event], properties_v1: Property,
+                                properties_v2: Property, property_path_v1: Property):
 	details = Article.details.get(article.article_identifier, 1)
 	assert details == {
 		'article-id': '09003',
@@ -101,7 +100,7 @@ def test_can_get_article_detail(article, events_for_09003,
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_for_article(article_complete):
+def test_can_get_publication_status_for_article(article_complete: Article):
 	status, msg = Article.versions.get_publication_status(article_id=article_complete.article_identifier,
 	                                                      version=1, run=1)
 	assert status == 'ready to publish'
@@ -109,7 +108,7 @@ def test_can_get_publication_status_for_article(article_complete):
 
 
 @pytest.mark.django_db
-def test_can_get_error_pub_status_and_message(article_complete):
+def test_can_get_error_pub_status_and_message(article_complete: Article):
 	Event.objects.create(version=1,
 	                     run='8e9e5c86-c592-4013-ba2b-16eb9a14c666',
 	                     type='Some bad things',
