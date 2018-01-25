@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Article, Event, Property
-from .scheduler import get_scheduled_statuses
+from .scheduler_adapter import get_scheduled_statuses
 from .serializers import (
 	ArticlePublicationStatusSerializer,
 	ArticleScheduledstatusSerializer,
@@ -190,3 +190,47 @@ class ArticlePublicationStatusAPIView(APIView):
 			return Response({'msg': msg}, status=status.HTTP_400_BAD_REQUEST)
 
 		return Response({'articles': publication_statuses}, status=status.HTTP_200_OK)
+
+
+class ArticleScheduledStatusAPIView(APIView):
+
+	def post(self, request: Request) -> Response:
+		"""Return scheduled article statuses for the target article ids.
+
+		example input:
+		{
+			"articles": [
+				{
+					"id": "32417"
+				}
+			]
+		}
+
+
+		example return value:
+		{
+		    "articles": [
+		        {
+		            "article-identifier": {
+		                "id": "32417"
+		            },
+		            "published": false,
+		            "scheduled": null
+		        }
+		    ]
+		}
+
+		"""
+		serializer = ArticleScheduledstatusSerializer(data=request.data.get('articles'), many=True)
+
+		if serializer.is_valid():
+			article_ids = serializer.data
+			# contact scheduler service
+			scheduled_statuses = get_scheduled_statuses(article_ids=article_ids)
+			return Response(scheduled_statuses, status=status.HTTP_200_OK)
+		else:
+			msg = 'Invalid article id data provided'
+			logger.error(msg)
+			return Response({'msg': msg}, status=status.HTTP_400_BAD_REQUEST)
+
+

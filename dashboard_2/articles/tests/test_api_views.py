@@ -1,4 +1,5 @@
 from typing import Dict
+from unittest.mock import patch
 
 from django.test import Client
 import pytest
@@ -69,7 +70,7 @@ def test_can_get_article_detail(article_complete: Article, article_detail_respon
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_of_target_article(article_complete: Article, api_client: Client):
+def test_can_get_publication_status_of_target_article(article_complete: Article, api_client: APIClient):
 	data = {'articles': [{'id': '09003', 'run': 1, 'version': 1}]}
 
 	response = api_client.post('/api/article_publication_status', data=data, format='json')
@@ -86,7 +87,7 @@ def test_can_get_publication_status_of_target_article(article_complete: Article,
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_and_error_message(article_complete: Article, api_client: Client):
+def test_can_get_publication_status_and_error_message(article_complete: Article, api_client: APIClient):
 	data = {'articles': [{'id': '09003', 'run': 1, 'version': 1}]}
 
 	Event.objects.create(version=1,
@@ -111,7 +112,7 @@ def test_can_get_publication_status_and_error_message(article_complete: Article,
 
 
 @pytest.mark.django_db
-def test_publication_status_is_none_if_not_found(api_client: Client):
+def test_publication_status_is_none_if_not_found(api_client: APIClient):
 	data = {'articles': [{'id': '99999', 'run': 1, 'version': 1}]}
 
 	response = api_client.post('/api/article_publication_status', data=data, format='json')
@@ -128,7 +129,7 @@ def test_publication_status_is_none_if_not_found(api_client: Client):
 
 
 @pytest.mark.django_db
-def test_can_get_publication_status_of_multiple_articles(article_complete: Article, api_client: Client):
+def test_can_get_publication_status_of_multiple_articles(article_complete: Article, api_client: APIClient):
 	data = {
 		'articles': [
 			{'id': '09003', 'run': 1, 'version': 1},
@@ -156,4 +157,20 @@ def test_can_get_publication_status_of_multiple_articles(article_complete: Artic
 	]}
 
 
-# TODO ArticleScheduledStatusAPIView
+@pytest.mark.django_db
+@patch('articles.api.get_scheduled_statuses')
+def test_can_get_scheduled_status(mock_scheduler, article_complete: Article, api_client: APIClient):
+	mock_data = {"articles": [
+		{"article-identifier": {"id": "09003"},
+		 "published": False,
+		 "scheduled": None
+		 }
+	]}
+
+	mock_scheduler.return_value = mock_data
+
+	data = {'articles': [{'id': '09003'}]}
+
+	response = api_client.post('/api/article_scheduled_status', data=data, format='json')
+	assert response.status_code == 200
+	assert response.data == mock_data
