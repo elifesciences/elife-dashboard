@@ -8,7 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Article, Event, Property
-from .scheduler_adapter import get_scheduled_statuses, schedule_publication
+from .scheduler_adapter import (
+	get_scheduled_statuses,
+	schedule_publication,
+	scheduled_statuses_for_range,
+)
 from .serializers import (
 	ArticlePublicationStatusSerializer,
 	ArticleScheduledstatusSerializer,
@@ -250,3 +254,11 @@ class ScheduleArticlePublicationAPIView(APIView):
 		"""
 		schedule_response = schedule_publication(article_ids=request.data)
 		return Response(schedule_response, status=status.HTTP_200_OK)
+
+
+class ScheduleForRangeAPIView(APIView):
+
+	def get(self, request: Request, from_date, to_date):
+		"""Return scheduled article statuses between a given date time range."""
+		response_data = scheduled_statuses_for_range(from_date=from_date, to_date=to_date)
+		return Response(response_data, status=status.HTTP_200_OK)

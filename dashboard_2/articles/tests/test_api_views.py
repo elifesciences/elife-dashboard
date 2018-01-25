@@ -191,3 +191,22 @@ def test_can_schedule_an_article(mock_scheduler: MagicMock, api_client: APIClien
 	response = api_client.post('/api/schedule_article_publication', data=data, format='json')
 	assert response.status_code == 200
 	assert response.data == mock_data
+
+
+@pytest.mark.django_db
+@patch('articles.api.scheduled_statuses_for_range')
+def test_can_get_schedules_for_range(mock_scheduler: MagicMock, api_client: APIClient):
+	mock_data = {
+	    "articles": [
+	        {
+	            "scheduled": 1463151556,
+	            "article-identifier": "09003",
+	            "published": False
+	        }
+	    ]
+	}
+	mock_scheduler.return_value = mock_data
+
+	response = api_client.get('/api/article_schedule_for_range/from/1463151555/to/1463151559')
+	assert response.status_code == 200
+	assert response.data == mock_data

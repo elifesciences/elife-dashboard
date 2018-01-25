@@ -27,10 +27,6 @@ def get_scheduled_statuses(article_ids: List[str]) -> Dict:
 	return scheduler_post_request(settings.ARTICLE_SCHEDULER_URL, {'articles': article_ids})
 
 
-def get_scheduled_publication_dates() -> Dict:
-	return {}
-
-
 def schedule_publication(data: Dict) -> Dict:
 	"""Schedule an article publication via remote service
 
@@ -43,5 +39,35 @@ def schedule_publication(data: Dict) -> Dict:
 	}
 	"""
 	return scheduler_post_request(settings.ARTICLE_SCHEDULE_PUBLICATION_URL, data)
+
+
+def scheduled_statuses_for_range(from_date: int, to_date: int) -> Dict:
+	"""Retrieve scheduled article statuses from remote service between
+	a given date time range.
+
+	example return value:
+	{
+	    "articles": [
+	        {
+	            "article-identifier": "09003",
+	            "scheduled": 1463151556,
+	            "published": false
+	        }
+	    ]
+	}
+	"""
+	url = settings.ARTICLE_SCHEDULE_RANGE_URL
+	url = url.replace("<from>", from_date)
+	url = url.replace("<to>", to_date)
+
+	response = requests.get(url)
+	if response.status_code == 200:
+		return response.json()
+	else:
+		log_scheduler_error(response)
+		return {}
+
+
+
 
 

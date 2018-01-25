@@ -3,7 +3,7 @@ from django.urls import path
 from .api import (
     ArticleDetailAPIView, ArticlePublicationStatusAPIView,
     ArticleScheduledStatusAPIView, CurrentArticlesAPIView,
-    ScheduleArticlePublicationAPIView,
+    ScheduleArticlePublicationAPIView, ScheduleForRangeAPIView,
 )
 from .views import (
     CurrentPageView, DetailPageView,
@@ -23,11 +23,12 @@ urlpatterns = [
     path('api/article_publication_status', ArticlePublicationStatusAPIView.as_view(), name='api-article-pub-status'),
     path('api/article_scheduled_status', ArticleScheduledStatusAPIView.as_view(), name='api-article-scheduled-status'),
     path('api/current', CurrentArticlesAPIView.as_view(), name='api-current-articles'),
+    path('api/article_schedule_for_range/from/<str:from_date>/to/<str:to_date>', ScheduleForRangeAPIView.as_view(),
+         name='api-article-scheduled-for-range'),
     path('api/article_scheduled_status', ArticleScheduledStatusAPIView.as_view(), name='api-article-scheduled-status'),
     path('api/schedule_article_publication', ScheduleArticlePublicationAPIView.as_view(), name='api-schedule-article'),
     path('', IndexView.as_view(), name='index'),
 
-    # '/api/article_schedule_for_range/from/<from_date>/to/<to_date>/'
     # '/api/queue_article_publication', methods=['POST'] + remote SQS
 ]
 
