@@ -211,20 +211,17 @@ class ArticleScheduledStatusAPIView(APIView):
 		{
 		    "articles": [
 		        {
-		            "article-identifier": {
-		                "id": "32417"
-		            },
-		            "published": false,
-		            "scheduled": null
+		            "scheduled": 1463151540,
+		            "article-identifier": "09003",
+		            "published": false
 		        }
 		    ]
 		}
-
 		"""
 		serializer = ArticleScheduledstatusSerializer(data=request.data.get('articles'), many=True)
 
 		if serializer.is_valid():
-			article_ids = serializer.data
+			article_ids = [article['id'] for article in serializer.data]
 			# contact scheduler service
 			scheduled_statuses = get_scheduled_statuses(article_ids=article_ids)
 			return Response(scheduled_statuses, status=status.HTTP_200_OK)
