@@ -1,5 +1,5 @@
 from typing import Dict
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from django.test import Client
 import pytest
@@ -159,18 +159,35 @@ def test_can_get_publication_status_of_multiple_articles(article_complete: Artic
 
 @pytest.mark.django_db
 @patch('articles.api.get_scheduled_statuses')
-def test_can_get_scheduled_status(mock_scheduler, article_complete: Article, api_client: APIClient):
+def test_can_get_scheduled_status(mock_scheduler: MagicMock, api_client: APIClient):
 	mock_data = {"articles": [
-		{"article-identifier": {"id": "09003"},
+		{"article-identifier": "09003",
 		 "published": False,
 		 "scheduled": None
 		 }
 	]}
-
 	mock_scheduler.return_value = mock_data
 
 	data = {'articles': [{'id': '09003'}]}
 
 	response = api_client.post('/api/article_scheduled_status', data=data, format='json')
+	assert response.status_code == 200
+	assert response.data == mock_data
+
+
+@pytest.mark.django_db
+@patch('articles.api.schedule_publication')
+def test_can_schedule_an_article(mock_scheduler: MagicMock, api_client: APIClient):
+	mock_data = {"result": "success"}
+	mock_scheduler.return_value = mock_data
+
+	data = {
+		"article": {
+			"article-identifier": "09003",
+			"scheduled": 1463151556
+		}
+	}
+
+	response = api_client.post('/api/schedule_article_publication', data=data, format='json')
 	assert response.status_code == 200
 	assert response.data == mock_data
