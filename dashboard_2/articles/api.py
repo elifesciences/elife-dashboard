@@ -8,7 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Article, Event, Property
-from .serializers import ArticlePublicationStatusSerializer
+from .scheduler import get_scheduled_statuses
+from .serializers import (
+	ArticlePublicationStatusSerializer,
+	ArticleScheduledstatusSerializer,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -18,7 +22,7 @@ class CurrentArticlesAPIView(APIView):
 
 	def get(self, request: Request) -> Response:
 		""" TODO **complete**
-		
+
 		"""
 		articles_by_status = {
 			'error': [],
@@ -181,7 +185,8 @@ class ArticlePublicationStatusAPIView(APIView):
 					})
 
 		except (AttributeError, ObjectDoesNotExist, ValidationError) as err:
-			logger.exception(err)
-			return Response({'msg': err}, status=status.HTTP_400_BAD_REQUEST)
+			msg = 'Unable to return publication statuses'
+			logger.exception(msg)
+			return Response({'msg': msg}, status=status.HTTP_400_BAD_REQUEST)
 
 		return Response({'articles': publication_statuses}, status=status.HTTP_200_OK)

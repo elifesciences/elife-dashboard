@@ -86,8 +86,8 @@ class ArticleVersionManager(models.Manager):
 				if last_event['event-status'] == self.ERROR_STATUS:
 					publication_status = last_event['event-status']
 					message = last_event['event-message']
-		except IndexError as err:
-			logger.exception(err)
+		except IndexError:
+			logger.exception('Unable to process runs whilst obtaining publication status')
 
 		return publication_status, message
 
@@ -157,7 +157,7 @@ class ArticleVersionManager(models.Manager):
 			result = Event.objects.filter(article__article_identifier=article_id).aggregate(Max('version'))
 			return result.get('version__max', 0)
 		else:
-			raise Exception('Please provide args')  # TODO need to flesh out
+			return 0
 
 	@staticmethod
 	def sort_events(events: List['Event']) -> List[Dict]:
