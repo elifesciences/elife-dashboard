@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_NAME = 'dashboard_2'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -120,43 +120,43 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'verbose': {
-#             'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-#             'datefmt': "%d/%b/%Y %H:%M:%S"
-#         },
-#         'simple': {
-#             'format': '%(levelname)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, '%s.log' % PROJECT_NAME),
-#             'formatter': 'verbose'
-#         },
-#         'debug-console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'propagate': True,
-#             'level': 'DEBUG',
-#         },
-#         'schedule': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#         },
-#     }
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, '%s.log' % PROJECT_NAME),
+            'formatter': 'verbose'
+        },
+        'debug-console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'dashboard': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
 
 DEBUG_TOOLBAR_PANELS = [
     # 'ddt_request_history.panels.request_history.RequestHistoryPanel',
@@ -194,6 +194,6 @@ EVENT_QUEUE_POOL_SIZE = 5
 EVENT_QUEUE_MESSAGE_COUNT = 5
 
 # Article scheduler
-# article_scheduler_url = 'http://localhost:8000/schedule/v1/article_scheduled_status/'
-# article_schedule_publication_url = 'http://localhost:8000/schedule/v1/schedule_article_publication/'
-# article_schedule_range = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
+ARTICLE_SCHEDULER_URL = 'http://localhost:8000/schedule/v1/article_scheduled_status/'
+ARTICLE_SCHEDULE_PUBLICATION_URL = 'http://localhost:8000/schedule/v1/schedule_article_publication/'
+ARTICLE_SCHEDULE_RANGE_URL = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
