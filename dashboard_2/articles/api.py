@@ -47,8 +47,16 @@ class CurrentArticlesAPIView(APIView):
 			latest_version = Article.versions.latest(article_id, events=events)
 			current_articles[article_id] = Article.details.get(article_id, latest_version, events=events)
 
-		# TODO get scheduled publication dates (from article-scheduler)
-		current_schedules = {}
+		current_schedules = get_scheduled_statuses(list(latest_article_ids)).get('articles', [])
+
+		# filter for actual scheduled articles that are not yet published
+		current_schedules = [a for a in current_schedules if a.get('scheduled') and not a.get('published')]
+
+		# for all scheduled articles assign a `scheduled-publication-date` value
+		for scheduled_article in current_schedules:
+			_id = scheduled_article['article-identifier']
+			scheduled_date = scheduled_article['scheduled']
+			current_articles[_id]['scheduled-publication-date'] = scheduled_date
 
 		# Assign articles to status lists
 		for article_id, article in current_articles.items():

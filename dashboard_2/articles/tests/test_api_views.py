@@ -9,20 +9,26 @@ from articles.models import Article, Event, Property
 
 
 @pytest.mark.django_db
-def test_can_get_current_articles(article_complete: Article,    client: Client):
+@patch('articles.api.get_scheduled_statuses')
+def test_can_get_current_articles(mock_scheduler: MagicMock,
+                                  article_complete: Article, client: Client):
 	response = client.get('/api/current')
 	assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_can_find_article_in_uir_status(article_complete: Article, client: Client):
+@patch('articles.api.get_scheduled_statuses')
+def test_can_find_article_in_uir_status(mock_scheduler: MagicMock,
+                                        article_complete: Article, client: Client):
 	response = client.get('/api/current')
 	assert response.status_code == 200
 	assert len(response.data['uir']) == 1
 
 
 @pytest.mark.django_db
-def test_can_find_article_in_error_status(article_complete: Article, client: Client):
+@patch('articles.api.get_scheduled_statuses')
+def test_can_find_article_in_error_status(mock_scheduler: MagicMock,
+                                          article_complete: Article, client: Client):
 	Event.objects.create(version=2,
 	                     run='ce3068ce-b248-4172-9b1e-ebb4f73d2400',
 	                     type='Some bad things',
@@ -38,7 +44,27 @@ def test_can_find_article_in_error_status(article_complete: Article, client: Cli
 
 # TODO test_can_find_article_with_in_progress_status
 
-# TODO test_can_find_article_in_scheduled_status
+
+@pytest.mark.django_db
+@patch('articles.api.get_scheduled_statuses')
+def test_can_find_article_in_scheduled_status(mock_scheduler: MagicMock,
+                                              article_complete: Article, client: Client):
+	# create mock scheduled response with scheduled date for article
+	mock_scheduler.return_value = {
+	    "articles": [
+	        {
+	            "scheduled": 1463151540,
+	            "article-identifier": "09003",
+	            "published": False
+	        }
+	    ]
+	}
+
+	response = client.get('/api/current')
+	assert response.status_code == 200
+	assert len(response.data['scheduled']) == 1
+	assert response.data['scheduled'][0]['article-id'] == "09003"
+	assert response.data['scheduled'][0]['scheduled-publication-date'] == 1463151540
 
 
 @pytest.mark.skip

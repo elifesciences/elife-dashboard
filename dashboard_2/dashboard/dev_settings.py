@@ -194,6 +194,6 @@ EVENT_QUEUE_POOL_SIZE = 5
 EVENT_QUEUE_MESSAGE_COUNT = 5
 
 # Article scheduler
-ARTICLE_SCHEDULER_URL = 'http://localhost:8000/schedule/v1/article_scheduled_status/'
-ARTICLE_SCHEDULE_PUBLICATION_URL = 'http://localhost:8000/schedule/v1/schedule_article_publication/'
-ARTICLE_SCHEDULE_RANGE_URL = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
+ARTICLE_SCHEDULER_URL = 'http://localhost:8001/schedule/v1/article_scheduled_status/'
+ARTICLE_SCHEDULE_PUBLICATION_URL = 'http://localhost:8001/schedule/v1/schedule_article_publication/'
+ARTICLE_SCHEDULE_RANGE_URL = 'http://localhost:8001/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
