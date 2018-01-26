@@ -15,6 +15,19 @@ logger = logging.getLogger(__name__)
 
 class ArticleDetailManager(models.Manager):
 
+	def get_details_for_articles(self, article_ids: List[str]) -> Dict:
+		"""Get detail data for each target article."""
+
+		current_articles = {}
+		event_map = Event.utils.to_article_map(article_ids=article_ids)
+
+		for article_id in article_ids:
+			events = event_map.get(article_id, None)
+			latest_version = Article.versions.latest(article_id, events=events)
+			current_articles[article_id] = self.get(article_id, latest_version, events=events)
+
+		return current_articles
+
 	def get(self, article_id: str, version: int, events: List['Event'] = None) -> Dict:
 		"""Get detail information for a given article version.
 

@@ -221,7 +221,8 @@ def test_can_schedule_an_article(mock_scheduler: MagicMock, api_client: APIClien
 
 @pytest.mark.django_db
 @patch('articles.api.scheduled_statuses_for_range')
-def test_can_get_schedules_for_range(mock_scheduler: MagicMock, api_client: APIClient):
+def test_can_get_schedules_for_range(mock_scheduler: MagicMock,
+                                     article_complete: Article, api_client: APIClient):
 	mock_data = {
 	    "articles": [
 	        {
@@ -233,6 +234,31 @@ def test_can_get_schedules_for_range(mock_scheduler: MagicMock, api_client: APIC
 	}
 	mock_scheduler.return_value = mock_data
 
-	response = api_client.get('/api/article_schedule_for_range/from/1463151555/to/1463151559')
+	response = api_client.get('/api/article_schedule_for_range/from/1463151555/to/1463151559/')
 	assert response.status_code == 200
-	assert response.data == mock_data
+	assert response.data == {
+		'articles': [
+			{
+				'article-type': 'research-article',
+				'_publication-data': '',
+				'publication-date': '2018-01-16',
+				'publication-status': 'ready to publish',
+				'title': 'Distributed rhythm generators and Caenorhabditis',
+				'run-id': 'ce3068ce-b248-4172-9b1e-ebb4f73d2400',
+				'event-status': 'end',
+				'event-type': 'Expand Article',
+				'path': '',
+				'article-id': '09003',
+				'corresponding-authors': 'Christopher Fang-Yen',
+				'event-timestamp': 1515150762.0,
+				'doi': '10.7554/eLife.09003',
+				'version': 2,
+				'run': 1,
+				'authors': 'Anthony D Fouad, Shelly Teng, Julian R Mark',
+				'id': '09003',
+				'status': 'VOR',
+				'scheduled-publication-date': 1463151556,
+				'preview-link': 'https://foo.test.org/'
+			}
+		]
+	}

@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 
 from .models import Article, Event, Property
 from .scheduler_adapter import (
+    apply_scheduled_dates,
 	get_scheduled_statuses,
 	schedule_publication,
 	scheduled_statuses_for_range,
@@ -35,17 +36,9 @@ class CurrentArticlesAPIView(APIView):
 			'uir': []
 		}
 
-		# get current articles with details
-		current_articles = {}
-
 		latest_article_ids = Property.find.latest_articles()
 
-		event_map = Event.utils.to_article_map(article_ids=latest_article_ids)
-
-		for article_id in latest_article_ids:
-			events = event_map.get(article_id, None)
-			latest_version = Article.versions.latest(article_id, events=events)
-			current_articles[article_id] = Article.details.get(article_id, latest_version, events=events)
+		current_articles = Article.details.get_details_for_articles(latest_article_ids)
 
 		current_schedules = get_scheduled_statuses(list(latest_article_ids)).get('articles', [])
 
@@ -53,10 +46,7 @@ class CurrentArticlesAPIView(APIView):
 		current_schedules = [a for a in current_schedules if a.get('scheduled') and not a.get('published')]
 
 		# for all scheduled articles assign a `scheduled-publication-date` value
-		for scheduled_article in current_schedules:
-			_id = scheduled_article['article-identifier']
-			scheduled_date = scheduled_article['scheduled']
-			current_articles[_id]['scheduled-publication-date'] = scheduled_date
+		current_articles = apply_scheduled_dates(current_articles, current_schedules)
 
 		# Assign articles to status lists
 		for article_id, article in current_articles.items():
@@ -65,7 +55,7 @@ class CurrentArticlesAPIView(APIView):
 			if article.get('event-status') == 'error':
 				articles_by_status['error'].append(article)
 
-			# scheduled: 'scheduled-publication-date' # TODO implement via article-scheduler
+			# scheduled: 'scheduled-publication-date'
 			elif 'scheduled-publication-date' in article:
 				articles_by_status['scheduled'].append(article)
 
@@ -261,6 +251,50 @@ class ScheduleArticlePublicationAPIView(APIView):
 class ScheduleForRangeAPIView(APIView):
 
 	def get(self, request: Request, from_date, to_date):
-		"""Return scheduled article statuses between a given date time range."""
-		response_data = scheduled_statuses_for_range(from_date=from_date, to_date=to_date)
+		"""Return scheduled article statuses between a given date time range.
+
+		example return value:
+
+		{
+			'articles': [
+				{
+					'article-type': 'research-article',
+					'_publication-data': '',
+					'publication-date': '2018-01-16',
+					'publication-status': 'ready to publish',
+					'title': 'Distributed rhythm generators and Caenorhabditis',
+					'run-id': 'ce3068ce-b248-4172-9b1e-ebb4f73d2400',
+					'event-status': 'end',
+					'event-type': 'Expand Article',
+					'path': '',
+					'article-id': '09003',
+					'corresponding-authors': 'Christopher Fang-Yen',
+					'event-timestamp': 1515150762.0,
+					'doi': '10.7554/eLife.09003',
+					'version': 2,
+					'run': 1,
+					'authors': 'Anthony D Fouad, Shelly Teng, Julian R Mark',
+					'id': '09003',
+					'status': 'VOR',
+					'scheduled-publication-date': 1463151556,
+					'preview-link': 'https://foo.test.org/'
+				}
+			]
+		}
+		"""
+		scheduled_articles_map = scheduled_statuses_for_range(from_date=from_date, to_date=to_date)
+
+		# get scheduled articles dict list
+		scheduled_articles = scheduled_articles_map.get('articles', [])
+
+		# pull out ids
+		article_ids = [article['article-identifier'] for article in scheduled_articles]
+
+		current_articles = Article.details.get_details_for_articles(article_ids)
+
+		# for all scheduled articles assign a `scheduled-publication-date` value
+		current_articles = apply_scheduled_dates(current_articles, scheduled_articles)
+
+		response_data = {'articles': [article for article in current_articles.values()]}
+
 		return Response(response_data, status=status.HTTP_200_OK)

@@ -9,6 +9,16 @@ from requests import Response
 logger = logging.getLogger(__name__)
 
 
+def apply_scheduled_dates(current_articles: Dict, current_schedules: List[Dict]):
+	"""Utility: for all scheduled articles assign a `scheduled-publication-date` value."""
+	for scheduled_article in current_schedules:
+		_id = scheduled_article['article-identifier']
+		scheduled_date = scheduled_article['scheduled']
+		current_articles[_id]['scheduled-publication-date'] = scheduled_date
+
+	return current_articles
+
+
 def log_scheduler_error(response: Response) -> None:
 	logging.error("Scheduler error status code: {}".format(response.status_code))
 
