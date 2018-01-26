@@ -211,11 +211,7 @@ class ArticleScheduledStatusAPIView(APIView):
 
 		example input:
 		{
-			"articles": [
-				{
-					"id": "32417"
-				}
-			]
+			"articles": ["32417"]
 		}
 
 
@@ -230,10 +226,8 @@ class ArticleScheduledStatusAPIView(APIView):
 		    ]
 		}
 		"""
-		serializer = ArticleScheduledstatusSerializer(data=request.data.get('articles'), many=True)
-
-		if serializer.is_valid():
-			article_ids = [article['id'] for article in serializer.data]
+		article_ids = request.data.get('articles', [])
+		if article_ids:
 			scheduled_statuses = get_scheduled_statuses(article_ids=article_ids)
 			return Response(scheduled_statuses, status=status.HTTP_200_OK)
 		else:
@@ -260,7 +254,7 @@ class ScheduleArticlePublicationAPIView(APIView):
 		    "result": "success"
 		}
 		"""
-		schedule_response = schedule_publication(article_ids=request.data)
+		schedule_response = schedule_publication(data=request.data)
 		return Response(schedule_response, status=status.HTTP_200_OK)
 
 
