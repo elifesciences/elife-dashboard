@@ -1,0 +1,17 @@
+[MESSAGE CONTROL]
+# too-few-public-methods: on Meta classes, seems broken...
+# unsed-variable: was getting Unused variable '__class__' (unused-variable), on models.Model
+disable = abstract-method,
+          missing-docstring,
+          redefined-outer-name,
+          too-few-public-methods,
+          unused-argument,
+          unused-variable
+
+argument-rgx = [a-z_][a-z0-9_]{2,35}$
+function-rgx = [a-z_][a-z0-9_]{2,60}$
+good-names = app_name,id,application,urlpatterns
+max-args = 8
+max-line-length = 120
+method-rgx = [a-z_][a-z0-9_]{2,60}$
+reports = n

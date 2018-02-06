@@ -32,4 +32,4 @@ urlpatterns = [
     # '/api/queue_article_publication', methods=['POST'] + remote SQS
 ]
 
-# TODO version api endpoints, will require change to consumers urls
+# Needs version support for api endpoints, though will require change to consumers urls
