@@ -13,7 +13,8 @@ def get_current_model():
         "error": [],
         "in-progress": [],
         "scheduled": [],
-        "uir": []
+        "uir": [],
+        "uirvr": []
     }
 
     current_articles = get_current_articles()
@@ -30,6 +31,8 @@ def get_current_model():
             model['scheduled'].append(article_model)
         elif 'publication-status' in article_model and article_model['publication-status'] == "ready to publish":
             model['uir'].append(article_model)
+        elif 'publication-status' in article_model and article_model['publication-status'] == 'version reason required':
+            model['uirvr'].append(article_model)
         else:
             model['in-progress'].append(article_model)
 
@@ -201,7 +204,6 @@ def get_detail_article_model(article_id):
                     last_type = event['event-type']
                 run['events'] = events
                 runs[run_number] = run
-
 
             model['versions'][str(version)] = {}
             model['versions'][str(version)]['details'] = details
