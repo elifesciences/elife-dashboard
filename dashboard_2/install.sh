@@ -13,6 +13,6 @@ fi
 
 source venv/bin/activate
 
-pip install -r requirements_dashboard_2.txt
+pip install -r requirements.txt
 
 
