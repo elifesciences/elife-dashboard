@@ -1,0 +1,3 @@
+[flake8]
+exclude = .git,.tox,.env,build,.cache,dist,venv
+max-line-length = 120
