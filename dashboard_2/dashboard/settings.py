@@ -37,7 +37,7 @@ SECRET_KEY = CONF.get('django', 'secret_key')
 
 DEBUG = CONF.get('django', 'debug', fallback=False)
 
-ALLOWED_HOSTS = [CONF.get('django', 'allowed_hosts')]  # Add via config prod--ppp-dash.elifesciences.org
+ALLOWED_HOSTS = [CONF.get('django', 'allowed_hosts')]
 
 INTERNAL_IPS = '127.0.0.1'
 
