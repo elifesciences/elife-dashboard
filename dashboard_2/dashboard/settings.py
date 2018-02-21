@@ -11,6 +11,8 @@ CFG_NAME = 'app.cfg'
 CONF = configparser.ConfigParser()
 CONF.read(os.path.join(CFG_PATH, CFG_NAME))
 
+DEFAULT_LOG_DIR = CONF.get('logging', 'path')
+
 # eLife
 PREVIEW_BASE_URL = CONF.get('elife', 'preview_base_url', fallback='')
 
@@ -35,7 +37,7 @@ SECRET_KEY = CONF.get('django', 'secret_key')
 
 DEBUG = CONF.get('django', 'debug', fallback=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [CONF.get('django', 'allowed_hosts')]
 
 INTERNAL_IPS = '127.0.0.1'
 
@@ -142,7 +144,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, '%s.log' % PROJECT_NAME),
+            'filename': os.path.join(DEFAULT_LOG_DIR, '%s.log' % PROJECT_NAME),
             'formatter': 'verbose'
         },
         'debug-console': {

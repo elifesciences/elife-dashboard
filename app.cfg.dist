@@ -5,7 +5,7 @@ article_scheduler_range_url = http://localhost:8001/schedule/v1/article_schedule
 
 [django]
 debug = true
-allowed_hosts =
+allowed_hosts = localhost
 secret_key = FAKE-KEY-DO-NOT-USE-IN-PRODUCTION
 
 [database]
@@ -21,6 +21,7 @@ user =
 preview_base_url = https://foo.test.org/
 
 [logging]
+path =
 log_level =
 log_file =
 
