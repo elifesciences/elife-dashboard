@@ -47,7 +47,7 @@
     "handlebars": "^4.0.5",
     "hbsfy": "^2.7.0",
     "historyjs": "^1.8.0-b2",
-    "jquery": "^1.11.3",
+    "jquery": "^3.0.0",
     "moment": "^2.13.0",
     "pickadate": "^3.5.6",
     "qtip2": "^3.0.3",
