@@ -163,6 +163,21 @@ def article_schedule_for_range(from_date, to_date):
                             "Stack trace: " + traceback.format_exc())
 
 
+@app.route('/api/version_reason', methods=['POST'])
+def version_reason():
+
+    request_data = request.get_json()
+    article_id = request_data.get('id')
+    version = request_data('version')
+    run = request_data('run')
+    version_reason_text = request_data.get('versionReasonText')
+    scheduled = request_data.get('articleScheduled')
+
+    article_operations.supply_version_reason(article_id, version, run, version_reason_text, scheduled)
+
+    return jsonify({"result": "success"})
+
+
 def report_error(message, error_detail):
 
     e = {"message": message}

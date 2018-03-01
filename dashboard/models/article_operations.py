@@ -1,6 +1,9 @@
 import base64
 import datetime
 import logging
+
+from flask import request
+
 from config_decider import config as settings
 from boto.sqs.message import Message
 import json
@@ -69,3 +72,26 @@ def queue_article_publication(article_id, version, run):
                 }
 
     return result
+
+
+def supply_version_reason(article_id, version, run, version_reason_text, scheduled):
+
+    queue_provider = QueueProvider()
+    out_queue = queue_provider.get_queue(settings.workflow_starter_queue)
+
+    workflow_data = {
+        'article_id': article_id,
+        'version': version,
+        'run': run,
+        'version_reason': version_reason_text,
+        'scheduled_publication_date': scheduled
+    }
+
+    message = {
+        'workflow_name': 'IngestArticleZip',
+        'workflow_data': workflow_data
+    }
+
+    m = Message()
+    m.set_body(json.dumps(message))
+    out_queue.write(m)
