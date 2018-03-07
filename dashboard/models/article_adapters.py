@@ -157,6 +157,9 @@ def get_detail_article_model(article_id):
             publication_date = merged_properties.get('publication-date')
             if publication_date is not None:
                 details['publication-date'] = publication_date.get('value')
+            expected_publication_date = merged_properties.get('expected-publication-date')
+            if expected_publication_date is not None:
+                details['expected-publication-date'] = expected_publication_date.get('value')
             publication_status = merged_properties.get('publication-status')
             if publication_status is not None:
                 details['publication-status'] = publication_status.get('value')
