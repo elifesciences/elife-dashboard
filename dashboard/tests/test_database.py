@@ -1,6 +1,7 @@
 import psycopg2
 from config_decider import config as settings
 
+from dashboard.models.articles import clean
 
 def test_database_setup():
     conn = psycopg2.connect(dbname='postgres',
@@ -8,14 +9,7 @@ def test_database_setup():
                            host=settings.host,
                            password=settings.password)
     conn.set_isolation_level(0)
-    cur = conn.cursor()
-    cur.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '" + settings.database + "' AND pid <> pg_backend_pid();")
-    conn.commit()
-    cur.execute("DROP DATABASE IF EXISTS " + settings.database + ";")
-    conn.commit()
-    cur.execute("CREATE DATABASE " + settings.database + ";")
-    conn.commit()
-    cur.close()
+    clean()
     conn.close()
 
 
@@ -25,8 +19,7 @@ def test_database_destroy():
                            host=settings.host,
                            password=settings.password)
     conn.set_isolation_level(0)
-    cur = conn.cursor()
-    cur.execute("DROP DATABASE IF EXISTS " + settings.database + ";")
+    clean()
     conn.commit()
 
 
