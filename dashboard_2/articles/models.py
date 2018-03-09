@@ -509,13 +509,16 @@ class PropertyFinderManager(models.Manager):
         of 'publication-status' and not having the value 'hidden' or 'published'
         """
 
-        articles = self.model.objects\
+        pub_states = self.model.objects \
             .filter(self.Q_FIND_PUB_STATUS) \
-            .exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL) \
-            .values_list('article__article_identifier', flat=True)
+            .exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL)
+
+        # check that property.article latest version matches current property version
+        # else could be an old property duplicate e.g. an article could have x3 `publication-status` entries
 
         # extract unique article identifiers
-        return {article for article in articles}
+        return {prop.article.article_identifier for prop in pub_states
+                if prop.version == Article.versions.latest(prop.article.article_identifier)}
 
     def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict[str, str]:
         """Generate a preview_link string including a base url and a `Property` of name 'path'.
