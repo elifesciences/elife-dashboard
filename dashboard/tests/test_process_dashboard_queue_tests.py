@@ -168,9 +168,8 @@ class TestProcessDashboardQueue(unittest.TestCase):
     def test_process_event_message_exception(self, mock_logger_exception):
         fake_logger = FakeLogger()
         mock_logger_exception.side_effect = fake_logger.exception
-        message = message_from_process_event_message
+        message = {}  # pass in bad message
         process_dashboard_queue.process_event_message(message)
-        self.assertRaises(Exception)
         self.assertEqual("Error processing event message: %s", fake_logger.logexception)
 
     def _process_property_message(self, message):
