@@ -50,7 +50,11 @@ def test_can_find_article_with_in_progress_status(mock_scheduler: MagicMock,
                                                   article: Article,
                                                   client: Client,
                                                   events_for_09003: List[Event],
-                                                  properties_v1: List[Property]):
+                                                  properties_v1: List[Property],
+                                                  property_publication_status_v2: Property):
+    property_publication_status_v2.text_value = 'publication in progress'
+    property_publication_status_v2.save()
+
     response = client.get('/api/current')
     assert response.status_code == 200
     assert len(response.data['in-progress']) == 1
