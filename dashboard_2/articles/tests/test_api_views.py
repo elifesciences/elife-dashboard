@@ -213,7 +213,8 @@ def test_can_schedule_an_article(mock_scheduler: MagicMock, api_client: APIClien
 @pytest.mark.django_db
 @patch('articles.api.scheduled_statuses_for_range')
 def test_can_get_schedules_for_range(mock_scheduler: MagicMock,
-                                     article_complete: Article, api_client: APIClient):
+                                     article_complete: Article,
+                                     api_client: APIClient):
     mock_data = {
         "articles": [
             {

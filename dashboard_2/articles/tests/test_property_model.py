@@ -1,5 +1,10 @@
+from typing import List
+
 import pytest
-from articles.models import Article, Property
+
+from articles.models import (
+    Article, Event, Property
+)
 
 
 @pytest.mark.django_db
@@ -18,7 +23,9 @@ def test_can_delete_property(property_doi_v1: Property):
 
 
 @pytest.mark.django_db
-def test_can_get_latest_article_ids_excluding_published_articles(article: Article, properties_v1: Property):
+def test_can_get_latest_article_ids_excluding_published_articles(article: Article,
+                                                                 events_for_09003: List[Event],
+                                                                 properties_v1: Property, ):
     # create an 'already published' article
     article_2 = Article.objects.create(article_identifier='01234')
 
@@ -36,7 +43,9 @@ def test_can_get_latest_article_ids_excluding_published_articles(article: Articl
 
 
 @pytest.mark.django_db
-def test_can_get_latest_article_ids_excluding_hidden_articles(article: Article, properties_v1: Property):
+def test_can_get_latest_article_ids_excluding_hidden_articles(article: Article,
+                                                              events_for_09003: List[Event],
+                                                              properties_v1: Property):
     # create an 'already published' article
     article_2 = Article.objects.create(article_identifier='01234')
 
