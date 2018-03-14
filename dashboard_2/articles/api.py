@@ -34,11 +34,11 @@ class CurrentArticlesAPIView(APIView):
             'uir': []
         }
 
-        latest_article_ids = Property.find.latest_articles()
+        latest_article_map = Property.find.latest_articles()
 
-        current_articles = Article.details.get_details_for_articles(latest_article_ids)
+        current_articles = Article.details.get_details_for_articles(article_map=latest_article_map)
 
-        current_schedules = get_scheduled_statuses(list(latest_article_ids)).get('articles', [])
+        current_schedules = get_scheduled_statuses(list(latest_article_map)).get('articles', [])
 
         # filter for actual scheduled articles that are not yet published
         current_schedules = [a for a in current_schedules if a.get('scheduled') and not a.get('published')]

@@ -1,3 +1,4 @@
+from collections import defaultdict
 import logging
 import time
 from typing import (
@@ -15,20 +16,40 @@ LOGGER = logging.getLogger(__name__)
 
 class ArticleDetailManager(models.Manager):
 
-    def get_details_for_articles(self, article_ids: List[str]) -> Dict:
-        """Get detail data for each target article."""
+    def get_details_for_articles(self, article_ids: List[str] = None, article_map: Dict[str, Dict] = None) -> Dict:
+        """Get detail data for each target article.
+
+        - can either pass `article_map` (with pre populated Event and Property values)
+        for large queries.
+        - or `article_ids` for smaller queries where the Event and Property values can be
+        fetched dynamically.
+
+        :param article_ids: list
+        :param article_map: dict
+        :return: dict
+        """
 
         current_articles = {}
-        event_map = Event.utils.to_article_map(article_ids=article_ids)
 
-        for article_id in article_ids:
-            events = event_map.get(article_id, None)
-            latest_version = Article.versions.latest(article_id, events=events)
-            current_articles[article_id] = self.get(article_id, latest_version, events=events)
+        if article_map:
+            for article_id, article in article_map.items():
+                current_articles[article_id] = self.get(article_id,
+                                                        article['max_version'],
+                                                        events=article['events'],
+                                                        properties=article['properties'])
+
+        if article_ids and not article_map:
+            event_map = Event.utils.to_article_map(article_ids=article_ids)
+
+            for article_id in article_ids:
+                events = event_map.get(article_id, None)
+                latest_version = Article.versions.latest(article_id, events=events)
+                current_articles[article_id] = self.get(article_id, latest_version, events)
 
         return current_articles
 
-    def get(self, article_id: str, version: int, events: List['Event'] = None) -> Dict:
+    def get(self, article_id: str, version: int, events: List['Event'] = None,
+            properties: List['Property'] = None) -> Dict:
         """Get detail information for a given article version.
 
         example return value:
@@ -59,7 +80,8 @@ class ArticleDetailManager(models.Manager):
         details = {}
 
         # get properties for that version
-        properties = list(Property.objects.filter(article__article_identifier=article_id, version=version))
+        if not properties:
+            properties = tuple(Property.objects.filter(article__article_identifier=article_id, version=version))
 
         # dynamically add properties to data
         for prop in properties:
@@ -509,16 +531,38 @@ class PropertyFinderManager(models.Manager):
         of 'publication-status' and not having the value 'hidden' or 'published'
         """
 
+        article_map = {}
+
         pub_states = self.model.objects \
+            .prefetch_related('article') \
             .filter(self.Q_FIND_PUB_STATUS) \
             .exclude(self.Q_FIND_PUBLISHED | self.Q_FIND_HIDDEN | self.Q_FIND_NULL)
 
-        # check that property.article latest version matches current property version
-        # else could be an old property duplicate e.g. an article could have x3 `publication-status` entries
+        unique_ids = {prop.article.article_identifier for prop in pub_states}
+        events = Event.utils.to_article_map(article_ids=unique_ids)
 
-        # extract unique article identifiers
-        return {prop.article.article_identifier for prop in pub_states
-                if prop.version == Article.versions.latest(prop.article.article_identifier)}
+        for prop in pub_states:
+            # max max version for article via events data
+            max_version = max(events[prop.article.article_identifier], key=lambda e: e.version).version
+            # if latest populate article_map for article
+            if prop.version == max_version:
+                article_map[prop.article.article_identifier] = {
+                    'max_version': max_version,
+                    'events': events[prop.article.article_identifier],
+                    'properties': []
+                }
+
+        latest_props = list(Property
+                            .objects
+                            .select_related('article')
+                            .filter(article__article_identifier__in=article_map.keys()))
+
+        # populate latest versions properties
+        for prop in latest_props:
+            if prop.version == article_map[prop.article.article_identifier]['max_version']:
+                article_map[prop.article.article_identifier]['properties'].append(prop)
+
+        return article_map
 
     def preview_link(self, article_id: str = None, properties: List['Property'] = None) -> Dict[str, str]:
         """Generate a preview_link string including a base url and a `Property` of name 'path'.
