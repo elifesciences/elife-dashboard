@@ -116,6 +116,8 @@ def get_detail_article_model(article_id):
 
     article = get_article(article_id)
     logging.debug("article data %s", str(article))
+    if not article:
+        return
 
     model = {'id': article['article-identifier']}
     versions = article.get('versions')

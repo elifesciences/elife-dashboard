@@ -1,6 +1,6 @@
 import logging
 from config_decider import config as settings
-from flask import Flask, redirect, url_for, render_template, request, jsonify
+from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
 from flask_session import Session
 from models import article_adapters, article_operations, articles
@@ -49,7 +49,10 @@ def detail_page(article_id, version=None, run_id=None):
 
 @app.route('/api/article/<article_id>')
 def detail(article_id):
-    return jsonify(article_adapters.get_detail_article_model(article_id))
+    article = article_adapters.get_detail_article_model(article_id)
+    if not article:
+        return Response(status=404)
+    return jsonify(article)
 
 
 @app.route('/api/queue_article_publication', methods=['POST'])
