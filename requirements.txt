@@ -3,7 +3,7 @@ backports.functools-lru-cache==1.4
 boto==2.34.0
 colorama==0.3.9
 enum34==1.1.6
-Flask==0.10.1
+Flask==0.12.4
 Flask-Cors==3.0.3
 Flask-HTTPAuth==3.2.3
 Flask-Session==0.3.1
