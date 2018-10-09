@@ -53,7 +53,6 @@ describe('Schedule', function () {
         it('Should update the template to reflect action type', function() {
             var btnClose = $('#schedule-modal #schedule-close');
             var btnAction = $('#schedule-modal #schedule-action');
-            console.log(btnClose);
             expect(btnClose[0].innerHTML).to.equal('Close');
             expect(btnAction[0].innerHTML).to.equal('Schedule');
             expect(btnClose).to.not.be.null;
