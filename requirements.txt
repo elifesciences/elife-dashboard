@@ -19,7 +19,7 @@ psycopg2==2.7.3.2
 py==1.4.34
 pylint==1.5.2
 pytest==2.9.2
-requests==2.9.1
+requests==2.20.0
 singledispatch==3.4.0.3
 six==1.11.0
 uWSGI==2.0.15
