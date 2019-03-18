@@ -6,22 +6,17 @@ This document covers the setup of the dashboard application and API. [Click here
 
 ## Table of Contents
 
-
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
 * [Tests](#tests)
 * [Documentation](#documentation)
 * [License](#license)
 
-
-
 ## Requirements:
-
 
 * [Scheduler](https://github.com/elifesciences/elife-article-scheduler)  
 * [Python](https://www.python.org/) 
 * [Postgres](https://www.postgresql.org/)
-
 
 ## Quick Start
 
@@ -48,11 +43,7 @@ pip install -r requirements.txt
 python runserver.py
 ```
 
-
-
-
 ## Tests
-
 
 The dashboard unit tests depend on database access. The settings used in the tests will be in `settings_test.py`.
 
@@ -81,9 +72,6 @@ cd /srv/elife-dashboard
  * Add content roots to PYTHONPATH (checked)
  * Add source roots to PYTHONPATH (checked)
 
-
-
-
 ## Documentation
 
 ### Creating, Activating and Deactivating virtual environment
@@ -105,8 +93,6 @@ source venv/bin/activate
 ```bash
 deactivate
 ```
-
-
 
 ## License
 
