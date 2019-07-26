@@ -3,7 +3,7 @@ from config_decider import config as settings
 from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
 from flask_session import Session
-from models import article_adapters, article_operations, articles
+from .models import article_adapters, article_operations, articles
 import requests
 import traceback
 

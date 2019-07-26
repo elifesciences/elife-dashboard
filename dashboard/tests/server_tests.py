@@ -62,7 +62,7 @@ class ServerTestCase(unittest.TestCase):
     def test_queue_article_publication_error(self):
         db.run(db.create_articles_properties_events)
         input = {"articles": [{"id": "09888888"}]}
-        data_expected = {u'articles': [{u'publication-status': u'error', u'id': u'09888888', u'run': None, u'version': u'None'}]}
+        data_expected = {'articles': [{'publication-status': 'error', 'id': '09888888', 'run': None, 'version': 'None'}]}
         resp = self.client.post('/api/queue_article_publication', data=json.dumps(input), content_type='application/json')
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
@@ -96,7 +96,7 @@ class ServerTestCase(unittest.TestCase):
         mock_requests_post.return_value = fixtures.request_scheduled_status_500
         input = '{"articles":{"article-identifier":"03430","scheduled":"1463151540"}}'
         resp = self.client.post('/api/schedule_article_publication', data=input)
-        self.assertDictEqual(json.loads(resp.data), {u'message': u'Error in scheduling service', u'detail': u'Status code from scheduler was 500'})
+        self.assertDictEqual(json.loads(resp.data), {'message': 'Error in scheduling service', 'detail': 'Status code from scheduler was 500'})
 
     @patch('requests.get')
     def test_article_scheduler_for_range(self, mock_requests_get):

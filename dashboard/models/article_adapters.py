@@ -2,7 +2,7 @@ import datetime
 import logging
 from config_decider import config as settings
 from dashboard.models import articles
-from articles import get_current_articles, get_article
+from .articles import get_current_articles, get_article
 import requests
 
 
@@ -38,15 +38,14 @@ def get_current_model():
 
 def get_scheduled_publication_dates(current_articles):
 
-    article_ids = map(lambda article: article.get('article-identifier'), current_articles)
+    article_ids = [article.get('article-identifier') for article in current_articles]
     r = requests.post(settings.article_scheduler_url, json={"articles": article_ids})
     if r.status_code == 200:
         scheduled_articles = r.json()
         if "articles" in scheduled_articles:
             article_list = scheduled_articles["articles"]
-            article_list = filter(lambda a: a.get("scheduled") is not None and a.get("published") is not True,
-                                  article_list)
-            return dict(map(lambda a: (a.get('article-identifier'), int(a.get('scheduled'))), article_list))
+            article_list = [a for a in article_list if a.get("scheduled") is not None and a.get("published") is not True]
+            return dict([(a.get('article-identifier'), int(a.get('scheduled'))) for a in article_list])
     return None
 
 
@@ -62,7 +61,7 @@ def get_current_article_model(article, current_schedules):
         global_version = versions.get(0)
         if isinstance(global_version, dict):
             global_version_properties = global_version.get('properties')
-            for prop_key in global_version_properties.keys():
+            for prop_key in list(global_version_properties.keys()):
                 prop = global_version_properties[prop_key]
                 model[prop['name']] = prop['value']
 
@@ -76,7 +75,7 @@ def get_current_article_model(article, current_schedules):
         if latest_version is not None:
             latest_version_properties = article['versions'][latest_version].get('properties')
             if isinstance(latest_version_properties, dict):
-                for prop_key in latest_version_properties.keys():
+                for prop_key in list(latest_version_properties.keys()):
                     prop = latest_version_properties[prop_key]
                     model[prop['name']] = prop['value']
                 preview_base = settings.preview_base_url
@@ -88,7 +87,7 @@ def get_current_article_model(article, current_schedules):
             latest_run_number = 0
             version_runs = article['versions'][latest_version].get('runs')
             if isinstance(version_runs, dict):
-                for run in version_runs.keys():
+                for run in list(version_runs.keys()):
                     run_id = run
                     run_number = version_runs[run]['run-number']
                     if run_number > latest_run_number:
@@ -217,11 +216,10 @@ def get_scheduled_articles(data):
     scheduled_articles = data['articles']
     # map this to a dictionary, keyed by the article-identifier
     # this is expected by get_current_article_model
-    publication_dates = dict(map(lambda a: (a.get('article-identifier'), int(a.get('scheduled'))),
-                                 scheduled_articles))
+    publication_dates = dict([(a.get('article-identifier'), int(a.get('scheduled'))) for a in scheduled_articles])
     # get a list of just the ids and use to obtain the 'full' article mode (with versions etc) for those
     #  scheduled articles that already have records in the dashboard
-    scheduled_article_ids = publication_dates.keys()
+    scheduled_article_ids = list(publication_dates.keys())
 
     existing_article_map = {}
     if len(scheduled_article_ids) > 0:
@@ -229,10 +227,9 @@ def get_scheduled_articles(data):
         # for each of those articles obtain the 'current article model' which is transformed for the client
         # this also adds in scheduled publication dates where known
         if existing_articles is not None and len(existing_articles) > 0:
-            existing_article_details = map(lambda f: get_current_article_model(f, publication_dates),
-                                           existing_articles)
+            existing_article_details = [get_current_article_model(f, publication_dates) for f in existing_articles]
             # turns the existing article details into a map for easy access
-            existing_article_map = dict(map(lambda a: (a['article-id'], a), existing_article_details))
+            existing_article_map = dict([(a['article-id'], a) for a in existing_article_details])
     # now we go through each of the articles scheduled for the date range and add a record in to
     # our return structure with either outline or 'current model' information, for each one
     articles_to_return = []

@@ -6,7 +6,7 @@ import dashboard.models.articles as articles
 import psycopg2
 
 message_from_process_message = {"status": "end", "version": "1", "run": "54dd39d7-a863-448c-96af-ae64ab66567f", "event_type": "Apply Version Number", "timestamp": "2016-03-23T15:15:22.620270", "message": "Finished applying version number to article 00353 for version 1 run 54dd39d7-a863-448c-96af-ae64ab66567f", "message_type": "event", "message_id": "f1392251-db64-4f6c-acb3-73b64aa79d9d", "item_identifier": "00353"}
-message_from_process_event_message = {u'status': u'end', u'run': u'54dd39d7-a863-448c-96af-ae64ab66567f', u'event_type': u'Apply Version Number', u'timestamp': u'2016-03-23T12:15:22.620270', u'version': u'1', u'message': u'Finished applying version number to article 00353 for version 1 run 54dd39d7-a863-448c-96af-ae64ab66567f', u'message_type': u'event', u'message_id': u'f1392251-db64-4f6c-acb3-73b64aa79d9d', u'item_identifier': u'00353'}
+message_from_process_event_message = {'status': 'end', 'run': '54dd39d7-a863-448c-96af-ae64ab66567f', 'event_type': 'Apply Version Number', 'timestamp': '2016-03-23T12:15:22.620270', 'version': '1', 'message': 'Finished applying version number to article 00353 for version 1 run 54dd39d7-a863-448c-96af-ae64ab66567f', 'message_type': 'event', 'message_id': 'f1392251-db64-4f6c-acb3-73b64aa79d9d', 'item_identifier': '00353'}
 message_from_process_property_message = {"version": "1", "run": "54dd39d7-a863-448c-96af-ae64ab66567f", "property_type": "text", "timestamp": "2016-03-23T12:15:22.620270", "message": "Some message", "message_type": "property", "message_id": "f1392251-db64-4f6c-acb3-73b64aa79d9d", "item_identifier": "00353"}
 
 

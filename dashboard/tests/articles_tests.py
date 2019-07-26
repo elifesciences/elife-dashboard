@@ -46,7 +46,7 @@ class MyTestCase(unittest.TestCase):
             conn, cur = db.get_connection()
             articles._store_message(cur,message_id,timestamp)
             db.commit_close_connection(conn,cur)
-        except Exception, e:
+        except Exception as e:
             self.fail("test_repeated_message_does_not_get_added raised an exception. Details: " + str(e))
 
         #then

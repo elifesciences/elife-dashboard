@@ -6,7 +6,7 @@ from boto.sqs.message import Message
 import json
 from provider.QueueProvider import QueueProvider
 
-from articles import get_current_articles, get_article
+from .articles import get_current_articles, get_article
 
 
 def queue_article_publication(article_id, version, run):

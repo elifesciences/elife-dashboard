@@ -97,7 +97,7 @@ def get_article_version(article_id, version):
     if len(article_versions) < 1:
         return None
     version = max(article_versions, key=int)
-    return unicode(version)
+    return str(version)
 
 
 def get_latest_version_of_articles(article_ids):
@@ -128,7 +128,7 @@ def get_latest_run(version):
     runs = version.get('runs')
     if len(runs):
         run_values = list(runs.values())
-        events = map(lambda x: x.get('events'),run_values)
+        events = [x.get('events') for x in run_values]
         first_events = [sorted(subevents, key=lambda x: x.get('timestamp'))[0] for subevents in events]
         run = sorted(first_events,key= lambda x: x.get('timestamp'), reverse = True)[0].get('run')
         return run
@@ -184,7 +184,7 @@ def _add_events(articles):
 
     # get all property data for articles in the mapping
     conn, cur = _get_connection()
-    cur.execute(get_article_events_sql, (article_map.keys(),))
+    cur.execute(get_article_events_sql, (list(article_map.keys()),))
     events = cur.fetchall()
 
     run_numbers = {}
@@ -250,7 +250,7 @@ def _add_properties(articles):
 
     # get all property data for articles in the mapping
     conn, cur = _get_connection()
-    cur.execute(get_article_properties_sql, (article_map.keys(),))
+    cur.execute(get_article_properties_sql, (list(article_map.keys()),))
     properties = cur.fetchall()
 
     for prop in properties:
@@ -350,7 +350,7 @@ def get_article_status(article_identifier, article_version):
             if article_version in versions:
                 article_version = versions.get(article_version)
                 runs = article_version.get('runs')
-                run_keys = sorted(runs.keys(), key=lambda e: runs[e].get('run-number'), reverse=True)
+                run_keys = sorted(list(runs.keys()), key=lambda e: runs[e].get('run-number'), reverse=True)
                 if len(run_keys) > 0:
                     latest_run = runs[run_keys[0]]
                     latest_event = latest_run['events'][-1]
