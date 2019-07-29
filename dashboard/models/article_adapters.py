@@ -203,7 +203,6 @@ def get_detail_article_model(article_id):
                 run['events'] = events
                 runs[run_number] = run
 
-
             model['versions'][str(version)] = {}
             model['versions'][str(version)]['details'] = details
             model['versions'][str(version)]['runs'] = runs

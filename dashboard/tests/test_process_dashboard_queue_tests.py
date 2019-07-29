@@ -13,12 +13,14 @@ message_from_process_property_message = {"version": "1", "run": "54dd39d7-a863-4
 class FakeConnection:
     def commit(self):
         pass
+
     def close(self):
         pass
 
 class FakeCursor:
     def __init__(self):
         self.executed_times = 0
+
     def execute(self, param1=None, param2=None):
         if self.executed_times == 0:
             self.executed_times += 1
@@ -34,6 +36,7 @@ class FakeCursor:
 class FakeCursorWorksAfterUniqueViolation:
     def __init__(self):
         self.executed_times = 0
+
     def execute(self, param1=None, param2=None):
         if self.executed_times == 0:
             self.executed_times += 1
@@ -70,6 +73,7 @@ class FakeLastLogging:
 
     def get_log_debug(self):
         return self.logging_debug
+
     def get_log_exception(self):
         return self.logging_exception
 
@@ -78,10 +82,13 @@ class FakeLogger:
         self.logdebug = "First logger debug"
         self.loginfo = "First logger info"
         self.logexception = "First logger exception"
+
     def debug(self, msg):
-        self.logdebug =  msg
+        self.logdebug = msg
+
     def info(self, msg):
         self.loginfo = msg
+
     def exception(self, msg, *args, **kwargs):
         self.logexception = msg
 
@@ -90,11 +97,10 @@ class FakeQueue:
         pass
 
 
-
 def fake_get_connection(connection, cursor):
-        conn = connection
-        cur = cursor
-        return conn,cur
+    conn = connection
+    cur = cursor
+    return conn, cur
 
 
 class TestProcessDashboardQueue(unittest.TestCase):
@@ -106,7 +112,6 @@ class TestProcessDashboardQueue(unittest.TestCase):
         mock_commit_and_close_conn.side_effect = None
         article_id = articles._get_article_id('00353')
         self.assertEqual(10, article_id)
-
 
     @patch('dashboard.models.articles._commit_and_close_connection')
     @patch('dashboard.models.articles._get_connection')
@@ -177,7 +182,6 @@ class TestProcessDashboardQueue(unittest.TestCase):
 
     def _process_dashboard_queue(self):
         return lambda: process_dashboard_queue.main()
-
 
 
 if __name__ == '__main__':

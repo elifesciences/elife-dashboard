@@ -15,12 +15,12 @@ articles = {}
 
 
 messages = [
-            "+++ out of cheese +++",
-            "I'm a teapot",
-            "Input, number 5 need input",
-            "Quit now and cake will be served immediately",
-            "I'm afraid I can't do that Dave",
-            "Use the force"]
+    "+++ out of cheese +++",
+    "I'm a teapot",
+    "Input, number 5 need input",
+    "Quit now and cake will be served immediately",
+    "I'm afraid I can't do that Dave",
+    "Use the force"]
 
 
 def get_random_enqueue_status():
@@ -133,7 +133,7 @@ def set_publication_date():
 
 
 @app.route('/api/article_schedule_for_range/from/<start>/to/<end>/')
-def article_schedule_for_range(start,end):
+def article_schedule_for_range(start, end):
 
     error = get_rate_error()
     if error is not None:
@@ -146,26 +146,26 @@ def article_schedule_for_range(start,end):
     authors = ["Miyuki Suzawa, Diego A Miranda, Karmela A Ramos, Kenny K-H Ang",
                "Emily J Faivre, Christopher G Wilson, Laura Caboni, Michelle R Arkin",
                "Robert J Fletterick, Aaron Diaz, John S Schneekloth, Holly A Ingraham",
-               "Yeong-Sang Kim, Peter Tontonoz"];
+               "Yeong-Sang Kim, Peter Tontonoz"]
     titles = ["A gene-expression screen identifies a non-toxic sumoylation inhibitor that mimics SUMO-less human LRH-1 in liver",
               "Sequence co-evolution gives 3D contacts and structures of protein complexes",
               "Residue proximity information and protein model discrimination using saturation-suppressor mutagenesis",
-              "Coverage and system efficiencies of insecticide-treated nets in Africa from 2000 to 2017"];
+              "Coverage and system efficiencies of insecticide-treated nets in Africa from 2000 to 2017"]
 
     s = int(start)
     e = int(end)
     lst = []
     is_advanced = True
     for i in range(20):
-        elife_article_id =  str(random.randint(2000,7000)).zfill(6)
+        elife_article_id = str(random.randint(2000, 7000)).zfill(6)
         #is_advanced = bool(int(not rng.randrange(1, 2) == 1))
         if is_advanced:
-            lst.append({"id": elife_article_id, "scheduled-publication-date": random.randint(s, e), "is-temp": 1 })
+            lst.append({"id": elife_article_id, "scheduled-publication-date": random.randint(s, e), "is-temp": 1})
             is_advanced = False
         else:
             index = int(random.randint(0, 3))
             lst.append({"corresponding-authors": authors[index],
-                        "doi": "10." + str(random.randint(7000,7854)) + "/elife." + elife_article_id,
+                        "doi": "10." + str(random.randint(7000, 7854)) + "/elife." + elife_article_id,
                         "event-status": "end",
                         "event-timestamp": 1458804203,
                         "event-type": "Convert images",
@@ -177,13 +177,13 @@ def article_schedule_for_range(start,end):
                         "title": titles[index],
                         "version": 2,
                         "preview-link": "http://continuum-test.v2.elifesciences.org/" + elife_article_id + ".html",
-                        "scheduled-publication-date": random.randint(s,e),
+                        "scheduled-publication-date": random.randint(s, e),
                         "is-temp": 0,
                         "publication-status": "in progress",
                         "path": "content/4/e" + elife_article_id + "v2",
                         "article_id": elife_article_id,
                         "authors": "Miyuki Suzawa, Diego A Miranda, Karmela A Ramos, Kenny K-H Ang, Emily J Faivre"})
-                        #"has-content": int(not rng.randrange(1, 10) == 1)})
+            # "has-content": int(not rng.randrange(1, 10) == 1)})
             is_advanced = True
 
     return jsonify({"articles": lst})
@@ -232,7 +232,7 @@ def get_rate_error(override_rate=None):
         return None
 
 
-### these routes provide the page framework or the services
+# these routes provide the page framework or the services
 
 @app.route('/')
 def index():

@@ -65,14 +65,14 @@ class ServerTestCase(unittest.TestCase):
         resp = self.client.post('/api/queue_article_publication', data=json.dumps(input), content_type='application/json')
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
-    #@app.route('/api/article_publication_status', methods=['POST'])
+    # @app.route('/api/article_publication_status', methods=['POST'])
 
     @patch('requests.post')
     def test_scheduled_status_200(self, mock_requests_post):
         mock_requests_post.return_value = fixtures.request_scheduled_status_200
-        example = {"articles":["11407"]} # most things happen on the scheduler side
+        example = {"articles": ["11407"]} # most things happen on the scheduler side
         data_expected = {"articles": [{"article-identifier": "11407", "published": False, "scheduled": 1464782520}]}
-        resp =  self.client.post('/api/article_scheduled_status', data=example)
+        resp = self.client.post('/api/article_scheduled_status', data=example)
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
     # @patch('requests.post')
@@ -108,10 +108,10 @@ class ServerTestCase(unittest.TestCase):
         expected_articles = json.loads(fixtures.scheduled_articles_to_return).get("articles")
 
         # lsh@2019-07-28: this doesn't work in python 3
-        # results may have been deterministicly sorted in python 2, 
+        # results may have been deterministicly sorted in python 2,
         # but the rules for comparing heterogeneous maps were not clear.
-        #articles_response.sort()
-        #expected_articles.sort()
+        # articles_response.sort()
+        # expected_articles.sort()
 
         advance_article = articles_response[0]
         normal_article = articles_response[1]

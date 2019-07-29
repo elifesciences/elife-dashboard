@@ -6,4 +6,5 @@ source venv/bin/activate
 ln -sf dashboard/dev_settings_test.py settings_test.py
 rm -rf build/junit.xml
 python -m pytest --junitxml build/junit.xml dashboard/
+echo "linting"
 pylint -E *.py dashboard/*.py dashboard/tests/*.py

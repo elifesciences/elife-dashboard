@@ -64,7 +64,7 @@ def queue_article_publication():
             articles_to_queue = request_data['articles']
             for article in articles_to_queue:
                 article_id = article.get('id')
-                version, run = articles.get_latest_version_run(article_id,article.get('version'), article.get('run'))
+                version, run = articles.get_latest_version_run(article_id, article.get('version'), article.get('run'))
                 if version is not None and run is not None:
                     queue_result = article_operations.queue_article_publication(article_id, version, run)
                     results.append(queue_result)

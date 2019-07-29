@@ -16,36 +16,36 @@ class FakeResponse:
     def json(self):
         return self.response_json
 
-request_post_schedule = FakeResponse(200,{'articles': [
-                                                            {'scheduled': None, 'article_identifier': '11407', 'published': False},
-                                                            {'scheduled': None, 'article_identifier': '09003', 'published': False},
-                                                            {'scheduled': None, 'article_identifier': '09672', 'published': False}
-                                                        ]
-                                    })
+request_post_schedule = FakeResponse(200, {'articles': [
+    {'scheduled': None, 'article_identifier': '11407', 'published': False},
+    {'scheduled': None, 'article_identifier': '09003', 'published': False},
+    {'scheduled': None, 'article_identifier': '09672', 'published': False}
+]
+})
 request_get_schedule_for_range = FakeResponse(200, {'articles':
-                                                        [
-                                                            {
-                                                                'article-identifier': '09003',
-                                                                'scheduled': 1464382800,
-                                                                'published': False
-                                                            },
-                                                            {
-                                                                'article-identifier': '00000099999999',
-                                                                'scheduled': 1464451200,
-                                                                'published': False
-                                                            }
-                                                        ]
+                                                    [
+                                                        {
+                                                            'article-identifier': '09003',
+                                                            'scheduled': 1464382800,
+                                                            'published': False
+                                                        },
+                                                        {
+                                                            'article-identifier': '00000099999999',
+                                                            'scheduled': 1464451200,
+                                                            'published': False
+                                                        }
+                                                    ]
                                                     })
 
 request_scheduled_status_200 = FakeResponse(200, {'articles':
-                                                        [
-                                                            {
-                                                                'article-identifier': '11407',
-                                                                'scheduled': 1464782520,
-                                                                'published': False
-                                                            }
-                                                        ]
-                                                    })
+                                                  [
+                                                      {
+                                                          'article-identifier': '11407',
+                                                          'scheduled': 1464782520,
+                                                          'published': False
+                                                      }
+                                                  ]
+                                                  })
 request_scheduled_article_publication = FakeResponse(200, {'result': 'success'})
 request_scheduled_status_500 = FakeResponse(500, None)
 
