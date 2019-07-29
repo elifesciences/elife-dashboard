@@ -3,8 +3,7 @@ import unittest
 import test_database as db
 import fixtures
 import json
-#from mock import Mock
-from mock import patch
+from unittest.mock import patch
 from fixtures import FakeQueueProvider
 
 class ServerTestCase(unittest.TestCase):

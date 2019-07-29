@@ -1,6 +1,6 @@
 import unittest
 import process_dashboard_queue
-from mock import patch, mock
+from unittest.mock import patch
 from dashboard.exceptions import ShortRetryException
 import dashboard.models.articles as articles
 import psycopg2

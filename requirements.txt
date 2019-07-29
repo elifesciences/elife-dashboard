@@ -7,7 +7,6 @@ Flask-Session
 Flask-SSLify
 funcsigs
 Jinja2
-mock
 psycopg2
 pylint
 pytest
