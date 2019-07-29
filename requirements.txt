@@ -1,15 +1,12 @@
-backports.functools-lru-cache
+autopep8
 boto
 Flask
 Flask-Cors
 Flask-HTTPAuth
 Flask-Session
 Flask-SSLify
-funcsigs
-Jinja2
 psycopg2
 pylint
 pytest
 requests
-singledispatch==3.4.0.3
 uWSGI
