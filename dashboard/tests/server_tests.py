@@ -107,8 +107,12 @@ class ServerTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, 'failed testing path %s' % path)
         articles_response = json.loads(resp.data).get("articles")
         expected_articles = json.loads(fixtures.scheduled_articles_to_return).get("articles")
-        articles_response.sort()
-        expected_articles.sort()
+
+        # lsh@2019-07-28: this doesn't work in python 3
+        # results may have been deterministicly sorted in python 2, 
+        # but the rules for comparing heterogeneous maps were not clear.
+        #articles_response.sort()
+        #expected_articles.sort()
 
         advance_article = articles_response[0]
         normal_article = articles_response[1]

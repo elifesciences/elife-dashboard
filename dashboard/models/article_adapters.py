@@ -212,14 +212,19 @@ def get_detail_article_model(article_id):
 
 
 def get_scheduled_articles(data):
-    # list of raw scheduling records for the articles schduled to be published in the datte rance
+    # list of raw scheduling records for the articles scheduled to be published in the date range
     scheduled_articles = data['articles']
     # map this to a dictionary, keyed by the article-identifier
     # this is expected by get_current_article_model
     publication_dates = dict([(a.get('article-identifier'), int(a.get('scheduled'))) for a in scheduled_articles])
+
     # get a list of just the ids and use to obtain the 'full' article mode (with versions etc) for those
     #  scheduled articles that already have records in the dashboard
-    scheduled_article_ids = list(publication_dates.keys())
+    # lsh@2019-07-29: non-deterministic (dicts are unordered prior to python 3.6)
+    #scheduled_article_ids = list(publication_dates.keys())
+    # deterministic if 'articles' list is ordered (like in a test fixture)
+    # 'data' parameter is provided by the separate article-scheduler app
+    scheduled_article_ids = [a.get('article-identifier') for a in scheduled_articles]
 
     existing_article_map = {}
     if len(scheduled_article_ids) > 0:
@@ -229,7 +234,7 @@ def get_scheduled_articles(data):
         if existing_articles is not None and len(existing_articles) > 0:
             existing_article_details = [get_current_article_model(f, publication_dates) for f in existing_articles]
             # turns the existing article details into a map for easy access
-            existing_article_map = dict([(a['article-id'], a) for a in existing_article_details])
+            existing_article_map = {a['article-id']: a for a in existing_article_details}
     # now we go through each of the articles scheduled for the date range and add a record in to
     # our return structure with either outline or 'current model' information, for each one
     articles_to_return = []
