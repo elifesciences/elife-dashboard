@@ -14,6 +14,9 @@ workflow_starter_queue = 'workflow-starter-queue'
 event_queue_pool_size = 5
 event_queue_message_count = 5
 
+aws_access_key_id = "AKIANotAnActualAccessKey"
+aws_secret_access_key = "asd8f7as8df8a9sdufliakij123j"
+
 # Logging
 log_level = "DEBUG"
 log_file = "dashboard_test.log"
