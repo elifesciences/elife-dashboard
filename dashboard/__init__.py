@@ -3,7 +3,7 @@ from config_decider import config as settings
 from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
 from flask_session import Session
-from models import article_adapters, article_operations, articles
+from .models import article_adapters, article_operations, articles
 import requests
 import traceback
 
@@ -64,7 +64,7 @@ def queue_article_publication():
             articles_to_queue = request_data['articles']
             for article in articles_to_queue:
                 article_id = article.get('id')
-                version, run = articles.get_latest_version_run(article_id,article.get('version'), article.get('run'))
+                version, run = articles.get_latest_version_run(article_id, article.get('version'), article.get('run'))
                 if version is not None and run is not None:
                     queue_result = article_operations.queue_article_publication(article_id, version, run)
                     results.append(queue_result)

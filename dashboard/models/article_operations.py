@@ -1,22 +1,19 @@
-import base64
-import datetime
-import logging
 from config_decider import config as settings
 from boto.sqs.message import Message
 import json
 from provider.QueueProvider import QueueProvider
 
-from articles import get_current_articles, get_article
+from .articles import get_article
 
 
 def queue_article_publication(article_id, version, run):
     if version is None or run is None:
         return {
-                    'publication-status': 'error',
-                    'id': article_id,
-                    'version': str(version),
-                    'run': run
-                }
+            'publication-status': 'error',
+            'id': article_id,
+            'version': str(version),
+            'run': run
+        }
     queue_provider = QueueProvider()
     out_queue = queue_provider.get_queue(settings.workflow_starter_queue)
     article = get_article(article_id)

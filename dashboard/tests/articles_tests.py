@@ -4,7 +4,6 @@ import dashboard.models.articles as articles
 import fixtures
 
 
-
 class MyTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -21,35 +20,35 @@ class MyTestCase(unittest.TestCase):
         pass
 
     def test_store_message(self):
-        #given
+        # given
         db.run(db.create_random_message)
         message_id = fixtures.message_id_example
         timestamp = fixtures.timestamp_example
 
-        #when
+        # when
         conn, cur = db.get_connection()
-        articles._store_message(cur,message_id,timestamp)
-        db.commit_close_connection(conn,cur)
+        articles._store_message(cur, message_id, timestamp)
+        db.commit_close_connection(conn, cur)
 
-        #then
+        # then
         count = db.retrieve_first("select count(message_id) from message")
         self.assertEqual(2, count)
 
     def test_store_message_duplicate_does_not_get_added(self):
-        #given
+        # given
         db.run(db.create_messages_including_example)
         message_id = fixtures.message_id_example
         timestamp = fixtures.timestamp_example
 
-        #when
+        # when
         try:
             conn, cur = db.get_connection()
-            articles._store_message(cur,message_id,timestamp)
-            db.commit_close_connection(conn,cur)
-        except Exception, e:
+            articles._store_message(cur, message_id, timestamp)
+            db.commit_close_connection(conn, cur)
+        except Exception as e:
             self.fail("test_repeated_message_does_not_get_added raised an exception. Details: " + str(e))
 
-        #then
+        # then
         count = db.retrieve_first("select count(message_id) from message")
         self.assertEqual(2, count)
 

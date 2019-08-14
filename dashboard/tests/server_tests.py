@@ -3,8 +3,7 @@ import unittest
 import test_database as db
 import fixtures
 import json
-#from mock import Mock
-from mock import patch
+from unittest.mock import patch
 from fixtures import FakeQueueProvider
 
 class ServerTestCase(unittest.TestCase):
@@ -62,18 +61,18 @@ class ServerTestCase(unittest.TestCase):
     def test_queue_article_publication_error(self):
         db.run(db.create_articles_properties_events)
         input = {"articles": [{"id": "09888888"}]}
-        data_expected = {u'articles': [{u'publication-status': u'error', u'id': u'09888888', u'run': None, u'version': u'None'}]}
+        data_expected = {'articles': [{'publication-status': 'error', 'id': '09888888', 'run': None, 'version': 'None'}]}
         resp = self.client.post('/api/queue_article_publication', data=json.dumps(input), content_type='application/json')
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
-    #@app.route('/api/article_publication_status', methods=['POST'])
+    # @app.route('/api/article_publication_status', methods=['POST'])
 
     @patch('requests.post')
     def test_scheduled_status_200(self, mock_requests_post):
         mock_requests_post.return_value = fixtures.request_scheduled_status_200
-        example = {"articles":["11407"]} # most things happen on the scheduler side
+        example = {"articles": ["11407"]} # most things happen on the scheduler side
         data_expected = {"articles": [{"article-identifier": "11407", "published": False, "scheduled": 1464782520}]}
-        resp =  self.client.post('/api/article_scheduled_status', data=example)
+        resp = self.client.post('/api/article_scheduled_status', data=example)
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
     # @patch('requests.post')
@@ -96,7 +95,7 @@ class ServerTestCase(unittest.TestCase):
         mock_requests_post.return_value = fixtures.request_scheduled_status_500
         input = '{"articles":{"article-identifier":"03430","scheduled":"1463151540"}}'
         resp = self.client.post('/api/schedule_article_publication', data=input)
-        self.assertDictEqual(json.loads(resp.data), {u'message': u'Error in scheduling service', u'detail': u'Status code from scheduler was 500'})
+        self.assertDictEqual(json.loads(resp.data), {'message': 'Error in scheduling service', 'detail': 'Status code from scheduler was 500'})
 
     @patch('requests.get')
     def test_article_scheduler_for_range(self, mock_requests_get):
@@ -107,8 +106,12 @@ class ServerTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, 'failed testing path %s' % path)
         articles_response = json.loads(resp.data).get("articles")
         expected_articles = json.loads(fixtures.scheduled_articles_to_return).get("articles")
-        articles_response.sort()
-        expected_articles.sort()
+
+        # lsh@2019-07-28: this doesn't work in python 3
+        # results may have been deterministicly sorted in python 2,
+        # but the rules for comparing heterogeneous maps were not clear.
+        # articles_response.sort()
+        # expected_articles.sort()
 
         advance_article = articles_response[0]
         normal_article = articles_response[1]

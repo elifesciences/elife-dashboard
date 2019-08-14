@@ -40,7 +40,6 @@ _sql_drop_functions = "DROP FUNCTION IF EXISTS select_article_ids_by_identifier(
                     DROP FUNCTION IF EXISTS select_properties_by_identifier(text);"
 
 
-
 def _get_connection():
 
     conn = psycopg2.connect(database=settings.database,

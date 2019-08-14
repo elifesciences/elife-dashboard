@@ -5,9 +5,9 @@ from dashboard.models.articles import clean
 
 def test_database_setup():
     conn = psycopg2.connect(dbname='postgres',
-                           user=settings.user,
-                           host=settings.host,
-                           password=settings.password)
+                            user=settings.user,
+                            host=settings.host,
+                            password=settings.password)
     conn.set_isolation_level(0)
     clean()
     conn.close()
@@ -15,9 +15,9 @@ def test_database_setup():
 
 def test_database_destroy():
     conn = psycopg2.connect(dbname='postgres',
-                           user=settings.user,
-                           host=settings.host,
-                           password=settings.password)
+                            user=settings.user,
+                            host=settings.host,
+                            password=settings.password)
     conn.set_isolation_level(0)
     clean()
     conn.commit()
@@ -76,14 +76,14 @@ def retrieve_first(query):
 
 def get_connection():
     conn = psycopg2.connect(dbname=settings.database,
-                           user=settings.user,
-                           host=settings.host,
-                           password=settings.password)
+                            user=settings.user,
+                            host=settings.host,
+                            password=settings.password)
     cur = conn.cursor()
     return conn, cur
 
 
-def commit_close_connection(conn,cur):
+def commit_close_connection(conn, cur):
     conn.commit()
     cur.close()
     conn.close()

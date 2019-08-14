@@ -97,7 +97,7 @@ def get_article_version(article_id, version):
     if len(article_versions) < 1:
         return None
     version = max(article_versions, key=int)
-    return unicode(version)
+    return str(version)
 
 
 def get_latest_version_of_articles(article_ids):
@@ -128,9 +128,9 @@ def get_latest_run(version):
     runs = version.get('runs')
     if len(runs):
         run_values = list(runs.values())
-        events = map(lambda x: x.get('events'),run_values)
+        events = [x.get('events') for x in run_values]
         first_events = [sorted(subevents, key=lambda x: x.get('timestamp'))[0] for subevents in events]
-        run = sorted(first_events,key= lambda x: x.get('timestamp'), reverse = True)[0].get('run')
+        run = sorted(first_events, key=lambda x: x.get('timestamp'), reverse=True)[0].get('run')
         return run
     return None
 
@@ -176,7 +176,7 @@ def _get_event_from_row(event):
 
 
 def _add_events(articles):
-   
+
     # build mapping of article id to article
     article_map = dict((a['article-id'], a) for a in articles)
     if not article_map:
@@ -184,7 +184,7 @@ def _add_events(articles):
 
     # get all property data for articles in the mapping
     conn, cur = _get_connection()
-    cur.execute(get_article_events_sql, (article_map.keys(),))
+    cur.execute(get_article_events_sql, (list(article_map.keys()),))
     events = cur.fetchall()
 
     run_numbers = {}
@@ -250,7 +250,7 @@ def _add_properties(articles):
 
     # get all property data for articles in the mapping
     conn, cur = _get_connection()
-    cur.execute(get_article_properties_sql, (article_map.keys(),))
+    cur.execute(get_article_properties_sql, (list(article_map.keys()),))
     properties = cur.fetchall()
 
     for prop in properties:
@@ -308,11 +308,11 @@ def _get_article_id(article_identifier, add=False):
             try:
                 cur.execute(insert_article_sql, (article_identifier,))
                 article_id = cur.fetchone()[0]
-            except Exception: #unique_violation
+            except Exception:  # unique_violation
                 logging.exception('Possible unique violation. App will try to retrieve article again')
                 try:
                     _commit_and_close_connection(conn, cur)
-                except:
+                except BaseException:
                     logging.exception('Error on trying to close connection')
                 try:
                     conn, cur = _get_connection()
@@ -335,7 +335,7 @@ def _get_article_id(article_identifier, add=False):
 def get_article_status(article_identifier, article_version):
 
     conn, cur = _get_connection()
-    cur.execute(get_article_status_sql, (article_identifier,article_version))
+    cur.execute(get_article_status_sql, (article_identifier, article_version))
     result = cur.fetchone()
     status = result[2] if result is not None else None
     conn.commit()
@@ -350,7 +350,7 @@ def get_article_status(article_identifier, article_version):
             if article_version in versions:
                 article_version = versions.get(article_version)
                 runs = article_version.get('runs')
-                run_keys = sorted(runs.keys(), key=lambda e: runs[e].get('run-number'), reverse=True)
+                run_keys = sorted(list(runs.keys()), key=lambda e: runs[e].get('run-number'), reverse=True)
                 if len(run_keys) > 0:
                     latest_run = runs[run_keys[0]]
                     latest_event = latest_run['events'][-1]
@@ -432,7 +432,7 @@ def _commit_and_close_connection(conn, cur):
 
 
 def _get_connection():
-    
+
     conn = psycopg2.connect(database=settings.database,
                             host=settings.host,
                             port=settings.port,
@@ -440,5 +440,3 @@ def _get_connection():
                             password=settings.password)
     cur = conn.cursor()
     return conn, cur
-
-
