@@ -37,7 +37,7 @@ These requirements are for the front end only, additional requirements can be fo
 * In the root of the project folder create your virtual environment and activate it. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
 
 ```bash
-virtualenv venv
+python3 -m venv venv
 source venv/bin/activate
 ```  
   
