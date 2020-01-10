@@ -25,7 +25,7 @@ The instructions below are for Mac OS and may need to be adapted for other platf
 * Create virtual environment, you will only need to do this once. In the project folder run:
 
 ```bash
-virtualenv venv
+python3 -m venv venv
 ```
 * Activate the virtual environment
 
@@ -79,7 +79,7 @@ cd /srv/elife-dashboard
 **Create environment**
 
 ```bash
-virtualenv venv
+python3 -m venv venv
 ```
 
 **Activate environment**
