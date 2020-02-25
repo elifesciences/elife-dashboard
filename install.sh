@@ -1,11 +1,15 @@
 #!/bin/bash
 set -e # everything must succeed.
-. mkvenv.sh
-source venv/bin/activate
+
 if [ -e requirements.lock ]; then
     # just delete the .lock file when you want to recreate it
+    . mkvenv.sh
+    source venv/bin/activate
     pip install -r requirements.lock
 else
+    rm -rf venv/
+    . mkvenv.sh
+    source venv/bin/activate
     pip install -r requirements.txt
     echo "locking..."
     pip freeze > requirements.lock

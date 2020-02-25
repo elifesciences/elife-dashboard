@@ -5,8 +5,12 @@ Flask-Cors~=3.0
 Flask-HTTPAuth~=3.3
 Flask-Session~=0.3
 Flask-SSLify~=0.1
-psycopg2~=2.8
+psycopg2-binary~=2.8
 pylint~=2.0
 pytest~=5.0
 requests~=2.22
 uWSGI~=2.0
+# remove once Flask is updated:
+# - https://github.com/fengsp/flask-session/issues/112
+# see https://github.com/pallets/werkzeug/issues/1714
+werkzeug==0.16.1
