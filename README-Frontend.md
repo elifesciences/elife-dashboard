@@ -2,7 +2,8 @@
 
 This is the eLife Dashboard application and API.
 
-This document covers the setup of the application from a front end perspective and explains how to run the application with no third party dependencies and mocked data. If this is not what you require please consult the main [readme](README.md).
+This document covers the setup of the application from a front end perspective and explains how to run the application 
+with no third party dependencies and mocked data. If this is not what you require please consult the main [readme](README.md).
 
 You can setup the application to run in one of two ways:  
 
