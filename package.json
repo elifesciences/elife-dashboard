@@ -43,7 +43,7 @@
     "bootstrap-sass": "~3.3.6",
     "font-awesome": "~4.6.3",
     "fontawesome": "~4.5.0",
-    "fullcalendar": "~2.6.1",
+    "fullcalendar": "^2.6.1",
     "handlebars": "~4.0.5",
     "hbsfy": "~2.7.0",
     "historyjs": "~1.8.0-b2",
