@@ -40,7 +40,7 @@
     "sinon": "~1.17.4"
   },
   "dependencies": {
-    "bootstrap-sass": "~3.3.6",
+    "bootstrap-sass": "~3.4.1",
     "font-awesome": "~4.6.3",
     "fontawesome": "~4.5.0",
     "fullcalendar": "^2.6.1",
