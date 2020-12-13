@@ -14,9 +14,7 @@
     "url": "git://github.com/elifesciences/elife-dashboard.git"
   },
   "scripts": {
-    "install": "grunt",
-    "start": "grunt shell",
-    "test": "grunt test"
+    "install": "grunt"
   },
   "devDependencies": {
     "browserify": "~13.0.1",
