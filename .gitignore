@@ -12,7 +12,7 @@ venv
 flask_session
 *.sass-cache/
 .idea/
-node_modules/
+node_modules
 npm-debug.log
 uwsgi.ini
 /build/
