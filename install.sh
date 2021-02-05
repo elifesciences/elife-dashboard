@@ -15,4 +15,11 @@ else
     pip freeze > requirements.lock
     echo "wrote 'requirements.lock'"
 fi
+
+# Install nodejs dependencies 
+if [ -e package.json ]; then
+    rm -rf node_modules/
+    npm install
+fi
+
 NEW_RELIC_EXTENSIONS=false pip install --no-binary :all: newrelic==2.82.0.62
