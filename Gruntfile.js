@@ -30,6 +30,9 @@ module.exports = function (grunt) {
             },
             serve: {
                 command: 'source venv/bin/activate && python runserver.py'
+            },
+            test: {
+                command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -f %'
             }
         },
 
@@ -148,13 +151,6 @@ module.exports = function (grunt) {
             }
         },
 
-        mocha_phantomjs: {
-            options: {
-                reporter: 'spec'
-            },
-            all: ['./assets/test/*.html']
-        },
-
         // Watches for changes and runs relevant tasks
         watch: {
             options: {
@@ -202,5 +198,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass']);
     grunt.registerTask('dev', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
-    grunt.registerTask('test', ['handlebars', 'browserify:test', 'mocha_phantomjs']);
+    grunt.registerTask('test', ['handlebars', 'browserify:test', 'shell:test']);
 };
