@@ -184,8 +184,7 @@ module.exports = function (grunt) {
         'grunt-contrib-handlebars',
         'grunt-sass',
         'grunt-scss-lint',
-        'grunt-browserify',
-        'grunt-mocha-phantomjs',
+        'grunt-browserify'
     ].forEach(function (task) {
         grunt.loadNpmTasks(task);
     });
