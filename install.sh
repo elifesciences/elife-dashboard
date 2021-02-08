@@ -16,4 +16,8 @@ else
     echo "wrote 'requirements.lock'"
 fi
 
+# Clean and re-install node.js dependencies 
+rm -rf node_modules/
+npm install
+
 NEW_RELIC_EXTENSIONS=false pip install --no-binary :all: newrelic==2.82.0.62
