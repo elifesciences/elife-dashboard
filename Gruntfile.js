@@ -33,6 +33,9 @@ module.exports = function (grunt) {
             },
             test: {
                 command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -f %'
+            },
+            ci: {
+                command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -e /usr/bin/chromium-browser -f %'
             }
         },
 
@@ -198,4 +201,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['handlebars', 'concat:css', 'browserify:app', 'sass']);
     grunt.registerTask('dev', ['handlebars', 'concat:css', 'browserify:app', 'sass', 'watch']);
     grunt.registerTask('test', ['handlebars', 'browserify:test', 'shell:test']);
+    grunt.registerTask('ci', ['handlebars', 'browserify:test', 'shell:ci']);
 };
