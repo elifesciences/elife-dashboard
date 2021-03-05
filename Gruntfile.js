@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -f %'
             },
             ci: {
-                command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -e /usr/bin/chromium-browser -f %'
+                command: 'ls ./assets/test/*.html | xargs -I % ./node_modules/.bin/mocha-headless-chrome -e /usr/bin/chromium-browser -a no-sandbox -f %'
             }
         },
 
