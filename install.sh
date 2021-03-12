@@ -16,7 +16,7 @@ else
     echo "wrote 'requirements.lock'"
 fi
 
-# update, or install, node.js deps
+# clean install node.js deps
 if [ -e package-lock.json ]; then
     rm -rf node_modules
     npm install
