@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.6"
+
+[packages]
+boto = "~=2.0"
+psycopg2-binary = "~=2.8"
+requests = "~=2.22"
+Flask = "~=1.1"
+Flask-Cors = "~=3.0"
+Flask-HTTPAuth = "~=3.3"
+Flask-Session = "~=0.3"
+Flask-SSLify = "~=0.1"
+uWSGI = "~=2.0"
+# remove once Flask is updated:
+# - https://github.com/fengsp/flask-session/issues/112
+# see https://github.com/pallets/werkzeug/issues/1714
+Werkzeug = "==0.16.1"
+
+[dev-packages]
+pylint = "~=2.0"
+pytest = "~=5.0"
+autopep8 = "~=1.4"
