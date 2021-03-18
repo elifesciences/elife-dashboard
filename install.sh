@@ -1,23 +1,17 @@
 #!/bin/bash
 set -e # everything must succeed.
 
-if [ -e requirements.lock ]; then
-    # just delete the .lock file when you want to recreate it
-    . mkvenv.sh
-    source venv/bin/activate
-    pip install -r requirements.lock
-else
-    rm -rf venv/
-    . mkvenv.sh
-    source venv/bin/activate
-    pip install -r requirements.txt
-    echo "locking..."
-    pip freeze > requirements.lock
-    echo "wrote 'requirements.lock'"
-fi
+. mkvenv.sh
 
-# Clean and re-install node.js dependencies
-rm -rf node_modules/
-npm install
-
+source venv/bin/activate
+pip install pip wheel --upgrade
+pip install -r requirements.txt
 NEW_RELIC_EXTENSIONS=false pip install --no-binary :all: newrelic==2.82.0.62
+
+if which npm; then
+    # clean install node.js deps
+    if [ -e package-lock.json ]; then
+        rm -rf node_modules
+        npm install
+    fi
+fi
