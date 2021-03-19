@@ -4,7 +4,7 @@ chardet==3.0.4
 Django>=2.2.9
 django-debug-toolbar==1.9.1
 django-filter==1.1.0
-djangorestframework==3.9.4
+djangorestframework==3.11.2
 idna==2.6
 pluggy==0.6.0
 psycopg2==2.7.3.2
