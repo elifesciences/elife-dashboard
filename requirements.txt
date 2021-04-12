@@ -1,7 +1,7 @@
-# file generated 2021-03-15 - see update-dependencies.sh
-astroid==2.5.1
+# file generated 2021-04-12 - see update-dependencies.sh
+astroid==2.5.3
 attrs==20.3.0
-autopep8==1.5.5
+autopep8==1.5.6
 boto==2.49.0
 cachelib==0.1.1
 certifi==2020.12.5
@@ -13,11 +13,11 @@ Flask-HTTPAuth==3.3.0
 Flask-Session==0.3.2
 Flask-SSLify==0.1.5
 idna==2.10
-importlib-metadata==3.7.3
-isort==5.7.0
+importlib-metadata==3.10.0
+isort==5.8.0
 itsdangerous==1.1.0
 Jinja2==2.11.3
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
 MarkupSafe==1.1.1
 mccabe==0.6.1
 more-itertools==8.7.0
@@ -26,15 +26,15 @@ pluggy==0.13.1
 psycopg2-binary==2.8.6
 py==1.10.0
 pycodestyle==2.7.0
-pylint==2.7.2
+pylint==2.7.4
 pyparsing==2.4.7
 pytest==5.4.3
 requests==2.25.1
 six==1.15.0
 toml==0.10.2
-typed-ast==1.4.2
+typed-ast==1.4.3
 typing-extensions==3.7.4.3
-urllib3==1.26.3
+urllib3==1.26.4
 uWSGI==2.0.19.1
 wcwidth==0.2.5
 Werkzeug==0.16.1
