@@ -47,7 +47,7 @@
     "moment": "~2.19.3",
     "pickadate": "~3.5.6",
     "qtip2": "~3.0.3",
-    "underscore": "~1.8.3",
+    "underscore": "~1.12.1",
     "uniq": "~1.0.1"
   },
   "browserify": {
