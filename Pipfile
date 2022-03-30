@@ -14,12 +14,10 @@ Flask = "~=1.1"
 Flask-Cors = "~=3.0"
 Flask-HTTPAuth = "~=3.3"
 Flask-Session = "~=0.3"
+# lsh@2022-03-30: redirects http->https. this should be the job of nginx. investigate.
 Flask-SSLify = "~=0.1"
+newrelic = "*"
 uWSGI = "~=2.0"
-# remove once Flask is updated:
-# - https://github.com/fengsp/flask-session/issues/112
-# see https://github.com/pallets/werkzeug/issues/1714
-Werkzeug = "==0.16.1"
 
 [dev-packages]
 pylint = "~=2.0"
