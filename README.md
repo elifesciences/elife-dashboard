@@ -18,81 +18,19 @@ This document covers the setup of the dashboard application and API. [Click here
 * [Python](https://www.python.org/) 
 * [Postgres](https://www.postgresql.org/)
 
-## Quick Start
+## setup
 
-The instructions below are for Mac OS and may need to be adapted for other platforms
+    ./install.sh
+    source venv/bin/activate
+    python runserver.py
 
-* Create virtual environment, you will only need to do this once. In the project folder run:
-
-```bash
-python3 -m venv venv
-```
-* Activate the virtual environment
-
-```bash
-source venv/bin/activate
-```
-* Install dependencies (This will only succeed if postgres binaries are installed)
-
-```bash
-pip install -r requirements.txt
-```
-* run application
-
-```bash
-python runserver.py
-```
-
-## Tests
+## testing
 
 The dashboard unit tests depend on database access. The settings used in the tests will be in `settings_test.py`.
 
 To check which files will be considered tests, take a look at the `pytest.ini` configuration file.
 
-#### Command line:
-
-```
-cd /srv/elife-dashboard 
-./project_tests.sh
-```
-
-#### Pycharm:
-
-* Create a new Run/Debug Configuration
-* Add a new Python test > Unittests configuration
-* In the section
- * Unittests:
-     * Test: Script
-    	* Script: the path select the path .../tests/test_file_you want_to_test.py
- * Environment:
-     * Project: elife-dashboard
-     * Environment variables: CONFIG_FILE=test
-     * Python interpreter: (the virtualenv at your dashboard project)
-     * Working directory: [your path to]/elife-dashboard
- * Add content roots to PYTHONPATH (checked)
- * Add source roots to PYTHONPATH (checked)
-
-## Documentation
-
-### Creating, Activating and Deactivating virtual environment
-
-**Create environment**
-
-```bash
-python3 -m venv venv
-```
-
-**Activate environment**
-
-```bash
-source venv/bin/activate
-```
-
-**Deactivate environment**
-
-```bash
-deactivate
-```
+    ./project_tests.sh
 
 ## License
 
