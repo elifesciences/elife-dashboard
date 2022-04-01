@@ -1,3 +1,5 @@
+const sass = require('node-sass');
+
 module.exports = function (grunt) {
 
     var browserifyAlias = {
@@ -78,6 +80,7 @@ module.exports = function (grunt) {
                     'dashboard/static/css/style.css': 'assets/scss/style.scss'
                 },
                 options: {
+                    implementation: sass,
                     outputStyle: 'expanded',
                     imagePath: '../images',
                     sourceMap: true,
