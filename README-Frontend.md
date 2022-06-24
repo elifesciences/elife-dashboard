@@ -3,7 +3,7 @@
 This is the eLife Dashboard application and API.
 
 This document covers the setup of the application from a front end perspective and explains how to run the application 
-with no third party dependencies and mocked data. If this is not what you require please consult the main [readme](README.md).
+with no third party dependencies and mocked data.
 
 You can setup the application to run in one of two ways:  
 
@@ -12,7 +12,6 @@ You can setup the application to run in one of two ways:
 
 ## Table of Contents
 
-
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
 * [Aliases](#aliases)
@@ -20,8 +19,6 @@ You can setup the application to run in one of two ways:
 * [Documentation](#documentation)
 * [Maintaining Dashboard and Pattern Library](#maintaining-dashboard-and-pattern-library)
 * [License](#license)
-
-
 
 ## Requirements:
 
@@ -35,37 +32,21 @@ These requirements are for the front end only, additional requirements can be fo
 
 ## Quick Start
 
-* In the root of the project folder create your virtual environment and activate it. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
+In the root of the project folder create the Python virtual environment (venv), activate it and install the Python dependencies. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
 
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```  
-  
-* Install the dependencies.
+    ./install.sh
 
-```bash
-pip install -r service-test-requirements.txt
-```
+Install all dependencies and build the assets 
 
-* Install all dependencies and build the assets 
+    npm install
 
-```bash
-npm install
-```
+If you wish to enable watch and live reload
 
-* If you wish to enable watch and live reload
+    grunt dev
 
-```bash
-grunt dev
-```
+To serve the application, if you are running ```grunt dev``` you will need to run this in a new shell window
 
-* To serve the application, if you are running ```grunt dev``` you will need to run this in a new shell window
-
-```bash
-grunt shell:mocked_services
-```
-
+    grunt shell:mocked_services
 
 ## Aliases
 
@@ -78,22 +59,15 @@ grunt shell:mocked_services
 | ```grunt shell:serve```      | Alias for run server python command ```source venv/bin/activate && python runserver.py```        |
 
 
-
 ## Tests
 
-```bash
-grunt test
-```
+    grunt test
 
 You can view individual tests in the browser by opening the corresponding html file in ```/assets/test``` and running 
 
-```bash 
-grunt browserify:test
-```
-
+    grunt browserify:test
 
 ## Documentation
-
 
 The front end workflow for the eLife dashboard is comprised of three parts.
 
