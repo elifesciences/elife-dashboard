@@ -7,4 +7,4 @@ set -e
 
 source venv/bin/activate
 pip install pip wheel --upgrade
-pip install -r requirements.txt
+pip install -r requirements.txt --no-color
