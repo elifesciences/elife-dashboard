@@ -2,21 +2,13 @@
 
 This is the eLife Dashboard application and API.
 
-This document covers the setup of the dashboard application and API. [Click here for frontend documentation](README-Frontend.md) which includes instructions for a setup with no external dependencies.
-
-## Table of Contents
-
-* [Requirements](#requirements)
-* [Quick start](#quick-start)
-* [Tests](#tests)
-* [Documentation](#documentation)
-* [License](#license)
+[README-Frontend.md](README-Frontend.md) covers the setup of the application from a front end perspective.
 
 ## Requirements:
 
-* [Scheduler](https://github.com/elifesciences/elife-article-scheduler)  
-* [Python](https://www.python.org/) 
-* [Postgres](https://www.postgresql.org/)
+* Python 3+
+* [PostgreSQL](https://www.postgresql.org/)
+* [elife-article-scheduler](https://github.com/elifesciences/elife-article-scheduler)
 
 ## setup
 
@@ -26,9 +18,7 @@ This document covers the setup of the dashboard application and API. [Click here
 
 ## testing
 
-The dashboard unit tests depend on database access. The settings used in the tests will be in `settings_test.py`.
-
-To check which files will be considered tests, take a look at the `pytest.ini` configuration file.
+The dashboard unit tests depend on database access. The settings used in the tests are in `settings_test.py`.
 
     ./project_tests.sh
 
