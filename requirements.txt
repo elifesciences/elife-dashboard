@@ -18,7 +18,7 @@ isort==5.10.1
 itsdangerous==1.1.0
 Jinja2==2.11.3
 lazy-object-proxy==1.7.1
-MarkupSafe==2.1.1
+MarkupSafe==2.0.1
 mccabe==0.7.0
 more-itertools==8.13.0
 newrelic==7.16.0.178
