@@ -279,7 +279,7 @@ describe('Details page', function () {
                 runId: '1345f644-67ba-479d-8e54-65e7803c79c1',
             };
             detail.setArticleParams();
-            console.log(detail);
+            //console.log(detail);
             expect(detail.data.queryParams).to.eql(result);
         });
     });
@@ -748,7 +748,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1');
         });
     });
@@ -784,7 +784,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });
@@ -820,7 +820,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/2/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });

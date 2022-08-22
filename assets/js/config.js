@@ -10,10 +10,7 @@ module.exports = function config(options) {
     config.colorArticle = (_.has(options, 'colorArticle')) ? options.colorArticle : '#cde1f1';
     config.colorText = (_.has(options, 'colorText')) ? options.colorText : '#111111';
 
-
-    // is pattern portfolio - used in the pattern library
-
-
+    // 'is pattern portfolio' (ISPP), used in the pattern library
     config.ISPP = (_.has(options, 'ISPP')) ? options.ISPP : false;
 
 

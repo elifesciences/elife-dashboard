@@ -278,7 +278,7 @@ describe('Scheduled page', function () {
             expect(listBtnActive).to.be.true;
             expect($('.scheduled-page').hasClass('list-view')).to.be.true;
             expect($('.scheduled-page').hasClass('calendar-view')).to.be.false;
-            console.log($('.schedule-page__content .article-list-section'));
+            //console.log($('.schedule-page__content .article-list-section'));
             expect($('.schedule-page__content .article-list-section').length).to.be.greaterThan(0);
         });
     });
