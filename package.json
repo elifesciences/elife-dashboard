@@ -34,7 +34,7 @@
     "loglevel": "^1.4",
     "mocha": "^9.1",
     "mocha-headless-chrome": "^2.0.3",
-    "node-sass": "^7.0.1",
+    "sass": "^1.54",
     "sinon": "^1.17"
   },
   "dependencies": {
