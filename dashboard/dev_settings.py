@@ -5,7 +5,7 @@ preview_base_url = 'https://elifesciences.org/' # URL for drupal site to preview
 # Article scheduler settings
 article_scheduler_url = 'http://localhost:8000/schedule/v1/article_scheduled_status/'
 article_schedule_publication_url = 'http://localhost:8000/schedule/v1/schedule_article_publication/'
-article_schedule_range = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
+article_schedule_range_url = 'http://localhost:8000/schedule/v1/article_schedule_for_range/from/<from>/to/<to>/'
 
 # SQS settings
 sqs_region = 'eu-west-1'
