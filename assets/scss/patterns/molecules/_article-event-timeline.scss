@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .article-event-timeline {
 
 
@@ -12,7 +14,7 @@
   .article-event-timeline__title {
     @include make-sm-column(3, 0px);
     p {
-      padding: $icon-circle-md/4 0px ;
+      padding: math.div($icon-circle-md, 4) 0px ;
     }
   }
   .article-event-timeline__detail {
@@ -20,7 +22,7 @@
     div {
       min-height: 90px;
       font-size: $font-size-small;
-      padding-top: $icon-circle-md/4;
+      padding-top: math.div($icon-circle-md, 4);
     }
   }
 

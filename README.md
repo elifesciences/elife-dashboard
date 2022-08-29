@@ -6,20 +6,49 @@ This is the eLife Dashboard application and API.
 
 ## Requirements:
 
-* Python 3+
+* [Python 3+](https://www.python.org/)
 * [PostgreSQL](https://www.postgresql.org/)
 * [elife-article-scheduler](https://github.com/elifesciences/elife-article-scheduler)
 
 ## setup
 
+Create a database and import it's schema:
+    
+    createdb -U root elifedash
+    psql -U root elifedash < dashboard/db/create_monitor_dashboard.sql
+
+Install the Python HTTP server:
+
     ./install.sh
-    source venv/bin/activate
-    python runserver.py
+
+The scheduler is a separate application called [elife-article-scheduler](https://github.com/elifesciences/elife-article-scheduler)
+and is installed the same way.
+
+## running
+
+Start the application HTTP server:
+
+    venv/bin/python runserver.py
+
+Start the article scheduler:
+
+    venv/bin/python src/manage.py runserver
+
+Visit the application in your browser:
+
+    http://localhost:5000
+
+Test the article-scheduler is running:
+
+    http://localhost:8000/schedule/ping
 
 ## testing
 
-The dashboard unit tests depend on database access. The settings used in the tests are in `settings_test.py`.
+The settings used in during testing are in `dashboard/dev_settings_test.py`.
 
+The dashboard unit tests depend on a database.
+
+    ./init-test-db.sh
     ./project_tests.sh
 
 ## License

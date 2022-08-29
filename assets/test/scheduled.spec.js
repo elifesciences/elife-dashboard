@@ -99,7 +99,7 @@ describe('Scheduled page', function () {
         var getWindowPathnameStub;
         var schdReplaceStateStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "list",
                     start: "26-08-2016",
@@ -107,9 +107,9 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -130,7 +130,7 @@ describe('Scheduled page', function () {
         var getWindowPathnameStub;
         var schdReplaceStateStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "calendar",
                     type: "month",
@@ -138,9 +138,9 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -161,7 +161,7 @@ describe('Scheduled page', function () {
         var getWindowPathnameStub;
         var schdReplaceStateStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "list",
                     start: "26-08-2016",
@@ -169,9 +169,9 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -193,7 +193,7 @@ describe('Scheduled page', function () {
         var getWindowPathnameStub;
         var schdReplaceStateStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "calendar",
                     type: "month",
@@ -201,9 +201,9 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -243,7 +243,7 @@ describe('Scheduled page', function () {
         var schdReplaceStateStub;
         var ajaxStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "list",
                     start: "26-08-2016",
@@ -251,9 +251,9 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
             ajaxStub = sinon.stub($, "ajax").returns({
                 done: function (callback) {
@@ -278,7 +278,7 @@ describe('Scheduled page', function () {
             expect(listBtnActive).to.be.true;
             expect($('.scheduled-page').hasClass('list-view')).to.be.true;
             expect($('.scheduled-page').hasClass('calendar-view')).to.be.false;
-            console.log($('.schedule-page__content .article-list-section'));
+            //console.log($('.schedule-page__content .article-list-section'));
             expect($('.schedule-page__content .article-list-section').length).to.be.greaterThan(0);
         });
     });
@@ -289,7 +289,7 @@ describe('Scheduled page', function () {
         var schdReplaceStateStub;
         var renderCalendarStub;
         before(function () {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "calendar",
                     type: "month",
@@ -297,11 +297,11 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState", function () {
+            schdReplaceStateStub = sinon.stub(scheduled, "schdReplaceState").callsFake(function () {
             });
-            renderCalendarStub = sinon.stub(scheduled, "renderCalendar", function () {
+            renderCalendarStub = sinon.stub(scheduled, "renderCalendar").callsFake(function () {
             });
         });
         after(function () {
@@ -407,7 +407,7 @@ describe('Scheduled page', function () {
         var renderCalendarViewRenderStub;
         var schdPushStateStub;
         before(function (done) {
-            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams", function () {
+            getUrlParamsStub = sinon.stub(scheduled, "getUrlParams").callsFake(function () {
                 var urlObject = {
                     view: "calendar",
                     type: "month",
@@ -415,11 +415,11 @@ describe('Scheduled page', function () {
                 };
                 return urlObject;
             });
-            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(scheduled, "getWindowPathname").callsFake(function () {
             });
-            renderCalendarViewRenderStub = sinon.stub(scheduled, "renderCalendarViewRender", function () {
+            renderCalendarViewRenderStub = sinon.stub(scheduled, "renderCalendarViewRender").callsFake(function () {
             });
-            schdPushStateStub = sinon.stub(scheduled, "schdPushState", function () {
+            schdPushStateStub = sinon.stub(scheduled, "schdPushState").callsFake(function () {
             });
 
             scheduled.data.scheduled = scheduledArticles;

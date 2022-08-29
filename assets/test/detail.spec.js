@@ -264,7 +264,7 @@ describe('Details page', function () {
         var getWindowPathnameStub;
         before(function () {
             detail.resetParams();
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
         });
@@ -279,7 +279,7 @@ describe('Details page', function () {
                 runId: '1345f644-67ba-479d-8e54-65e7803c79c1',
             };
             detail.setArticleParams();
-            console.log(detail);
+            //console.log(detail);
             expect(detail.data.queryParams).to.eql(result);
         });
     });
@@ -289,7 +289,7 @@ describe('Details page', function () {
         var fetchArticleStub;
 
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
             fetchArticleStub = sinon.stub(detail, "fetchArticle");
@@ -332,12 +332,12 @@ describe('Details page', function () {
         var getDetailActionsStub;
         var renderArticleStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
-            getDetailActionsStub = sinon.stub(detail, "getDetailActions", function () {
+            getDetailActionsStub = sinon.stub(detail, "getDetailActions").callsFake(function () {
             });
-            renderArticleStub = sinon.stub(detail, "renderArticle", function () {
+            renderArticleStub = sinon.stub(detail, "renderArticle").callsFake(function () {
             });
         });
         after(function () {
@@ -530,10 +530,10 @@ describe('Details page', function () {
         var renderDetailActionsStub;
         var getWindowPathnameStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
         });
         after(function () {
@@ -572,7 +572,7 @@ describe('Details page', function () {
     describe('getDetailActionsSuccess', function () {
         var renderDetailActionsStub;
         before(function () {
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
         });
         after(function () {
@@ -614,7 +614,7 @@ describe('Details page', function () {
     describe('renderDetailActions', function () {
         var getWindowPathnameStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
         });
@@ -684,10 +684,10 @@ describe('Details page', function () {
         var getWindowPathnameStub;
         var detailPushStateStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
             detailPushStateStub = sinon.stub(detail, "detailPushState");
         });
@@ -723,15 +723,15 @@ describe('Details page', function () {
         var getWindowPathnameStub;
         var detailReplaceStateStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
-            getUrlHashStub = sinon.stub(detail, "getUrlHash", function () {
+            getUrlHashStub = sinon.stub(detail, "getUrlHash").callsFake(function () {
                 return '/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1';
             });
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
-            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState", function () {
+            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -748,7 +748,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/1/1345f644-67ba-479d-8e54-65e7803c79c1');
         });
     });
@@ -759,15 +759,15 @@ describe('Details page', function () {
         var getWindowPathnameStub;
         var detailReplaceStateStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353/1';
             });
-            getUrlHashStub = sinon.stub(detail, "getUrlHash", function () {
+            getUrlHashStub = sinon.stub(detail, "getUrlHash").callsFake(function () {
                 return '/article/00353/1';
             });
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
-            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState", function () {
+            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -784,7 +784,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/1/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });
@@ -795,15 +795,15 @@ describe('Details page', function () {
         var getWindowPathnameStub;
         var detailReplaceStateStub;
         before(function () {
-            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname", function () {
+            getWindowPathnameStub = sinon.stub(detail, "getWindowPathname").callsFake(function () {
                 return '/article/00353';
             });
-            getUrlHashStub = sinon.stub(detail, "getUrlHash", function () {
+            getUrlHashStub = sinon.stub(detail, "getUrlHash").callsFake(function () {
                 return '/article/00353';
             });
-            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions", function () {
+            renderDetailActionsStub = sinon.stub(detail, "renderDetailActions").callsFake(function () {
             });
-            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState", function () {
+            detailReplaceStateStub = sinon.stub(detail, "detailReplaceState").callsFake(function () {
             });
         });
         after(function () {
@@ -820,7 +820,7 @@ describe('Details page', function () {
             detail.data.currentArticle = detail.getCurrentArticle();
             detail.data.currentEvents = detail.getCurrentRun();
             detail.renderArticle();
-            console.log(detail.data.currUrl);
+            //console.log(detail.data.currUrl);
             expect(detail.data.currUrl).to.equal('/article/00353/2/afa7d187-4fad-4286-aea4-3460adebfca7');
         });
     });
