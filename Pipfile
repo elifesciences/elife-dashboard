@@ -25,5 +25,5 @@ uWSGI = "~=2.0"
 
 [dev-packages]
 pylint = "~=2.0"
-pytest = "~=5.0"
+pytest = "~=7.2"
 autopep8 = "~=1.4"
