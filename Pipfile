@@ -10,11 +10,7 @@ python_version = "3.8"
 boto = "~=2.0"
 psycopg2-binary = "~=2.8"
 requests = "~=2.22"
-# pinned, Flask depends on MarkupSafe (same guy/org), which removed a feature in a minor version.
-# - https://github.com/pallets/flask/issues/4455
-# - https://github.com/pallets/markupsafe/issues/286
 Flask = "~=1.1"
-MarkupSafe = "==2.0.1"
 Flask-Cors = "~=3.0"
 Flask-HTTPAuth = "~=3.3"
 Flask-Session = "~=0.3"
@@ -22,6 +18,8 @@ Flask-Session = "~=0.3"
 Flask-SSLify = "~=0.1"
 newrelic = "*"
 uWSGI = "~=2.0"
+# lsh@2023-02-17: dependency of Flask, CVE-2023-25577
+Werkzeug = ">=2.2.3"
 
 [dev-packages]
 pylint = "~=2.0"
