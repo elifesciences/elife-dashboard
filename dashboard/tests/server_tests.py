@@ -53,16 +53,16 @@ class ServerTestCase(unittest.TestCase):
     def test_queue_article_publication(self, fake_queue_provider):
         fake_queue_provider.return_value = fixtures.FakeQueueProvider()
         db.run(db.create_complete_article_properties_events)
-        input = {"articles": [{"id": "09003"}]}
+        payload = {"articles": [{"id": "09003"}]}
         data_expected = {"articles": [{"id": "09003", "publication-status": "queued", "run": "b6ef5d1f-23b3-4f4e-9ba3-7de24f885171", "version": "3"}]}
-        resp = self.client.post('/api/queue_article_publication', data=json.dumps(input), content_type='application/json')
+        resp = self.client.post('/api/queue_article_publication', json=payload, content_type='application/json')
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
     def test_queue_article_publication_error(self):
         db.run(db.create_articles_properties_events)
-        input = {"articles": [{"id": "09888888"}]}
+        payload = {"articles": [{"id": "09888888"}]}
         data_expected = {'articles': [{'publication-status': 'error', 'id': '09888888', 'run': None, 'version': 'None'}]}
-        resp = self.client.post('/api/queue_article_publication', data=json.dumps(input), content_type='application/json')
+        resp = self.client.post('/api/queue_article_publication', json=payload, content_type='application/json')
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
     # @app.route('/api/article_publication_status', methods=['POST'])
@@ -72,7 +72,7 @@ class ServerTestCase(unittest.TestCase):
         mock_requests_post.return_value = fixtures.request_scheduled_status_200
         example = {"articles": ["11407"]} # most things happen on the scheduler side
         data_expected = {"articles": [{"article-identifier": "11407", "published": False, "scheduled": 1464782520}]}
-        resp = self.client.post('/api/article_scheduled_status', data=example)
+        resp = self.client.post('/api/article_scheduled_status', json=example)
         self.assertDictEqual(json.loads(resp.data), data_expected)
 
     # @patch('requests.post')
@@ -86,15 +86,15 @@ class ServerTestCase(unittest.TestCase):
     @patch('requests.post')
     def test_schedule_article_publication(self, mock_requests_post):
         mock_requests_post.return_value = fixtures.request_scheduled_article_publication
-        input = '{"articles":{"article-identifier":"03430","scheduled":"1463151540"}}'
-        resp = self.client.post('/api/schedule_article_publication', data=input)
+        payload = {"articles":{"article-identifier":"03430","scheduled":"1463151540"}}
+        resp = self.client.post('/api/schedule_article_publication', json=payload)
         self.assertDictEqual(json.loads(resp.data), {'result': 'success'})
 
     @patch('requests.post')
     def test_schedule_article_publication_error(self, mock_requests_post):
         mock_requests_post.return_value = fixtures.request_scheduled_status_500
-        input = '{"articles":{"article-identifier":"03430","scheduled":"1463151540"}}'
-        resp = self.client.post('/api/schedule_article_publication', data=input)
+        payload = {"articles":{"article-identifier":"03430","scheduled":"1463151540"}}
+        resp = self.client.post('/api/schedule_article_publication', json=payload)
         self.assertDictEqual(json.loads(resp.data), {'message': 'Error in scheduling service', 'detail': 'Status code from scheduler was 500'})
 
     @patch('requests.get')
