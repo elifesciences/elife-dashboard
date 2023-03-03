@@ -44,11 +44,6 @@ Test the article-scheduler is running:
 
 ## testing
 
-The settings used in during testing are in `dashboard/dev_settings_test.py`.
-
-The dashboard unit tests depend on a database.
-
-    ./init-test-db.sh
     ./project_tests.sh
 
 ## License
