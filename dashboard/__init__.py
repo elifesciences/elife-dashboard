@@ -58,7 +58,7 @@ def detail(article_id):
 @app.route('/api/queue_article_publication', methods=['POST'])
 def queue_article_publication():
     results = []
-    request_data = request.get_json()
+    request_data = request.get_json(force=True)
     if isinstance(request_data, dict):
         if 'articles' in request_data:
             articles_to_queue = request_data['articles']
@@ -87,7 +87,7 @@ def queue_article_publication():
 @app.route('/api/article_publication_status', methods=['POST'])
 def status():
     results = []
-    request_data = request.get_json()
+    request_data = request.get_json(force=True)
     if isinstance(request_data, dict):
         if 'articles' in request_data:
             articles_for_status = request_data['articles']
@@ -108,7 +108,7 @@ def status():
 def scheduled_status():
 
     try:
-        r = requests.post(settings.article_scheduler_url, json=request.get_json())
+        r = requests.post(settings.article_scheduler_url, json=request.get_json(force=True))
         if r.status_code == 200:
             return jsonify(r.json())
         else:
@@ -126,7 +126,7 @@ def scheduled_status():
 def schedule_publication():
 
     try:
-        r = requests.post(settings.article_schedule_publication_url, json=request.get_json())
+        r = requests.post(settings.article_schedule_publication_url, json=request.get_json(force=True))
         if r.status_code == 200:
             return jsonify(r.json())
         else:
