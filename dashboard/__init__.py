@@ -2,7 +2,6 @@ import logging
 from config_decider import config as settings
 from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
-from flask_session import Session
 from .models import article_adapters, article_operations, articles
 import requests
 import traceback
@@ -12,11 +11,8 @@ logging.basicConfig(format=LOG_FORMAT,
                     filename=settings.log_file,
                     level=getattr(logging, settings.log_level))
 app = Flask(__name__)
-SESSION_TYPE = 'filesystem'
-SESSION_FILE_DIR = '/tmp/flask_session/'
 app.config.from_object(__name__)
 CORS(app)
-Session(app)
 
 
 @app.route('/')
