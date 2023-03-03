@@ -80,7 +80,7 @@ def queue_article_publication():
 
     # create new registry of articles and generate random queue status for each and return the result
     global articles
-    articles = request.get_json()
+    articles = request.get_json(force=True)
     for art in articles['articles']:
         art['publication-status'], message = get_random_enqueue_status()
         art.pop('doi', None)
@@ -108,7 +108,7 @@ def publication_status():
                 art['message'] = message
 
     # check status of request articles
-    check_articles = request.get_json()
+    check_articles = request.get_json(force=True)
     checked_articles = {'articles': []}
 
     for check_article in check_articles['articles']:
@@ -193,7 +193,7 @@ def scheduled_status():
     if error is not None:
         return error, 500
 
-    data = request.get_json()
+    data = request.get_json(force=True)
     article_ids = data["articles"]
     lst = []
     for article_id in article_ids:
