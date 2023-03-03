@@ -14,6 +14,9 @@ workflow_starter_queue = 'CHANGEME-workflow-starter-queue'
 event_queue_pool_size = 5
 event_queue_message_count = 5
 
+aws_access_key_id = "" # AKIAFOOBARBAZ
+aws_secret_access_key = ""
+
 # Logging
 log_level = "DEBUG"
 log_file = "dashboard.log"
