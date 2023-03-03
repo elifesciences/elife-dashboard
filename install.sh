@@ -9,6 +9,6 @@ source venv/bin/activate
 pip install pip wheel --upgrade
 pip install -r requirements.txt --no-color
 
-if [ ! settings.py ]; then
+if [ ! -e settings.py ]; then
     cp dashboard/dev_settings.py settings.py
 fi
