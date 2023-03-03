@@ -1,4 +1,4 @@
-# file generated 2023-02-17 - see update-dependencies.sh
+# file generated 2023-03-01 - see update-dependencies.sh
 astroid==2.14.2
 attrs==22.2.0
 autopep8==1.7.0
@@ -40,5 +40,5 @@ typing_extensions==4.5.0
 urllib3==1.26.14
 uWSGI==2.0.21
 Werkzeug==2.2.3
-wrapt==1.14.1
-zipp==3.13.0
+wrapt==1.15.0
+zipp==3.15.0
