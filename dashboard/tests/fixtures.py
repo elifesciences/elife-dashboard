@@ -58,5 +58,5 @@ class FakeQueueProvider:
         return FakeQueue()
 
 class FakeQueue:
-    def write(self, message):
+    def send_message(self, MessageBody):
         pass

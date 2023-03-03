@@ -1,5 +1,4 @@
 from config_decider import config as settings
-from boto.sqs.message import Message
 import json
 from provider.QueueProvider import QueueProvider
 
@@ -53,9 +52,7 @@ def queue_article_publication(article_id, version, run):
                     'workflow_data': follow_on_data
                 }
 
-                m = Message()
-                m.set_body(json.dumps(message))
-                out_queue.write(m)
+                out_queue.send_message(MessageBody=json.dumps(message))
 
                 result = {
                     'publication-status': status,
