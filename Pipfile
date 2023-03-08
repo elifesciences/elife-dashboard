@@ -7,7 +7,7 @@ name = "pypi"
 python_version = "3.8"
 
 [packages]
-boto = "~=2.0"
+boto3 = "~=1.26"
 psycopg2-binary = "~=2.8"
 requests = "~=2.22"
 # not semver, it removes major features in minor versions

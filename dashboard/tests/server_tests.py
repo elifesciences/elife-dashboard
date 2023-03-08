@@ -4,7 +4,6 @@ import test_database as db
 import fixtures
 import json
 from unittest.mock import patch
-from fixtures import FakeQueueProvider
 
 class ServerTestCase(unittest.TestCase):
 
