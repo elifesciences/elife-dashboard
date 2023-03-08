@@ -1,9 +1,7 @@
-from config_decider import config as settings
+import settings
 import json
 from provider.QueueProvider import QueueProvider
-
 from .articles import get_article
-
 
 def queue_article_publication(article_id, version, run):
     if version is None or run is None:

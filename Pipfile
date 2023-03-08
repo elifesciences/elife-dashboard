@@ -13,10 +13,6 @@ requests = "~=2.22"
 # not semver, it removes major features in minor versions
 Flask = "==2.2.*"
 Flask-Cors = "~=3.0"
-Flask-HTTPAuth = "~=3.3"
-Flask-Session = "~=0.3"
-# lsh@2022-03-30: redirects http->https. this should be the job of nginx. investigate.
-Flask-SSLify = "~=0.1"
 newrelic = "*"
 uWSGI = "~=2.0"
 

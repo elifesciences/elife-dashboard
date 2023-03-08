@@ -1,7 +1,7 @@
 """
 Process SQS message from event and property queue and populate monitoring database
 """
-from config_decider import config as settings
+import settings
 import boto3
 import json
 import dashboard

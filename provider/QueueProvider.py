@@ -1,5 +1,5 @@
 import boto3
-from config_decider import config as settings
+import settings
 from botocore.exceptions import ClientError
 import logging
 
