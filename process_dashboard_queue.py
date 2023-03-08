@@ -21,11 +21,12 @@ def main():
     queue = get_queue()
 
     while True:
-        message = queue.receive_messages(VisibilityTimeout=60, WaitTimeSeconds=20)
-        if message is not None:
-            logger.info("Message received")
-            logger.debug("Message received details: %s", message)
-            process_message(message)
+        message_list = queue.receive_messages(VisibilityTimeout=60, WaitTimeSeconds=20)
+        if message_list is not None:
+            for message in message_list:
+                logger.info("Message received")
+                logger.debug("Message received details: %s", message)
+                process_message(message)
         else:
             logger.debug("No message received")
 
