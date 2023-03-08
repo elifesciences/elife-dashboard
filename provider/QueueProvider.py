@@ -1,5 +1,5 @@
 import boto
-from config_decider import config as settings
+import settings
 
 class QueueProvider:
 

@@ -1,6 +1,6 @@
+import settings
 import datetime
 import logging
-from config_decider import config as settings
 import psycopg2
 from psycopg2.extensions import SQL_IN, register_adapter
 from dashboard.exceptions import ShortRetryException

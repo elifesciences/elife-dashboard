@@ -1,6 +1,6 @@
 import datetime
 import logging
-from config_decider import config as settings
+import settings
 from dashboard.models import articles
 from .articles import get_current_articles, get_article
 import requests

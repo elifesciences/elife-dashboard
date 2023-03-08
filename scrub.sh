@@ -13,4 +13,4 @@ autopep8 \
     --in-place --recursive --aggressive \
     --ignore E501,E302,E261,E401,E305,E309,E731 \
     --exclude *.html \
-    dashboard/ config_decider.py experiments.py mocked_services.py process_dashboard_queue.py runserver.py
+    dashboard/ experiments.py mocked_services.py process_dashboard_queue.py runserver.py
