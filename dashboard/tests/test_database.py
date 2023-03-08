@@ -1,6 +1,5 @@
 import psycopg2
-from config_decider import config as settings
-
+import settings
 from dashboard.models.articles import clean
 
 def test_database_setup():

@@ -32,19 +32,19 @@ These requirements are for the front end only, additional requirements can be fo
 
 ## Quick Start
 
-In the root of the project folder create the Python virtual environment (venv), activate it and install the Python dependencies. This step will only need to be done once, the [aliases](#aliases) will do this for you in the future.
+In the root of the project folder create the Python virtual environment (venv), activate it and install the Python dependencies.
 
     ./install.sh
 
-Install all dependencies and build the assets 
+Install all dependencies and build the assets:
 
-    npm install
+    ./install-js.sh
 
-If you wish to enable watch and live reload
+If you wish to enable watch and live reload:
 
     grunt dev
 
-To serve the application, if you are running ```grunt dev``` you will need to run this in a new shell window
+To serve the application, if you are running `grunt dev` you will need to run this in a new shell window:
 
     grunt shell:mocked_services
 
@@ -82,9 +82,9 @@ The task will not be considered complete until any UI changes and all updated ja
 ## Maintaining Dashboard and Pattern Library
 Copying [Dashboard](https://github.com/elifesciences/elife-dashboard) back into the [Pattern Library](https://github.com/digirati-co-uk/elife-monitoring-dashboard-frontend)
 
- ```sh
- bash -x copyfromdashboard.sh ~/Projects/eLife/elife-dashboard
- ```
+```sh
+bash -x copyfromdashboard.sh ~/Projects/eLife/elife-dashboard
+```
 
 
 ## License

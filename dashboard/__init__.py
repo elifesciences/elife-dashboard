@@ -1,5 +1,5 @@
 import logging
-from config_decider import config as settings
+import settings
 from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
 from .models import article_adapters, article_operations, articles

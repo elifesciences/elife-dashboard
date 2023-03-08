@@ -10,5 +10,5 @@ pip install pip wheel --upgrade
 pip install -r requirements.txt --no-color
 
 if [ ! -e settings.py ]; then
-    cp dashboard/dev_settings.py settings.py
+    cp dashboard/example_settings.py settings.py
 fi
