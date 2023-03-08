@@ -36,7 +36,7 @@ def get_queue():
                           settings.sqs_region,
                           aws_access_key_id=settings.aws_access_key_id,
                           aws_secret_access_key=settings.aws_secret_access_key)
-    queue = conn.get_queue_by_name(settings.event_monitor_queue)
+    queue = conn.get_queue_by_name(QueueName=settings.event_monitor_queue)
     assert queue is not None, "failed to find %r in region %r" % (settings.event_monitor_queue, settings.sqs_region)
     return queue
 
