@@ -8,15 +8,16 @@ python_version = "3.8"
 
 [packages]
 boto3 = "~=1.26"
-psycopg2-binary = "~=2.8"
-requests = "~=2.22"
 # not semver, it removes major features in minor versions
 Flask = "==2.2.*"
 Flask-Cors = "~=3.0"
 newrelic = "*"
+psycopg2-binary = "~=2.8"
+python-json-logger = "~=2.0"
+requests = "~=2.22"
 uWSGI = "~=2.0"
 
 [dev-packages]
-pylint = "~=2.0"
-pytest = "~=7.2"
 autopep8 = "~=1.4"
+pytest = "~=7.2"
+pylint = "~=2.0"
