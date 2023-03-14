@@ -5,10 +5,10 @@ from dashboard.models import articles
 from .articles import get_current_articles, get_article
 import requests
 
+LOG = logging.getLogger(__name__)
 
-# called by the dashboard app to get the detailed data for an article
 def get_current_model():
-    logging.debug('in current model')
+    "called by the dashboard app to get the detailed data for an article"
     model = {
         "error": [],
         "in-progress": [],
@@ -114,7 +114,7 @@ def get_detail_article_model(article_id):
     epoch = datetime.datetime.utcfromtimestamp(0)
 
     article = get_article(article_id)
-    logging.debug("article data %s", str(article))
+    LOG.debug("article data %s", str(article))
     if not article:
         return
 
@@ -126,16 +126,16 @@ def get_detail_article_model(article_id):
     model['versions'] = {}
     for version in versions:
         if version > 0:
-            logging.debug("version %s", str(version))
+            LOG.debug("version %s", str(version))
 
             version_data = versions.get(version)
-            logging.debug("version_data %s", str(version_data))
+            LOG.debug("version_data %s", str(version_data))
 
             version_properties = version_data.get('properties')
-            logging.debug("version_properties data %s", str(version_properties))
+            LOG.debug("version_properties data %s", str(version_properties))
 
             merged_properties = version_zero_properties.copy()
-            logging.debug("merged_properties data %s", str(merged_properties))
+            LOG.debug("merged_properties data %s", str(merged_properties))
 
             merged_properties.update(version_properties)
 
