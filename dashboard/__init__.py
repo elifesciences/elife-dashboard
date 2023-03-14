@@ -1,15 +1,16 @@
-import logging
 import settings
+from . import app_logging
+app_logging.init_logging(__name__, settings.log_file, settings.log_level)
+
 from flask import Flask, redirect, url_for, render_template, request, Response, jsonify
 from flask_cors import CORS
 from .models import article_adapters, article_operations, articles
 import requests
 import traceback
+import logging
 
-LOG_FORMAT = '%(asctime)-15s - %(levelname)s - %(processName)s - %(name)s - %(message)s'
-logging.basicConfig(format=LOG_FORMAT,
-                    filename=settings.log_file,
-                    level=getattr(logging, settings.log_level))
+LOG = logging.getLogger(__name__)
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 CORS(app)
@@ -65,8 +66,8 @@ def queue_article_publication():
                     queue_result = article_operations.queue_article_publication(article_id, version, run)
                     results.append(queue_result)
                 else:
-                    logging.error("Could not determine version and run for article")
-                    logging.error("Error in article: %s", article_id)
+                    LOG.error("Could not determine version and run for article")
+                    LOG.error("Error in article: %s", article_id)
                     results.append({
                         'publication-status': 'error',
                         'id': article_id,
@@ -74,7 +75,7 @@ def queue_article_publication():
                         'run': run
                     })
     else:
-        logging.error("Problem with request data")
+        LOG.error("Problem with request data")
         return report_error("Problem with request data", "Request data not a json dictionary")
 
     return jsonify({'articles': results})
@@ -95,7 +96,7 @@ def status():
                                 'publication-status': publication_status,
                                 'message': message})
     else:
-        logging.error("Problem with request data")
+        LOG.error("Problem with request data")
         return report_error("Problem with request data", "Request data not a json dictionary")
     return jsonify({'articles': results})
 
@@ -108,12 +109,12 @@ def scheduled_status():
         if r.status_code == 200:
             return jsonify(r.json())
         else:
-            logging.error("Status code from scheduler was " + str(r.status_code))
+            LOG.error("Status code from scheduler was " + str(r.status_code))
             return report_error("Error in scheduling service",
                                 "Status code from scheduler was " + str(r.status_code))
 
     except IOError:
-        logging.exception("Error contacting scheduling service")
+        LOG.exception("Error contacting scheduling service")
         return report_error("Error contacting scheduling service",
                             "Stack trace: " + traceback.format_exc())
 
@@ -126,12 +127,12 @@ def schedule_publication():
         if r.status_code == 200:
             return jsonify(r.json())
         else:
-            logging.error("Status code from scheduler was " + str(r.status_code))
+            LOG.error("Status code from scheduler was " + str(r.status_code))
             return report_error("Error in scheduling service",
                                 "Status code from scheduler was " + str(r.status_code))
 
     except IOError:
-        logging.exception("Error contacting scheduling service")
+        LOG.exception("Error contacting scheduling service")
         return report_error("Error contacting scheduling service",
                             "Stack trace: " + traceback.format_exc())
 
@@ -152,12 +153,12 @@ def article_schedule_for_range(from_date, to_date):
                 scheduled_articles = article_adapters.get_scheduled_articles(data)
                 return jsonify({'articles': scheduled_articles})
         else:
-            logging.error("Status code from scheduler was " + str(r.status_code))
+            LOG.error("Status code from scheduler was " + str(r.status_code))
             return report_error("Error in scheduling service",
                                 "Status code from scheduler  was " + str(r.status_code))
 
     except IOError:
-        logging.exception("Error contacting scheduling service")
+        LOG.exception("Error contacting scheduling service")
         return report_error("Error contacting scheduling service",
                             "Stack trace: " + traceback.format_exc())
 

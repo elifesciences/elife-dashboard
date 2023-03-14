@@ -5,6 +5,8 @@ import psycopg2
 from psycopg2.extensions import SQL_IN, register_adapter
 from dashboard.exceptions import ShortRetryException
 
+LOG = logging.getLogger(__name__)
+
 register_adapter(list, SQL_IN)
 
 insert_article_sql = 'insert into article (article_identifier) values (%s) returning article_id'
@@ -309,11 +311,11 @@ def _get_article_id(article_identifier, add=False):
                 cur.execute(insert_article_sql, (article_identifier,))
                 article_id = cur.fetchone()[0]
             except Exception:  # unique_violation
-                logging.exception('Possible unique violation. App will try to retrieve article again')
+                LOG.exception('Possible unique violation. App will try to retrieve article again')
                 try:
                     _commit_and_close_connection(conn, cur)
                 except BaseException:
-                    logging.exception('Error on trying to close connection')
+                    LOG.exception('Error on trying to close connection')
                 try:
                     conn, cur = _get_connection()
                     cur.execute(get_article_sql, (article_identifier,))
@@ -322,7 +324,7 @@ def _get_article_id(article_identifier, add=False):
                     if result is not None:
                         article_id = result[0]
                 except Exception as e:
-                    logging.exception('Error retrieving article_id')
+                    LOG.exception('Error retrieving article_id')
                     raise ShortRetryException("Error when retrieving article_id was %s" % e)
         else:
             article_id = None
@@ -375,7 +377,7 @@ def _store_event(version, run, event_type, timestamp, status, message, article_i
     conn.commit()
     cur.close()
     conn.close()
-    logging.debug("The event " + event_type + " for article " + str(article_id) + " has been stored.")
+    LOG.debug("The event " + event_type + " for article " + str(article_id) + " has been stored.")
 
 
 def _store_property(property_type, name, value, article_identifier, version, message_id):
@@ -386,7 +388,7 @@ def _store_property(property_type, name, value, article_identifier, version, mes
     try:
         article_id = _get_article_id(article_identifier, add=True)
     except psycopg2.Error:
-        logging.exception("error storing property")
+        LOG.exception("error storing property")
         raise
     int_value = None
     date_value = None
@@ -398,7 +400,7 @@ def _store_property(property_type, name, value, article_identifier, version, mes
     elif property_type == 'int':
         int_value = int(value)
     else:
-        logging.exception("Property type not given in message. Article: %s", article_identifier)
+        LOG.exception("Property type not given in message. Article: %s", article_identifier)
         return
 
     # TODO (AMO delivery) store_message(message_id, timestamp)
@@ -421,9 +423,9 @@ def _store_property(property_type, name, value, article_identifier, version, mes
         conn.close()
 
     except psycopg2.Error:
-        logging.exception("Error storing property")
+        LOG.exception("Error storing property")
 
-    logging.debug("The property " + property_type + " for article " + str(article_id) + " has been stored.")
+    LOG.debug("The property " + property_type + " for article " + str(article_id) + " has been stored.")
 
 def _commit_and_close_connection(conn, cur):
     conn.commit()

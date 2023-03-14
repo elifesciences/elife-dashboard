@@ -1,34 +1,19 @@
 """
-Process SQS message from event and property queue and populate monitoring database
+Process SQS message from event and property queue and populate monitoring database.
+
 """
 import settings
+from dashboard import app_logging
+app_logging.init_logging(__name__, settings.process_queue_log_file, settings.log_level)
+
 import boto3
 import json
 import dashboard
 import dashboard.models.articles as articles
-import logging
 from dashboard.exceptions import ShortRetryException
+import logging
 
-logger = logging.getLogger(__name__)
-fh = logging.FileHandler(settings.process_queue_log_file)
-formatter = logging.Formatter(dashboard.LOG_FORMAT)
-fh.setFormatter(formatter)
-logger.addHandler(fh)
-
-
-def main():
-    logger.info("Started")
-    queue = get_queue()
-
-    while True:
-        message_list = queue.receive_messages(VisibilityTimeout=60, WaitTimeSeconds=20)
-        if message_list is not None:
-            for message in message_list:
-                logger.debug("Message received details: %s", message)
-                process_message(message)
-        else:
-            logger.debug("No message received")
-
+LOG = logging.getLogger(__name__)
 
 def get_queue():
     conn = boto3.resource('sqs',
@@ -38,7 +23,6 @@ def get_queue():
     queue = conn.get_queue_by_name(QueueName=settings.event_monitor_queue)
     assert queue is not None, "failed to find %r in region %r" % (settings.event_monitor_queue, settings.sqs_region)
     return queue
-
 
 def process_message(message):
     "`message` is a boto3.sqs.Message instance."
@@ -53,15 +37,15 @@ def process_message(message):
         elif message_type == 'property':
             process_property_message(message_payload)
         elif message_type is None:
-            logger.error('Missing message type: %s', message_payload)
+            LOG.error('Missing message type: %s', message_payload)
         else:
-            logger.error('Unknown message type: %s', message_type)
+            LOG.error('Unknown message type: %s', message_type)
         message.delete()
     except ShortRetryException as e:
-        logging.info('short retry: %s because of %s', message.message_id, e)
+        LOG.info('short retry: %s because of %s', message.message_id, e)
         message.change_visibility(VisibilityTimeout=10)
     except Exception:
-        logger.exception("Error processing message")
+        LOG.exception("Error processing message")
 
 
 def process_event_message(message):
@@ -71,7 +55,7 @@ def process_event_message(message):
                               message.get('timestamp'), message.get('status'), message.get('message'),
                               message.get('item_identifier'), message.get('message_id'))
     except Exception:
-        logger.exception("Error processing event message: %s", message)
+        LOG.exception("Error processing event message: %s", message)
 
 
 def process_property_message(message):
@@ -81,10 +65,25 @@ def process_property_message(message):
                                  message.get('item_identifier'), message.get('version'),
                                  message.get('message_id'))
     except ShortRetryException as e:
-        logging.info("Error processing property message: %s", message)
+        LOG.info("Error processing property message: %s", message)
         raise ShortRetryException("Short retry: %s", e)
     except Exception:
-        logger.exception("Error processing property message: %s", message)
+        LOG.exception("Error processing property message: %s", message)
+
+# ---
+
+def main():
+    LOG.info("Started")
+    queue = get_queue()
+
+    while True:
+        message_list = queue.receive_messages(VisibilityTimeout=60, WaitTimeSeconds=20)
+        if message_list is not None:
+            for message in message_list:
+                LOG.debug("Message received details: %s", message)
+                process_message(message)
+        else:
+            LOG.debug("No message received")
 
 
 if __name__ == "__main__":
