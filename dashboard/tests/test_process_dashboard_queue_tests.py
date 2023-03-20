@@ -121,7 +121,7 @@ class TestProcessDashboardQueue(unittest.TestCase):
         attempt = self._process_property_message(message_from_process_message)
         self.assertRaises(ShortRetryException, attempt)
 
-    @patch('dashboard.models.articles.logging')
+    @patch('dashboard.models.articles.LOG')
     @patch('dashboard.models.articles._commit_and_close_connection')
     @patch('dashboard.models.articles._get_connection')
     def test_process_property_message_no_property_type(self, mock_get_connection, mock_commit_and_close_conn, mock_logging):
@@ -133,7 +133,7 @@ class TestProcessDashboardQueue(unittest.TestCase):
         attempt()
         self.assertTrue(mock_logging.exception.called)
 
-    @patch('process_dashboard_queue.logger.exception')
+    @patch('process_dashboard_queue.LOG.exception')
     @patch('dashboard.models.articles._commit_and_close_connection')
     @patch('dashboard.models.articles._get_connection')
     def test_process_property_message_unique_violation_psycopg2_error(self, mock_get_connection, mock_commit_and_close_conn, mock_logger_exception):
@@ -146,7 +146,7 @@ class TestProcessDashboardQueue(unittest.TestCase):
         self.assertRaises(Exception)
         self.assertEqual("Error processing property message: %s", fake_logger.logexception)
 
-    @patch('dashboard.models.articles.logging')
+    @patch('dashboard.models.articles.LOG')
     @patch('dashboard.models.articles._commit_and_close_connection')
     @patch('dashboard.models.articles._get_connection')
     def test_process_property_message_unique_violation_select(self, mock_get_connection, mock_commit_and_close_conn, mock_logging):
@@ -158,7 +158,7 @@ class TestProcessDashboardQueue(unittest.TestCase):
 
     @patch('dashboard.models.articles._store_message')
     @patch('dashboard.models.articles._get_article_id')
-    @patch('dashboard.models.articles.logging')
+    @patch('dashboard.models.articles.LOG')
     @patch('dashboard.models.articles._commit_and_close_connection')
     @patch('dashboard.models.articles._get_connection')
     def test_process_event_message(self, mock_get_connection, mock_commit_and_close_conn, mock_logging, mock_get_article_id, mock_store_message):
@@ -169,7 +169,7 @@ class TestProcessDashboardQueue(unittest.TestCase):
         process_dashboard_queue.process_event_message(message_from_process_event_message)
         self.assertTrue(mock_logging.debug.called)
 
-    @patch('process_dashboard_queue.logger.exception')
+    @patch('process_dashboard_queue.LOG.exception')
     def test_process_event_message_exception(self, mock_logger_exception):
         fake_logger = FakeLogger()
         mock_logger_exception.side_effect = fake_logger.exception

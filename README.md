@@ -28,10 +28,11 @@ and is installed the same way.
 
 Start the application HTTP server:
 
-    venv/bin/python runserver.py
+    venv/bin/python flask --app dashboard run
 
 Start the article scheduler:
 
+    cd /path/elife-article-scheduler/
     venv/bin/python src/manage.py runserver
 
 Visit the application in your browser:
