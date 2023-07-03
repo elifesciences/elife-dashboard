@@ -51,6 +51,9 @@
     "underscore": "^1.12",
     "uniq": "^1.0"
   },
+  "overrides": {
+    "word-wrap" : "npm:@aashutoshrathi/word-wrap"
+  },
   "browserify": {
     "transform": [
       [
