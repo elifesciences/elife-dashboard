@@ -52,7 +52,7 @@
     "uniq": "^1.0"
   },
   "overrides": {
-    "word-wrap" : "npm:@aashutoshrathi/word-wrap"
+    "optionator" : "0.9.3"
   },
   "browserify": {
     "transform": [
