@@ -11,7 +11,6 @@ boto3 = "~=1.26"
 # not semver, it removes major features in minor versions
 Flask = "==2.2.*"
 Flask-Cors = "~=3.0"
-newrelic = "*"
 psycopg2-binary = "~=2.8"
 python-json-logger = "~=2.0"
 requests = "~=2.22"
