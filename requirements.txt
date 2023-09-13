@@ -1,8 +1,8 @@
-# file generated 2023-08-25 - see update-dependencies.sh
+# file generated 2023-09-13 - see update-dependencies.sh
 astroid==2.15.6
 autopep8==1.7.0
-boto3==1.28.34
-botocore==1.31.34
+boto3==1.28.46
+botocore==1.31.46
 certifi==2023.7.22
 charset-normalizer==3.2.0
 click==8.1.7
@@ -20,14 +20,13 @@ jmespath==1.0.1
 lazy-object-proxy==1.9.0
 MarkupSafe==2.1.3
 mccabe==0.7.0
-newrelic==8.11.0
 packaging==23.1
 platformdirs==3.10.0
-pluggy==1.2.0
+pluggy==1.3.0
 psycopg2-binary==2.9.7
 pycodestyle==2.11.0
 pylint==2.17.5
-pytest==7.4.0
+pytest==7.4.2
 python-dateutil==2.8.2
 python-json-logger==2.0.7
 requests==2.31.0
