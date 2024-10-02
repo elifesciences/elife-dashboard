@@ -11,16 +11,6 @@ elifePipeline {
     }
 
     elifeMainlineOnly {
-        stage 'End2end tests', {
-            elifeSpectrum(
-                deploy: [
-                    stackname: 'elife-dashboard--end2end',
-                    revision: commit,
-                    folder: '/srv/elife-dashboard'
-                ]
-            )
-        }
-
         stage 'Deploy on continuumtest', {
             lock('elife-dashboard--continuumtest') {
                 builderDeployRevision 'elife-dashboard--continuumtest', commit
